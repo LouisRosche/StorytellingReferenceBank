@@ -93,80 +93,154 @@ python manuscript_to_chapters.py manuscript.txt \
 python manuscript_to_chapters.py manuscript.txt --dry-run
 ```
 
+### audio_postprocess.py
+
+ACX-compliant mastering chain for raw TTS output.
+
+```bash
+# Process single file
+python audio_postprocess.py raw_audio.wav --output mastered.mp3
+
+# Process directory
+python audio_postprocess.py raw_chapters/ --output-dir mastered/
+
+# Analyze without processing
+python audio_postprocess.py audio.wav --analyze
+
+# Custom parameters
+python audio_postprocess.py raw.wav -o final.mp3 \
+    --target-rms -20 --limiter-ceiling -3 \
+    --room-tone-head 0.5 --room-tone-tail 3.0
+```
+
+**Processing Chain:**
+1. High-pass filter (80 Hz) - removes rumble
+2. Low-pass filter (16 kHz) - removes hiss
+3. Compression (2.5:1, -24 dB threshold, soft knee)
+4. De-essing (4-8 kHz band)
+5. Limiter (-3 dB ceiling)
+6. Loudness normalization (-20 dB RMS)
+7. Room tone insertion (0.5s head, 3s tail)
+8. Export: 192 kbps CBR MP3, 44.1 kHz, mono
+
+### batch_produce.py
+
+Full pipeline orchestrator: manuscript → distributable audiobook.
+
+```bash
+# Full production (requires GPU)
+python batch_produce.py manuscript.txt \
+    --persona ../personas/examples/narrator-literary.json \
+    --output-dir audiobook/ \
+    --title "My Book" --author "Jane Doe" --narrator "AI Voice"
+
+# Dry run (test orchestration without TTS)
+python batch_produce.py manuscript.txt \
+    --persona ../personas/examples/narrator-childrens.json \
+    --dry-run --verbose
+
+# Picture book with page-turn pauses
+python batch_produce.py picturebook.txt \
+    --persona ../personas/examples/narrator-childrens.json \
+    --page-turns --pause-duration 2.0 \
+    --output-dir audiobook/
+```
+
+**Produces:**
+- ACX-compliant chapter MP3s
+- Opening/closing credits
+- Retail sample (first 5 min of chapter 1)
+- `production_report.json` with full status
+
 ## Pipeline Workflow
 
 ```
-manuscript.txt
-      │
-      ▼
-┌─────────────────────┐
-│ manuscript_to_      │
-│ chapters.py         │
-└─────────────────────┘
-      │
-      ▼
-chapters/
-├── manifest.json
-├── Book_Chapter_01.txt
-├── Book_Chapter_02.txt
-└── ...
-      │
-      ▼
-┌─────────────────────┐
-│ tts_generator.py    │  ← Uses persona from personas/
-└─────────────────────┘
-      │
-      ▼
-audio/
-├── Book_Chapter_01.wav
-├── Book_Chapter_02.wav
-└── ...
-      │
-      ▼
-┌─────────────────────┐
-│ acx_validator.py    │
-└─────────────────────┘
-      │
-      ▼
-✓ ACX-compliant audiobook
+manuscript.txt + persona.json
+           │
+           ▼
+    ┌──────────────────┐
+    │  batch_produce   │  ← Full orchestrator
+    └──────────────────┘
+           │
+           ├─────────────────────────────────────────┐
+           │                                         │
+           ▼                                         │
+    ┌──────────────────┐                             │
+    │ manuscript_to_   │  STAGE 1: PREP              │
+    │ chapters.py      │                             │
+    └──────────────────┘                             │
+           │                                         │
+           ▼                                         │
+    prep/                                            │
+    ├── Chapter_01.txt                               │
+    ├── Opening_Credits.txt                          │
+    └── manifest.json                                │
+           │                                         │
+           ▼                                         │
+    ┌──────────────────┐                             │
+    │ tts_generator.py │  STAGE 2: TTS               │
+    └──────────────────┘                             │
+           │                                         │
+           ▼                                         │
+    raw_audio/                                       │
+    ├── Chapter_01.wav                               │
+    └── Opening_Credits.wav                          │
+           │                                         │
+           ▼                                         │
+    ┌──────────────────┐                             │
+    │ audio_postprocess│  STAGE 3: MASTER            │
+    └──────────────────┘                             │
+           │                                         │
+           ▼                                         │
+    final/                                           │
+    ├── Chapter_01.mp3  (ACX-compliant)              │
+    ├── Opening_Credits.mp3                          │
+    └── Retail_Sample.mp3                            │
+           │                                         │
+           ▼                                         │
+    ┌──────────────────┐                             │
+    │ acx_validator.py │  STAGE 4: VALIDATE          │
+    └──────────────────┘                             │
+           │                                         │
+           ▼                                         │
+    production_report.json ◄─────────────────────────┘
+           │
+           ▼
+    ✓ Distributable audiobook
 ```
 
-## Batch Processing Example
+## Batch Processing
 
-```python
-#!/usr/bin/env python3
-"""Process entire audiobook from manuscript."""
+The recommended approach is to use `batch_produce.py` which orchestrates the full pipeline:
 
-import json
-from pathlib import Path
-from tts_generator import Persona, generate_from_persona, save_audio
-from acx_validator import validate_audio
+```bash
+# Complete audiobook production
+python batch_produce.py my_novel.txt \
+    --persona ../personas/examples/narrator-literary.json \
+    --title "My Novel" \
+    --author "Jane Doe" \
+    --narrator "AI Narrator" \
+    --output-dir my_novel_audiobook/ \
+    --verbose
+```
 
-# Load manifest
-with open("chapters/manifest.json") as f:
-    manifest = json.load(f)
+For custom workflows, you can chain scripts manually:
 
-# Load persona
-persona = Persona.from_json("../personas/examples/narrator-literary.json")
+```bash
+# Step 1: Split manuscript
+python manuscript_to_chapters.py novel.txt -o chapters/
 
-# Process each chapter
-for chapter in manifest["chapters"]:
-    text_path = Path("chapters") / chapter["text_file"]
-    audio_path = Path("audio") / chapter["audio_file"]
+# Step 2: Generate TTS for each chapter
+for f in chapters/*.txt; do
+    python tts_generator.py --persona ../personas/examples/narrator-literary.json \
+        --text-file "$f" --output "raw_audio/$(basename ${f%.txt}).wav"
+done
 
-    # Read text
-    with open(text_path) as f:
-        text = f.read()
+# Step 3: Post-process for ACX compliance
+python audio_postprocess.py raw_audio/ --output-dir final/
 
-    # Generate audio
-    print(f"Generating: {chapter['title']}")
-    wavs, sr = generate_from_persona(text, persona)
-    save_audio(wavs, sr, str(audio_path))
-
-    # Validate
-    report = validate_audio(str(audio_path))
-    if not report.passed:
-        print(f"  Warning: {audio_path} needs post-processing")
+# Step 4: Validate
+python acx_validator.py final/
 ```
 
 ## Hardware Requirements
@@ -189,10 +263,26 @@ python tts_generator.py --model 0.6B ...
 ```
 
 **"Noise floor too high"**
-- This is expected for TTS output—apply noise reduction in post-processing
-- Use a dedicated DAW or ffmpeg for final mastering
+- This is expected for raw TTS output
+- Run `audio_postprocess.py` to apply full mastering chain
 
 **ACX validation failures**
-- RMS too quiet: Normalize audio to -20 dB RMS
-- Peaks over -3 dB: Apply limiter at -3 dB
-- Missing room tone: Add 0.5s silence at start/end
+- Run `audio_postprocess.py` on raw files - it handles all ACX requirements:
+  - Normalizes to -20 dB RMS (center of -23 to -18 range)
+  - Limits peaks to -3 dB
+  - Adds room tone (0.5s head, 3s tail)
+  - Exports as 192 kbps CBR MP3, 44.1 kHz, mono
+
+**"No module named 'scipy'"**
+```bash
+pip install scipy
+```
+
+**ffmpeg errors with pydub**
+```bash
+# Ubuntu/Debian
+sudo apt install ffmpeg
+
+# macOS
+brew install ffmpeg
+```

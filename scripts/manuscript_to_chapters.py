@@ -166,12 +166,18 @@ def split_manuscript(
 
     if pattern is None:
         # No pattern found - treat as single chapter
+        content = text.strip()
+        has_page_turns = any(
+            re.search(p, content, re.IGNORECASE)
+            for p in PAGE_TURN_PATTERNS
+        )
         return [Chapter(
             number=1,
             title="Full Text",
-            content=text.strip(),
+            content=content,
             start_line=0,
             end_line=len(text.split('\n')),
+            has_page_turns=has_page_turns,
         )]
 
     # Split by pattern
