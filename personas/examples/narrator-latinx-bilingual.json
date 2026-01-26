@@ -1,0 +1,18 @@
+{
+  "id": "narrator-latinx-bilingual",
+  "name": "Latinx Bilingual Narrator",
+  "voice_prompt": "Perfect audio quality. Narrator comfortable in English with natural Spanish fluency. American Latinx—the English of someone raised bilingual, with occasional Spanish phrases pronounced natively, not Anglicized. Warm, expressive, emotionally present. Can shift between cultures within a sentence. Urban, educated, contemporary.",
+  "voice_attributes": {
+    "age_range": "30s",
+    "gender": "neutral",
+    "pitch": "medium",
+    "pace": "natural, expressive",
+    "texture": "warm, clear",
+    "accent": "American Latinx (bilingual)",
+    "languages": ["en", "es"]
+  },
+  "emotional_range": ["warm", "passionate", "tender", "sharp", "playful", "melancholic", "fierce"],
+  "use_cases": ["Latinx literature", "bilingual narratives", "contemporary fiction", "family stories", "diaspora narratives"],
+  "model_variant": "1.7B-VoiceDesign",
+  "notes": "Spanish words should be pronounced with native Spanish phonemes, not Anglicized. The code-switching is natural, not performed. Think: Junot Díaz's narrative voice, or Sandra Cisneros."
+}

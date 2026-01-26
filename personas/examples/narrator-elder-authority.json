@@ -1,0 +1,18 @@
+{
+  "id": "narrator-elder-authority",
+  "name": "Elder Voice (Non-Gendered Authority)",
+  "voice_prompt": "Perfect audio quality. Voice of an elder—someone who has lived long enough to speak with quiet authority. Age shows in slight weathering of the voice, but clarity remains. Could be any gender, any culture. Speaks slowly because they no longer need to rush. Weight behind every word. The kind of voice that makes you lean in to listen.",
+  "voice_attributes": {
+    "age_range": "70s+",
+    "gender": "neutral",
+    "pitch": "lower range",
+    "pace": "slow, deliberate",
+    "texture": "slightly weathered, warm",
+    "accent": "neutral (or specify regional)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["wise", "patient", "occasionally sharp", "tender", "grave", "quietly humorous"],
+  "use_cases": ["wisdom literature", "fables", "multigenerational narratives", "frame stories", "philosophical fiction", "griot-influenced work"],
+  "model_variant": "1.7B-VoiceDesign",
+  "notes": "This is the archetypal storyteller voice—the person the village gathers around. Not frail, just unhurried. Silence is part of the speech. Customize accent for specific cultural context."
+}
