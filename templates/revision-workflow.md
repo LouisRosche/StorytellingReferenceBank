@@ -170,30 +170,13 @@ Record major revision decisions and rationale. Future-you will want to know why.
 
 ## Children's Picture Book Revision
 
-Picture books have unique constraints. Additional checks:
+**Full constraints**: `@style-guides/childrens-picture-book.md`
 
-### Word Count Gate
-
-- Under 600 words? If not, you're not done.
-- Every word earns its place? Picture books are poetry.
-
-### Page Turn Audit
-
-- Map text to spreads (32 pages, 13-14 usable)
-- Does each spread end with a reason to turn?
-- Is there visual variety (action spread, quiet spread)?
-
-### Read-Aloud Test
-
-- Can a tired parent read this smoothly?
-- Do repeated readings reveal new layers?
-- Is the rhythm pleasant to speak?
-
-### Illustration Notes
-
-- Does text leave room for illustration to tell part of the story?
-- Are there places where showing is better than telling?
-- Have you avoided over-describing what pictures will show?
+Additional revision checks:
+- [ ] Under 600 words
+- [ ] Page turns create tension (32 pages, 13-14 usable spreads)
+- [ ] Read-aloud test: smooth for tired parent
+- [ ] Text leaves room for illustration
 
 ---
 

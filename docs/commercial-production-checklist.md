@@ -58,17 +58,9 @@ Complete checklist for producing audiobooks for commercial sale.
 
 ## ACX/Audible Specific
 
-### Technical Requirements
+**Full technical specs**: `@audiobook-specs/acx-requirements.md`
 
-| Parameter | Requirement | Check Command |
-|-----------|-------------|---------------|
-| Format | MP3 | `file chapter.mp3` |
-| Bit rate | 192 kbps CBR | `ffprobe -v error -select_streams a:0 -show_entries stream=bit_rate` |
-| Sample rate | 44.1 kHz | `ffprobe -v error -show_entries stream=sample_rate` |
-| Channels | Mono | `ffprobe -v error -show_entries stream=channels` |
-| RMS | -23 to -18 dB | Use ACX validator |
-| Peak | Max -3 dB | Use ACX validator |
-| Noise floor | Max -60 dB | Use ACX validator |
+**Validation**: `scripts/acx_validator.py`
 
 ### File Requirements
 

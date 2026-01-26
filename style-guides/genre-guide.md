@@ -1,6 +1,8 @@
 # Genre Guide
 
-Craft considerations and TTS production notes for major genres.
+Craft and TTS notes by genre.
+
+**Structures**: `@templates/structures/` | **Voice vocabulary**: `@references/voice-direction-vocabulary.md`
 
 ---
 
