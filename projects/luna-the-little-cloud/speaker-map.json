@@ -1,0 +1,41 @@
+{
+  "title": "Luna the Little Cloud",
+  "description": "Speaker-to-persona mapping for multi-voice TTS production",
+  "default_persona": "personas/narrator-luna-warm.json",
+  "speakers": {
+    "narrator": {
+      "persona_path": "personas/narrator-luna-warm.json",
+      "notes": "Main narrative voice - warm, bedtime aunt"
+    },
+    "luna": {
+      "persona_path": "personas/character-luna.json",
+      "notes": "Luna's dialogue - small, uncertain, growing confident"
+    },
+    "flower": {
+      "persona_path": "personas/character-flower.json",
+      "notes": "The flower - soft whisper, tired but hopeful"
+    },
+    "bee": {
+      "persona_path": "personas/character-bee.json",
+      "notes": "The bee - warm, slightly buzzy, grateful"
+    },
+    "storm_clouds": {
+      "persona_path": "personas/character-storm-clouds.json",
+      "notes": "Storm clouds - rumbly but not scary, dismissive"
+    }
+  },
+  "aliases": {
+    "the flower": "flower",
+    "the bee": "bee",
+    "storm clouds": "storm_clouds",
+    "the storm clouds": "storm_clouds",
+    "big clouds": "storm_clouds",
+    "the big clouds": "storm_clouds"
+  },
+  "production_notes": {
+    "crossfade_ms": 100,
+    "dialogue_pause_ms": 200,
+    "page_turn_pause_ms": 2500,
+    "version": "warm-bedtime"
+  }
+}

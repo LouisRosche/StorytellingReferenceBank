@@ -1,0 +1,19 @@
+{
+  "id": "character-luna",
+  "name": "Luna (Character Voice)",
+  "voice_prompt": "Perfect audio quality. Young child's voice, around age 6-7. Small, soft, slightly uncertain at first but growing in confidence. Higher pitch than narrator but never shrill. Gentle and earnest, with natural hesitations. The voice of a small being who feels overlooked but has a big heart. Warmth underneath the uncertainty.",
+  "character_context": "Luna is a tiny cloud who feels too small to matter. Her dialogue starts hesitant ('I only have three drops... Is that enough?') and grows more confident as she discovers her purpose. She speaks simply, as a child would, but with genuine feeling.",
+  "voice_attributes": {
+    "age_range": "child",
+    "gender": "female",
+    "pitch": "high",
+    "pace": "medium",
+    "texture": "soft",
+    "accent": "American (General)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["uncertain", "hopeful", "gentle", "quietly determined", "warmly surprised"],
+  "use_cases": ["dialogue", "character voice", "children's protagonist"],
+  "model_variant": "1.7B-VoiceDesign",
+  "notes": "Keep within soft register for bedtime version. Uncertainty shows through slight pauses and upward inflections, not volume changes."
+}
