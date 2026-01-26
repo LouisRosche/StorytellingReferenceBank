@@ -1,0 +1,19 @@
+{
+  "id": "character-bee",
+  "name": "The Bee (Character Voice)",
+  "voice_prompt": "Perfect audio quality. Warm, slightly buzzy quality without being cartoonish. Tired but friendly. Medium pitch with gentle energy. A hardworking creature who appreciates kindness. When happy, the voice has a gentle hum quality. Not high-pitched or frantic - this is a tired bee who just needs a little help.",
+  "character_context": "A fuzzy bee who has been flying for a long time and needs a rest. Lands on Luna's edge, panting. Grateful for the ride to the meadow. Hums a happy tune on the way - genuine contentment, not exaggerated cheerfulness.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "neutral",
+    "pitch": "medium",
+    "pace": "medium",
+    "texture": "warm",
+    "accent": "American (General)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["tired", "friendly", "grateful", "content", "warm"],
+  "use_cases": ["dialogue", "character voice", "supporting character"],
+  "model_variant": "1.7B-VoiceDesign",
+  "notes": "The buzz quality is subtle - more in the resonance than actual buzzing sounds. Happy hum at the end should feel natural, not forced."
+}

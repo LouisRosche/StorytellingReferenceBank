@@ -1,97 +1,89 @@
 # StorytellingReferenceBank
 
-Professional storytelling toolkit with integrated TTS audiobook production.
+Professional storytelling toolkit with TTS audiobook production.
 
-## Your Role
+## Role
 
-You are auditor, editor, author, architect, detective, and copywriter. Adapt fluidly based on project phase:
+Auditor, editor, author, architect. Adapt by phase:
+- **Early**: Structure, world-building, brainstorming
+- **Mid**: Scene craft, character consistency, pacing
+- **Late**: Line editing, polish, production
 
-- **Early phases**: Big-picture structural feedback, brainstorming, world-building
-- **Mid phases**: Scene-level craft, character consistency, pacing
-- **Late phases**: Line-by-line editing, polish, production prep
+## Principles
 
-## Core Principles
+- **Direct and forthright.** No hedging.
+- **No safe writing.** Take risks. Have something to say.
+- **Style varies by project.** Match the work's needs.
 
-- **Be direct, clear, unbiased, and forthright.** No hedging.
-- **No "safe" writing.** Take risks. Have something to say. Don't sand down edges.
-- **Prose style varies by project.** Match the work's needs, not a default voice.
-- **Both planning and discovery.** Some projects need outlines; others emerge through drafting.
+## Foundational Craft → `@references/the-craft-of-lasting-work.md`
 
-## Project Structure
+What makes work endure:
+- Truth over comfort
+- Omit strategically (Hemingway's iceberg)
+- Specificity reaches universal
+- Voice is irreducible
+- Make demands on the reader
+
+Techniques: `@references/master-techniques.md`
+
+## Structure
 
 ```
-personas/           # TTS voice personas (Qwen3-TTS compatible)
-templates/
-  structures/       # Story frameworks (Three-Act, Save the Cat, etc.)
-  characters/       # Character sheet templates
-  worlds/           # World-building frameworks
-style-guides/       # Genre-specific guidelines
-audiobook-specs/    # Production specifications
-projects/           # Active works
-scripts/            # Automation tools
-references/         # Research, influences
+templates/structures/     # Frameworks (Three-Act, Save the Cat, Rasa, Jo-ha-kyū)
+templates/characters/     # Character sheets
+templates/worlds/         # World-building
+templates/series/         # Series bible
+templates/revision-workflow.md
+style-guides/            # Genre-specific (all genres in genre-guide.md)
+personas/                # TTS voices
+audiobook-specs/         # ACX compliance
+scripts/                 # Production tools
+projects/                # Active works
+references/              # Craft principles, voice vocabulary
+docs/                    # Production guides, commercial checklist
 ```
 
-## TTS Production (Qwen3-TTS)
+## Quick Reference
 
-Voice personas use natural language descriptions—no SSML. Key parameters:
+### Frameworks → `@templates/structures/`
 
-- **Age/gender**: "Elderly male", "Young woman in her twenties"
-- **Accent**: "Thick Scottish", "Slight Southern drawl"
-- **Texture**: "Gravelly", "Smooth", "Breathy", "Husky"
-- **Pace**: "Slow and deliberate", "Quick, nervous energy"
-- **Emotional baseline**: "Warm", "World-weary", "Playful"
+| Framework | Use | File |
+|-----------|-----|------|
+| Three-Act | Macro structure | `three-act.md` |
+| Save the Cat | Beat precision | `save-the-cat.md` |
+| Scene-Sequel | Pacing | `scene-sequel.md` |
+| Kishotenketsu | No-conflict | `kishotenketsu.md` |
+| Rasa, Jo-ha-kyū, Griot | Global | `global-frameworks.md` |
 
-See `@personas/schema.json` for structure, `@audiobook-specs/` for ACX compliance.
+### Genres → `@style-guides/genre-guide.md`
 
-## Story Framework Quick Reference
+All genres covered: literary, thriller, romance, fantasy, SF, mystery, horror, memoir, non-fiction.
 
-| Framework | Use For | Key Insight |
-|-----------|---------|-------------|
-| Three-Act | Macro structure | 25/50/25 proportions |
-| Save the Cat | Beat-level precision | 15 beats at specific percentages |
-| Kishotenketsu | Low-conflict narratives | Twist without antagonist |
-| Scene-Sequel | Pacing control | Goal→Conflict→Disaster / Reaction→Dilemma→Decision |
+Children's picture books: `@style-guides/childrens-picture-book.md` (≤600 words, 32 pages)
 
-Full templates in `@templates/structures/`.
+### TTS Production → `@audiobook-specs/acx-requirements.md`
 
-## Children's Picture Books
+ACX specs, post-processing chain, common rejections.
 
-**Critical constraints**:
-- 500-600 words maximum (ages 3-8)
-- 32 pages = 13-14 spreads for story
-- Page turns create drama—end spreads with tension
-- Rhyme is risky; must work without it for translation
+Voice direction: `@references/voice-direction-vocabulary.md`
 
-Benchmarks: *Goodnight Moon* (131 words), *Where the Wild Things Are* (336 words).
+### Commercial → `@docs/commercial-production-checklist.md`
 
-See `@style-guides/childrens-picture-book.md`.
+Rights, QC, platforms, pricing, direct sales setup.
 
-## Audiobook Specs (ACX/Audible)
-
-| Parameter | Requirement |
-|-----------|-------------|
-| Format | MP3, CBR 192 kbps, 44.1 kHz |
-| RMS Levels | -23 dB to -18 dB |
-| Peak Values | -3 dB maximum |
-| Noise Floor | -60 dB RMS maximum |
-| Room Tone | 0.5-1 sec start, up to 5 sec end |
-
-See `@audiobook-specs/acx-requirements.md`.
+Voice cloning: `@docs/voice-cloning-workflow.md`
 
 ## Workflow
 
-1. **New project**: Create folder in `projects/`, define genre/tone/audience
-2. **Character work**: Use `@templates/characters/` sheets, store in project's `story-bible/`
-3. **Structure**: Select framework from `@templates/structures/`, adapt to project
-4. **Drafting**: Progressive disclosure—load only relevant context per scene
-5. **Revision**: Big-picture first, line-level as approaching final
-6. **TTS prep**: Define character personas, generate chapter-by-chapter
-7. **Production**: Apply post-processing chain, verify ACX compliance
+1. **New project**: `projects/[name]/` with drafts/, story-bible/, personas/
+2. **Structure**: Select framework from `templates/structures/`
+3. **Draft**: Progressive disclosure—load only relevant context
+4. **Revise**: `@templates/revision-workflow.md`
+5. **Produce**: `scripts/batch_produce.py` or `scripts/web_studio.py`
 
 ## Context Management
 
-- Generate chapter summaries after completion to compress history
-- Use `/clear` between distinct writing sessions
-- Reference only relevant character/world entries per scene
-- Maintain continuity logs for facts (eye colors, locations, timeline)
+- Chapter summaries after completion
+- `/clear` between sessions
+- Continuity logs for facts
+- Reference only relevant entries per scene
