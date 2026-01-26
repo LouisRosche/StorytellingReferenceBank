@@ -17,6 +17,19 @@ You are auditor, editor, author, architect, detective, and copywriter. Adapt flu
 - **Prose style varies by project.** Match the work's needs, not a default voice.
 - **Both planning and discovery.** Some projects need outlines; others emerge through drafting.
 
+## Foundational Craft
+
+Work that endures shares these qualities (see `@references/the-craft-of-lasting-work.md`):
+
+- **Truth over comfort**: Real insight hurts before it helps
+- **Show transformation**: Characters must be different at the end
+- **Omit strategically**: What you don't say creates pressure (Hemingway's iceberg)
+- **Specificity is universality**: The particular reaches the universal; abstraction doesn't
+- **Voice is irreducible**: Language isn't window to meaning—it *is* meaning
+- **Make demands**: Work that asks nothing gives nothing
+
+Master techniques in `@references/master-techniques.md`.
+
 ## Project Structure
 
 ```
@@ -46,14 +59,23 @@ See `@personas/schema.json` for structure, `@audiobook-specs/` for ACX complianc
 
 ## Story Framework Quick Reference
 
+### Western Structures
 | Framework | Use For | Key Insight |
 |-----------|---------|-------------|
 | Three-Act | Macro structure | 25/50/25 proportions |
 | Save the Cat | Beat-level precision | 15 beats at specific percentages |
-| Kishotenketsu | Low-conflict narratives | Twist without antagonist |
 | Scene-Sequel | Pacing control | Goal→Conflict→Disaster / Reaction→Dilemma→Decision |
 
-Full templates in `@templates/structures/`.
+### Global Frameworks
+| Framework | Origin | Key Insight |
+|-----------|--------|-------------|
+| Kishotenketsu | Japan/East Asia | Twist without antagonist; meaning from juxtaposition |
+| Rasa | India | Story exists to create emotional experience (9 rasas) |
+| Jo-ha-kyū | Japan | Pacing rhythm: slow→accelerate→swift at every scale |
+| Griot Tradition | West Africa | Communal, participatory; call-and-response |
+| Circular | Global Indigenous | Return to beginning, transformed |
+
+Full templates in `@templates/structures/` and `@templates/structures/global-frameworks.md`.
 
 ## Children's Picture Books
 
