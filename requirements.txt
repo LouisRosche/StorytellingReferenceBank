@@ -1,0 +1,19 @@
+# Core dependencies for TTS pipeline
+# Install with: pip install -r requirements.txt
+
+# Qwen3-TTS (requires GPU for generation)
+qwen-tts>=0.1.0
+
+# Audio processing
+soundfile>=0.12.0
+numpy>=1.24.0
+pydub>=0.25.0
+
+# Optional: Flash attention for faster inference
+# pip install flash-attn --no-build-isolation
+
+# Optional: PyTorch (usually installed with qwen-tts)
+# torch>=2.0.0
+
+# Development dependencies
+# pytest>=7.0.0
