@@ -1,0 +1,19 @@
+{
+  "id": "narrator-childrens",
+  "name": "Children's Book Narrator",
+  "voice_prompt": "Perfect audio quality. Warm, expressive female voice, early thirties. Bright and engaging without being shrill. Natural smile in the voice. Varies pace for drama—slows for suspense, speeds for excitement. Clear enunciation for young listeners. Playful but never condescending. The voice of a favorite aunt reading bedtime stories.",
+  "character_context": "An experienced children's narrator who understands pacing for young attention spans, knows when to pause for page turns, and can voice simple character distinctions without losing the narrative thread.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "female",
+    "pitch": "medium",
+    "pace": "medium",
+    "texture": "warm",
+    "accent": "American (General)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["playful", "excited", "gentle", "surprised", "soothing"],
+  "use_cases": ["picture books", "early readers", "chapter books (ages 4-8)"],
+  "model_variant": "1.7B-Base",
+  "notes": "Include 1-2 second pauses at page turn points. Slightly exaggerate emotional shifts for young listeners."
+}
