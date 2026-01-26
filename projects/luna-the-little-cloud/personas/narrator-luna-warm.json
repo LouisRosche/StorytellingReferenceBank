@@ -1,0 +1,19 @@
+{
+  "id": "narrator-luna-warm",
+  "name": "Luna Narrator (Bedtime/Warm)",
+  "voice_prompt": "Perfect audio quality. Warm, gentle female voice, late thirties. Soft and soothing, like a favorite aunt telling a bedtime story. Slow, unhurried pace—let each sentence breathe. Low-to-medium pitch, never shrill. Natural warmth in the voice, as if smiling gently. Slight pauses before emotional moments. Clear enunciation but never overly crisp. The voice of someone who has all the time in the world and nowhere else to be.",
+  "character_context": "A nurturing narrator for bedtime reading. This version emphasizes comfort, security, and gentle emotional resonance. The goal is to help children wind down while staying engaged with Luna's story. Emotional beats should land softly—sadness is wistful rather than heavy, joy is warm rather than exuberant.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "female",
+    "pitch": "low",
+    "pace": "slow",
+    "texture": "warm",
+    "accent": "American (General)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["gentle", "soothing", "tender", "wistful", "quietly joyful"],
+  "use_cases": ["bedtime reading", "quiet time", "wind-down routine", "nap time"],
+  "model_variant": "1.7B-VoiceDesign",
+  "notes": "Use longer pauses at page turns (2.5-3s). Dialogue voices should be differentiated but stay within the soft register—no loud or jarring character voices. Storm clouds: slightly lower, rumbly but not scary. Flower: soft whisper. Bee: gentle buzz quality, not high-pitched."
+}
