@@ -43,27 +43,27 @@
     },
     "voice_attributes": {
       "type": "object",
-      "description": "Structured attributes for documentation/filtering",
+      "description": "Voice characteristics. Use natural language for expressiveness; suggested values shown for consistency.",
       "properties": {
         "age_range": {
           "type": "string",
-          "enum": ["child", "teen", "young_adult", "middle_aged", "elderly"]
+          "description": "Age presentation (e.g., child, teen, young_adult, middle_aged, elderly, or specific like '40s', 'late 20s')"
         },
         "gender": {
           "type": "string",
-          "enum": ["male", "female", "neutral"]
+          "description": "Voice gender presentation (e.g., male, female, neutral, androgynous)"
         },
         "pitch": {
           "type": "string",
-          "enum": ["very_low", "low", "medium", "high", "very_high"]
+          "description": "Vocal pitch (e.g., very_low, low, medium, high, very_high, or descriptive like 'medium-low')"
         },
         "pace": {
           "type": "string",
-          "enum": ["very_slow", "slow", "medium", "fast", "very_fast"]
+          "description": "Speaking speed (e.g., very_slow, slow, medium, fast, very_fast, or descriptive like 'measured', 'unhurried')"
         },
         "texture": {
           "type": "string",
-          "enum": ["smooth", "warm", "breathy", "husky", "gravelly", "crisp"]
+          "description": "Voice quality (e.g., smooth, warm, breathy, husky, gravelly, crisp, or combinations like 'rich, resonant')"
         },
         "accent": {
           "type": "string",

@@ -132,7 +132,7 @@ Run a simple web interface on your machine, accessible from any device on your n
 **Using Gradio:**
 
 ```python
-# scripts/web_ui.py
+# scripts/web_studio.py
 import gradio as gr
 from pathlib import Path
 
