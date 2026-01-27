@@ -1,0 +1,30 @@
+{
+  "id": "character-teen",
+  "name": "Teen Character Voice",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "A teenager around sixteen with a bright, clear voice. Gender-neutral presentation that could read as any teen. Higher pitch than adult narrators. Natural contemporary speech patterns—not trying to sound adult. Authentic emotional volatility of adolescence: eye-rolling sarcasm one moment, raw vulnerability the next.",
+  "character_context": "The authentic teen voice. Not an adult performing 'young'—genuinely captures how teens actually speak and feel. For YA that respects its audience.",
+  "voice_attributes": {
+    "age_range": "teen",
+    "gender": "neutral",
+    "pitch": "high",
+    "pace": "natural, variable",
+    "texture": "clear",
+    "accent": "American (contemporary, neutral)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["sardonic", "vulnerable", "angry", "hopeful", "anxious", "defiant", "tender"],
+  "use_cases": ["young adult fiction", "YA contemporary", "coming-of-age", "teen dialogue", "middle grade crossover"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/character-teen.wav",
+    "validation_status": "pending"
+  },
+  "product": {
+    "display_name": "The Young Voice",
+    "tagline": "Authentic teen, not performed teen",
+    "tier": "standard"
+  },
+  "notes": "First teen persona. Fills age gap. High pitch fills pitch gap."
+}

@@ -249,6 +249,55 @@ python acx_validator.py final/
 - **CPU-only**: Use 0.6B model with `--model 0.6B` flag
 - **Memory**: 16 GB RAM minimum
 
+## Bespoke Personalities Tools
+
+### persona_compatibility.py
+
+Story-to-persona matching for the bespoke reading personalities product.
+
+```bash
+# Score all personas against a story
+python persona_compatibility.py --story story.json --top 5
+
+# Score specific persona
+python persona_compatibility.py --story story.json --persona narrator-literary-female
+
+# JSON output
+python persona_compatibility.py --story story.json --json
+```
+
+**Story JSON format:**
+```json
+{
+  "genre": "literary fiction",
+  "tone": ["contemplative", "melancholic"],
+  "audience": "adult",
+  "language": "en"
+}
+```
+
+### persona_regression.py
+
+Regression testing for persona voice consistency.
+
+```bash
+# Run all regression tests
+python persona_regression.py
+
+# Test specific personas
+python persona_regression.py --personas narrator-literary-female narrator-thriller
+
+# Custom threshold
+python persona_regression.py --threshold 0.90
+
+# JSON output for CI
+python persona_regression.py --json
+```
+
+Compares generated audio against golden references using MFCC fingerprints. Threshold: 0.85 cosine similarity.
+
+---
+
 ## Troubleshooting
 
 **"No module named 'qwen_tts'"**

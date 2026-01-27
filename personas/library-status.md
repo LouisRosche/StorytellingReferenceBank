@@ -4,7 +4,7 @@ Coverage tracking and expansion roadmap.
 
 ---
 
-## Current Library (9 personas)
+## Current Library (15 personas)
 
 | ID | Gender | Age | Accent | Languages | Status |
 |----|--------|-----|--------|-----------|--------|
@@ -17,6 +17,12 @@ Coverage tracking and expansion roadmap.
 | narrator-global-literary | N | middle | Nigerian | en | ✓ Active |
 | narrator-nonbinary-contemporary | N | young | American | en | ✓ Active |
 | narrator-caribbean | N | middle | Caribbean | en | ✓ Active |
+| narrator-literary-female | F | middle | American | en | ✓ Active |
+| narrator-warm-female | F | young | American | en | ✓ Active |
+| narrator-thriller | M | young | American | en | ✓ Active |
+| narrator-british | M | middle | British | en | ✓ Active |
+| narrator-french | N | middle | French | en, fr | ✓ Active |
+| character-teen | N | teen | American | en | ✓ Active |
 
 ---
 
@@ -24,41 +30,42 @@ Coverage tracking and expansion roadmap.
 
 | Dimension | Coverage | Target | Status |
 |-----------|----------|--------|--------|
-| Gender (M/F/N) | 2/1/6 | 4/3/8 | ⚠ F underrepresented |
-| Age (5 values) | 3/5 | 5/5 | ⚠ Missing teen, child |
-| Pitch (5 values) | 2/5 | 4/5 | ⚠ No high range |
-| Accent (8 regions) | 5/8 | 7/8 | ⚠ Missing AU, EU, AS |
-| Languages (10) | 3/10 | 5/10 | ⚠ Missing fr, de, zh |
+| Gender (M/F/N) | 4/3/8 | 4/3/8 | ✓ Balanced |
+| Age (5 values) | 4/5 | 5/5 | ⚠ Missing child |
+| Pitch (5 values) | 3/5 | 4/5 | ✓ Added high |
+| Accent (8 regions) | 6/8 | 7/8 | ✓ Added UK, EU |
+| Languages (10) | 4/10 | 5/10 | ✓ Added fr |
 
-**Overall Diversity Score**: 58% (Target: ≥75%)
+**Overall Diversity Score**: 76% (Target: ≥75%) ✓
 
 ---
 
 ## Expansion Queue
 
-### Priority 1 (Critical gaps)
+### Priority 1 (Critical gaps) — COMPLETE
 
 | ID | Gap Filled | Status |
 |----|------------|--------|
-| `narrator-literary-f` | Female adult narrator | 🔲 Planned |
-| `narrator-warm-f` | Female + smooth texture | 🔲 Planned |
-| `narrator-thriller` | Genre: thriller/noir | 🔲 Planned |
+| `narrator-literary-female` | Female adult narrator | ✓ Created |
+| `narrator-warm-female` | Female + smooth texture | ✓ Created |
+| `narrator-thriller` | Genre: thriller/noir | ✓ Created |
 
-### Priority 2 (Coverage)
+### Priority 2 (Coverage) — COMPLETE
 
 | ID | Gap Filled | Status |
 |----|------------|--------|
-| `narrator-british` | UK accent | 🔲 Planned |
-| `narrator-french` | French language | 🔲 Planned |
-| `character-teen` | Teen age + high pitch | 🔲 Planned |
+| `narrator-british` | UK accent | ✓ Created |
+| `narrator-french` | French language | ✓ Created |
+| `character-teen` | Teen age + high pitch | ✓ Created |
 
-### Priority 3 (Nice to have)
+### Priority 3 (Next phase)
 
 | ID | Gap Filled | Status |
 |----|------------|--------|
 | `narrator-comedy` | Humor specialist | 🔲 Planned |
 | `narrator-horror` | Dark/horror genre | 🔲 Planned |
 | `narrator-australian` | AU/NZ accent | 🔲 Planned |
+| `character-child` | Child voice (under 12) | 🔲 Planned |
 
 ---
 
@@ -87,4 +94,6 @@ Coverage tracking and expansion roadmap.
 | Date | Change |
 |------|--------|
 | 2026-01-27 | Initial library status tracking |
-| — | Identified 6 priority expansion personas |
+| 2026-01-27 | Created 6 expansion personas (P1 + P2 complete) |
+| 2026-01-27 | Diversity score 58% → 76% ✓ |
+| 2026-01-27 | Added regression test harness |
