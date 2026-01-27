@@ -1,0 +1,30 @@
+{
+  "id": "narrator-thriller",
+  "name": "Thriller Narrator",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "A man in his late thirties with a crisp, controlled baritone. American accent, urban and contemporary. Speaks with coiled tension—calm surface, intensity beneath. Pacing accelerates with action, slows for dread. Voice cuts clean; no warmth wasted.",
+  "character_context": "The voice of danger and consequence. Treats every scene as if lives depend on clarity. Knows when to whisper and when to strike.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "male",
+    "pitch": "low",
+    "pace": "controlled, variable",
+    "texture": "crisp",
+    "accent": "American (urban, neutral)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["tense", "cold", "urgent", "controlled", "menacing", "sharp"],
+  "use_cases": ["thriller", "suspense", "crime fiction", "noir", "psychological thriller", "action"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-thriller.wav",
+    "validation_status": "pending"
+  },
+  "product": {
+    "display_name": "The Edge",
+    "tagline": "Every word a loaded gun",
+    "tier": "standard"
+  },
+  "notes": "Genre specialist for thriller/suspense. Fills critical gap in library."
+}

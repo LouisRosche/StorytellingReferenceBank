@@ -43,6 +43,19 @@ Quick topic-to-file reference. One authoritative source per topic.
 | Voice direction vocabulary | `references/voice-direction-vocabulary.md` |
 | Voice cloning | `docs/voice-cloning-workflow.md` |
 | Persona schema | `personas/schema.json` |
+| Persona taxonomy | `personas/taxonomy.md` |
+| Library coverage status | `personas/library-status.md` |
+
+## Bespoke Personalities Product
+
+| Topic | Authoritative Source |
+|-------|---------------------|
+| Product architecture | `docs/bespoke-personalities-product.md` |
+| Voice taxonomy & math | `personas/taxonomy.md` |
+| Library status | `personas/library-status.md` |
+| Compatibility scoring | `scripts/persona_compatibility.py` |
+| Regression testing | `scripts/persona_regression.py` |
+| Golden references | `personas/golden/` |
 
 ## Production
 
@@ -62,4 +75,6 @@ Quick topic-to-file reference. One authoritative source per topic.
 | `acx_validator.py` | Compliance checking |
 | `dialogue_parser.py` | Multi-speaker extraction |
 | `multispeaker_tts.py` | Multi-voice generation |
+| `persona_compatibility.py` | Story-persona matching |
+| `persona_regression.py` | Voice consistency testing |
 | `web_studio.py` | Gradio web interface |
