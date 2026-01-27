@@ -1,5 +1,7 @@
 # Framework Validation & Gap Analysis
 
+> **ARCHIVED**: 2026-01-26. Many gaps identified here have since been addressed. See git history for current state.
+
 Audit date: 2026-01-26
 
 Critical assessment of the StorytellingReferenceBank toolkit for biases, gaps, and improvement opportunities.

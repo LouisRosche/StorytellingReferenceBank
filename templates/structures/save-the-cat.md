@@ -82,3 +82,16 @@ The eponymous beat: early in Act One, protagonist does something—often small�
 8. The Fool Triumphant (underdog)
 9. Institutionalized (group dynamics)
 10. Superhero (extraordinary person, ordinary world)
+
+## Common Problems
+
+| Problem | Symptom | Fix |
+|---------|---------|-----|
+| Passive protagonist | Things happen TO them; no Break Into Two decision | Force a choice with consequences |
+| Missing B Story | Theme feels bolted on; transformation unconvincing | Add relationship that embodies theme |
+| Weak Midpoint | Second act sags; "Fun and Games" drags | Create false victory/defeat that raises stakes |
+| All Is Lost without death | Moment lacks weight | Add "whiff of death"—literal, symbolic, or relationship death |
+| Rushed Dark Night | Protagonist bounces back too fast | Let them sit in defeat; earn the insight |
+| Break Into Three without synthesis | A and B stories don't merge | Eureka must combine external goal with internal truth |
+| Finale as new information | Deus ex machina feeling | Everything in Finale must be set up earlier |
+| Opening/Final Image mismatch | Transformation unclear | Make visual/thematic bookends explicit opposites |

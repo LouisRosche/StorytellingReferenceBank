@@ -26,6 +26,10 @@ What makes work endure:
 
 Techniques: `@references/master-techniques.md`
 
+## Navigation
+
+**Complete file index**: `@INDEX.md` — topic-to-file lookup for all resources.
+
 ## Structure
 
 ```
@@ -35,12 +39,13 @@ templates/worlds/         # World-building
 templates/series/         # Series bible
 templates/revision-workflow.md
 style-guides/            # Genre-specific (all genres in genre-guide.md)
-personas/                # TTS voices
+personas/                # TTS voices (schema + examples/)
 audiobook-specs/         # ACX compliance
-scripts/                 # Production tools
+scripts/                 # Production tools (see scripts/README.md)
 projects/                # Active works
 references/              # Craft principles, voice vocabulary
 docs/                    # Production guides, commercial checklist
+docs/archive/            # Historical audits and validation reports
 ```
 
 ## Quick Reference
