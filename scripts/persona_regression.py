@@ -158,7 +158,8 @@ def run_regression(
     personas_dir: Path,
     golden_dir: Path,
     test_dir: Path,
-    persona_ids: Optional[list[str]] = None
+    persona_ids: Optional[list[str]] = None,
+    threshold: float = SIMILARITY_THRESHOLD
 ) -> RegressionReport:
     """Run regression tests for all or specified personas."""
     results = []
@@ -247,14 +248,15 @@ def main():
 
     args = parser.parse_args()
 
-    global SIMILARITY_THRESHOLD
-    SIMILARITY_THRESHOLD = args.threshold
+    # Update threshold if specified
+    threshold = args.threshold
 
     report = run_regression(
         args.personas_dir,
         args.golden_dir,
         args.test_dir,
-        args.personas
+        args.personas,
+        threshold
     )
 
     if args.json:

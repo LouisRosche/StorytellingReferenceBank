@@ -367,7 +367,173 @@ def create_interface():
                     outputs=[clone_output, clone_status]
                 )
 
-            # Tab 5: Settings
+            # Tab 5: Voice Finder (Bespoke Personalities)
+            with gr.Tab("Voice Finder"):
+                gr.Markdown("""
+                ### Find the Right Voice for Your Story
+
+                Describe your story and get persona recommendations ranked by compatibility.
+                """)
+
+                with gr.Row():
+                    with gr.Column(scale=2):
+                        story_genre = gr.Dropdown(
+                            choices=[
+                                "literary fiction", "thriller", "mystery", "romance",
+                                "fantasy", "sci-fi", "horror", "memoir", "children's",
+                                "young adult", "historical", "humor", "self-help"
+                            ],
+                            label="Genre",
+                            value="literary fiction"
+                        )
+                        story_tone = gr.CheckboxGroup(
+                            choices=[
+                                "warm", "contemplative", "dark", "playful", "serious",
+                                "intimate", "epic", "humorous", "tense", "melancholic"
+                            ],
+                            label="Tone (select all that apply)",
+                            value=["contemplative"]
+                        )
+                        story_audience = gr.Dropdown(
+                            choices=["children", "young adult", "adult", "all ages"],
+                            label="Target Audience",
+                            value="adult"
+                        )
+                        story_language = gr.Dropdown(
+                            choices=["en", "es", "fr", "de"],
+                            label="Language",
+                            value="en"
+                        )
+
+                    with gr.Column(scale=1):
+                        gr.Markdown("#### Optional Details")
+                        cultural_context = gr.Textbox(
+                            label="Cultural Context",
+                            placeholder="Caribbean diaspora, Indian heritage, etc."
+                        )
+                        special_needs = gr.Textbox(
+                            label="Special Requirements",
+                            placeholder="Bilingual, specific accent, etc."
+                        )
+
+                find_voice_btn = gr.Button("Find Matching Voices", variant="primary")
+
+                gr.Markdown("### Recommendations")
+                recommendations_output = gr.Dataframe(
+                    headers=["Rank", "Persona", "Score", "Why"],
+                    label="Top Matches",
+                    interactive=False
+                )
+
+                selected_persona_details = gr.Code(
+                    label="Selected Persona Details",
+                    language="json"
+                )
+
+                def find_matching_voices(genre, tone, audience, language, cultural, special):
+                    """Score personas against story requirements."""
+                    # Load all personas
+                    personas_dir = PROJECT_ROOT / "personas" / "examples"
+                    results = []
+
+                    for persona_file in personas_dir.glob("*.json"):
+                        try:
+                            with open(persona_file) as f:
+                                persona = json.load(f)
+
+                            score = 0.0
+                            reasons = []
+
+                            # Genre matching (30%)
+                            use_cases = persona.get("use_cases", [])
+                            genre_words = genre.lower().split()
+                            for uc in use_cases:
+                                if any(w in uc.lower() for w in genre_words):
+                                    score += 0.30
+                                    reasons.append(f"Genre: {uc}")
+                                    break
+
+                            # Tone matching (25%)
+                            emotional_range = persona.get("emotional_range", [])
+                            tone_matches = sum(1 for t in tone if any(t.lower() in e.lower() for e in emotional_range))
+                            if tone_matches > 0:
+                                tone_score = min(0.25, 0.10 * tone_matches)
+                                score += tone_score
+                                reasons.append(f"Tone: {tone_matches} matches")
+
+                            # Language (20%)
+                            languages = persona.get("voice_attributes", {}).get("languages", ["en"])
+                            if language in languages:
+                                score += 0.20
+                                reasons.append(f"Language: {language}")
+
+                            # Audience (15%)
+                            if audience == "children" and "children" in str(use_cases).lower():
+                                score += 0.15
+                                reasons.append("Children's specialist")
+                            elif audience == "young adult" and any("ya" in uc.lower() or "young" in uc.lower() for uc in use_cases):
+                                score += 0.15
+                                reasons.append("YA suitable")
+                            elif audience == "adult":
+                                score += 0.10
+                                reasons.append("Adult content")
+
+                            # Cultural context bonus (10%)
+                            if cultural:
+                                accent = persona.get("voice_attributes", {}).get("accent", "")
+                                if any(c.lower() in accent.lower() for c in cultural.split()):
+                                    score += 0.10
+                                    reasons.append(f"Cultural: {accent}")
+
+                            results.append({
+                                "id": persona.get("id", persona_file.stem),
+                                "name": persona.get("name", persona_file.stem),
+                                "score": score,
+                                "reasons": ", ".join(reasons[:3]) if reasons else "General match"
+                            })
+
+                        except Exception as e:
+                            continue
+
+                    # Sort by score
+                    results.sort(key=lambda x: x["score"], reverse=True)
+
+                    # Format for display
+                    table_data = [
+                        [i + 1, r["name"], f"{r['score']:.0%}", r["reasons"]]
+                        for i, r in enumerate(results[:8])
+                    ]
+
+                    return table_data
+
+                find_voice_btn.click(
+                    fn=find_matching_voices,
+                    inputs=[story_genre, story_tone, story_audience, story_language, cultural_context, special_needs],
+                    outputs=[recommendations_output]
+                )
+
+                # Show persona details on row select
+                def show_persona_details(evt: gr.SelectData, data):
+                    if evt.index and len(evt.index) > 0:
+                        row_idx = evt.index[0]
+                        if row_idx < len(data):
+                            persona_name = data[row_idx][1]
+                            # Find and load persona
+                            personas_dir = PROJECT_ROOT / "personas" / "examples"
+                            for pf in personas_dir.glob("*.json"):
+                                with open(pf) as f:
+                                    p = json.load(f)
+                                    if p.get("name") == persona_name:
+                                        return json.dumps(p, indent=2)
+                    return "{}"
+
+                recommendations_output.select(
+                    fn=show_persona_details,
+                    inputs=[recommendations_output],
+                    outputs=[selected_persona_details]
+                )
+
+            # Tab 6: Settings
             with gr.Tab("Settings"):
                 gr.Markdown("### Production Settings")
 
