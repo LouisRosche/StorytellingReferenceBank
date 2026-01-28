@@ -1,0 +1,73 @@
+{
+  "title": "The Weight of Mangoes",
+  "author": "StorytellingReferenceBank",
+  "genre": "literary fiction",
+  "default_persona": "personas/narrator.json",
+  "speakers": {
+    "NARRATOR": {
+      "persona_path": "personas/narrator.json",
+      "description": "Primary narrative voice, Caribbean-American literary narrator"
+    },
+    "NIRMALA": {
+      "persona_path": "personas/nirmala.json",
+      "description": "Matriarch, 80, Trinidadian English"
+    },
+    "KAMLA": {
+      "persona_path": "personas/kamla.json",
+      "description": "Eldest daughter, 58, code-switching American/Caribbean"
+    },
+    "MARCUS": {
+      "persona_path": "personas/marcus-persaud.json",
+      "description": "Grandson, 28, American with Caribbean traces"
+    },
+    "MAYA": {
+      "persona_path": "personas/maya-persaud.json",
+      "description": "Granddaughter, 24, fast-paced American with deliberate Caribbean"
+    },
+    "SUNIL": {
+      "persona_path": "personas/sunil.json",
+      "description": "Son, 54, fully assimilated American"
+    },
+    "ANITA": {
+      "persona_path": "personas/anita.json",
+      "description": "Youngest daughter, 50, gentle American with undertones"
+    },
+    "JASON": {
+      "persona_path": "personas/jason.json",
+      "description": "Grandson, 26, California neutral, outsider"
+    },
+    "DEBORAH": {
+      "persona_path": null,
+      "description": "Sunil's wife, minimal dialogue, use narrator voice"
+    }
+  },
+  "aliases": {
+    "nani": "NIRMALA",
+    "ma": "NIRMALA",
+    "aji": "NIRMALA",
+    "grandma": "NIRMALA",
+    "aunt kamla": "KAMLA"
+  },
+  "production_notes": {
+    "crossfade_ms": 150,
+    "dialogue_pause_ms": 250,
+    "emotional_pause_ms": 500,
+    "chapter_pause_ms": 2000,
+    "accent_notes": "Trinidadian English must be authentic Indo-Caribbean, not generic. Code-switching should be natural, not performed. Nirmala's rhythm is the heart of the story."
+  },
+  "sound_design": {
+    "ambient": {
+      "kitchen_cooking": "Sizzling tava, pressure cooker, stirring",
+      "brooklyn_street": "Distant traffic, birds, urban ambience"
+    },
+    "sfx_cues": {
+      "doorbell": "[SFX: doorbell_residential]",
+      "photographs": "[SFX: paper_rustling_old]"
+    },
+    "music_cues": {
+      "opening": "[MUSIC: caribbean_ambient_nostalgic START -18dB]",
+      "family_tension": "[MUSIC: FADE_OUT 3s]",
+      "grandmother_story": "[MUSIC: indian_classical_subtle START -20dB]"
+    }
+  }
+}

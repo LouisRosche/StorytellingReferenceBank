@@ -1,0 +1,19 @@
+{
+  "id": "character-sunil",
+  "name": "Sunil Persaud",
+  "voice_prompt": "Perfect audio quality. Man, mid-fifties, born in Trinidad but emigrated young. Completely assimilated American voice—no trace of Caribbean accent. Deliberate, clipped, professional. The voice of someone who chose distance as survival and cannot admit the cost. Medium pitch, measured pace. Slightly formal even with family. The sound of erasure, of a man who became someone else.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "male",
+    "pitch": "medium",
+    "pace": "medium",
+    "texture": "crisp",
+    "accent": "American (neutral/professional)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["guarded", "defensive", "uncomfortable", "distant", "rarely vulnerable"],
+  "use_cases": ["dialogue", "family tension"],
+  "model_variant": "1.7B-Base",
+  "quality_tier": "premium",
+  "notes": "The son who left. His lack of accent is the accent—the deliberate removal of origin. Brief, functional sentences. Rarely emotional. When he does crack, it's devastating."
+}

@@ -1,0 +1,72 @@
+{
+  "title": "The Weight of Saltwater",
+  "author": "StorytellingReferenceBank",
+  "genre": "literary fiction",
+  "default_persona": "personas/narrator.json",
+  "speakers": {
+    "NARRATOR": {
+      "persona_path": "personas/narrator.json",
+      "description": "Literary female narrator, contemplative, Maine coastal atmosphere"
+    },
+    "ELEANOR": {
+      "persona_path": "personas/eleanor.json",
+      "description": "Eldest sibling, 65, controlled precision cracking into rawness"
+    },
+    "MARCUS": {
+      "persona_path": "personas/marcus.json",
+      "description": "Middle sibling, 58, dry sardonic deflection"
+    },
+    "HELEN": {
+      "persona_path": "personas/helen.json",
+      "description": "Youngest sibling, 52, emotional variable pace"
+    },
+    "RAY": {
+      "persona_path": "personas/ray.json",
+      "description": "Eleanor's husband, 68, Midwestern plain grounded"
+    },
+    "SOPHIE": {
+      "persona_path": "personas/sophie.json",
+      "description": "Helen's daughter, 25, young adult uncertain"
+    },
+    "PASTOR OAKES": {
+      "persona_path": "personas/pastor-oakes.json",
+      "description": "Pastor, 73, elderly pastoral slow weighted"
+    },
+    "SARAH": {
+      "persona_path": null,
+      "description": "Secret sister, appears later, to be cast"
+    }
+  },
+  "aliases": {
+    "elle": "ELEANOR",
+    "pastor": "PASTOR OAKES",
+    "david": "PASTOR OAKES",
+    "pastor oakes": "PASTOR OAKES"
+  },
+  "production_notes": {
+    "crossfade_ms": 200,
+    "dialogue_pause_ms": 300,
+    "emotional_pause_ms": 800,
+    "chapter_pause_ms": 3000,
+    "atmosphere_notes": "Maine coastal atmosphere throughout. Salt air, fog, halyards. The house is a character—creaking floors, wind against windows. Silence is heavy and meaningful."
+  },
+  "sound_design": {
+    "ambient": {
+      "coastal_morning": "Waves distant, seabirds, wind through grass",
+      "house_interior": "Old house creaks, clock ticking, wind against windows",
+      "evening_fire": "Fireplace crackle, wind outside"
+    },
+    "sfx_cues": {
+      "car_arrival": "[SFX: tires_on_gravel]",
+      "door_knock": "[SFX: door_knock_wood_three]",
+      "box_opening": "[SFX: wooden_box_latch]",
+      "paper_rustling": "[SFX: old_letters_paper]"
+    },
+    "music_cues": {
+      "opening": "[MUSIC: solo_piano_contemplative START -20dB]",
+      "revelation": "[MUSIC: FADE_OUT 5s]",
+      "grief": "[MUSIC: strings_minimal_aching START -22dB]",
+      "resolution": "[MUSIC: piano_hopeful_uncertain START -18dB]"
+    }
+  }
+}

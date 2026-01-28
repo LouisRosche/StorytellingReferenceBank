@@ -1,0 +1,19 @@
+{
+  "id": "character-kamla",
+  "name": "Kamla",
+  "voice_prompt": "Perfect audio quality. Woman, late fifties, born in Trinidad but raised in Brooklyn from age ten. Code-switches between American English and Trinidadian English depending on context and emotional state. More American in public, more Caribbean at home or when stressed. A tired voice, a voice that has spent decades translating between worlds. Medium pitch, moderate pace. The particular weariness of the eldest daughter who carries everything.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "female",
+    "pitch": "medium",
+    "pace": "medium",
+    "texture": "warm",
+    "accent": "American with Caribbean undertones",
+    "languages": ["en", "trinidadian-creole"]
+  },
+  "emotional_range": ["exhausted", "loving", "frustrated", "competent", "wistful"],
+  "use_cases": ["dialogue", "family drama"],
+  "model_variant": "1.7B-Base",
+  "quality_tier": "premium",
+  "notes": "The translator character. Voice shifts toward more Trinidadian patterns when speaking with mother, more American when speaking with children. Carries decades of resentment beneath her competence."
+}
