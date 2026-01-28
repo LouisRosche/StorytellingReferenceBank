@@ -77,9 +77,22 @@ class SpeakerMap:
         )
 
     def get_persona_path(self, speaker: str) -> str:
-        """Get persona path for a speaker."""
+        """Get persona path for a speaker (case-insensitive lookup)."""
+        # Direct lookup first
         if speaker in self.speakers:
             return self.speakers[speaker].get('persona_path', self.default_persona)
+
+        # Case-insensitive lookup
+        speaker_lower = speaker.lower()
+        for key, info in self.speakers.items():
+            if key.lower() == speaker_lower:
+                return info.get('persona_path', self.default_persona)
+
+        # Check aliases (also case-insensitive)
+        for alias, canonical in self.aliases.items():
+            if alias.lower() == speaker_lower:
+                return self.get_persona_path(canonical)
+
         return self.default_persona
 
 
