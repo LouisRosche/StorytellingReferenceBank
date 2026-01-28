@@ -3,6 +3,8 @@
 **Genre**: Psychological Thriller (Domestic Noir elements)
 **Word Count Target**: 80,000-90,000 words
 **Structure**: Save the Cat / Three-Act with psychological thriller pacing
+**Snyder Genre**: Monster in the House (enclosed setting + escalating threat)
+**Rasa Layer**: Bhayanaka (terror) dominant, with Veera (heroism) emerging in Act 3
 
 ---
 
@@ -33,6 +35,20 @@ Dr. Sarah Mercer is a respected trauma therapist. Ten years ago, her younger sis
 4. **Family exposure**: Thomas has seen Sarah's husband and daughter. The implied threat needs no words.
 
 5. **Guilt leverage**: Thomas knows Sarah ignored Maya's calls. He was watching. He can destroy Sarah's marriage, reputation, and self-image with this truth.
+
+---
+
+## Ticking Clock
+
+**The licensing board hearing is scheduled for 6 weeks from Thomas's complaint (Ch 17).**
+
+This creates escalating pressure:
+- Sarah cannot simply terminate Thomas as a patient during an active complaint
+- The hearing forces a deadline for resolution
+- If she loses her license, she loses her identity and her weapon
+- Cole's unofficial investigation must conclude before the hearing makes it public
+
+Secondary clock: **Emma's school year ends in 8 weeks** - Owen wants to send her to summer camp in Vermont, away from "whatever Sarah is dealing with." If Sarah hasn't resolved this by then, her family fragments.
 
 ---
 
@@ -147,23 +163,41 @@ She's a listener. But now she listens to herself too.
 
 ---
 
-## Character Arcs Summary
+## Character Arcs
 
-### Sarah Mercer
-- **Start**: Controlled, repressed, secretly guilt-ridden, distrustful of own perceptions
-- **End**: Vulnerable, integrated, accepting of her limitations and humanity, able to ask for help
+### Sarah Mercer (Protagonist)
+- **Want**: To catch Thomas without losing her license or family
+- **Need**: To forgive herself for failing Maya
+- **Lie**: "If I stay in control, I stay safe"
+- **Truth**: "Vulnerability is the only path through—to healing and to justice"
+- **Wound**: Childhood gaslighting taught her not to trust her own perceptions; Maya's murder proved her instincts right too late
+- **What She Cannot Say**: That she was relieved when Maya's calls stopped that night—for one moment, before the guilt set in
+- **Arc**: Controlled → shattered → rebuilt. She begins in armor and ends in therapy.
 
-### Thomas Vane
-- **Start**: Predator posing as patient, seeking validation
-- **End**: Exposed, pathetic, human in his brokenness (which makes him more disturbing, not less)
+### Thomas Vane (Antagonist)
+- **Want**: To be truly understood, validated, seen
+- **Need**: (Unmet—he is incapable of genuine connection)
+- **Lie**: "Love is possession; being watched is being known"
+- **Truth**: (Never accepted) "Connection requires consent; observation is not intimacy"
+- **Wound**: Unknown in detail, but suggested: profound early abandonment, never seen by those who should have loved him
+- **What He Cannot Say**: That Maya's death was a failure, not a choice—he lost control
+- **Arc**: Hunter → exposed → pathetic. His power is revealed as brittle.
 
-### Owen Mercer
-- **Start**: Supportive but surface-level, unknowing
-- **End**: Knowing, tested, choosing to stay - real partnership
+### Owen Mercer (Supporting)
+- **Want**: To protect his family and support his wife
+- **Need**: To know who his wife really is, not who she performs
+- **Lie**: "If I don't push, she'll eventually open up"
+- **Truth**: "Love requires confrontation sometimes"
+- **Wound**: His own family avoided conflict; he learned that peace means silence
+- **Arc**: Passive support → tested → active partner. He chooses to stay knowing everything.
 
-### Marcus Cole
-- **Start**: Obsessed, ethically compromised, guilt-ridden about failing Maya
-- **End**: Closure achieved, released from obsession, able to retire for real
+### Marcus Cole (B-Story)
+- **Want**: To catch Thomas before he dies
+- **Need**: To forgive himself for missing Thomas ten years ago
+- **Lie**: "Justice will heal me"
+- **Truth**: "Closure is not the same as peace"
+- **Wound**: He interviewed Thomas during the original investigation and let him go—his failure haunts him
+- **Arc**: Obsessed → complicit → released. Catching Thomas frees him, but doesn't heal him.
 
 ---
 

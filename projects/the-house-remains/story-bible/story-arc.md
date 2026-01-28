@@ -1,4 +1,4 @@
-# The Weight of Saltwater
+# The House Remains
 
 ## Core Theme
 
@@ -14,7 +14,9 @@ A family gathers at their childhood home on the Maine coast to sort through thei
 
 ## Structure: Three-Act with Scene-Sequel Pacing
 
-Literary fiction ratio: 1:2 Scenes to Sequels (heavy interiority)
+**Literary fiction ratio**: 1:2 Scenes to Sequels (heavy interiority)
+**Rasa Layer**: Karuna (compassion/sorrow) dominant, with Shanta (peace/serenity) emerging in resolution
+**Word Count Target**: 70,000-85,000 words
 
 ### Act One: The House (25%)
 
@@ -114,35 +116,57 @@ While beginning to sort Ruth's closet, Eleanor discovers a locked wooden box she
 
 ## Character Arcs
 
-### Eleanor Marchetti (65)
-**Want**: To be acknowledged as the one who sacrificed, who was there, who earned Ruth's trust.
-**Need**: To release the identity she built around being the responsible one.
-**Arc**: From control through shattering to acceptance. She cannot hold everything together. She never could. The story was always bigger than her grip.
+### Eleanor Marchetti (65) — Protagonist
+- **Want**: To be acknowledged as the one who sacrificed, who was there, who earned Ruth's trust
+- **Need**: To release the identity she built around being the responsible one
+- **Lie**: "If I control everything, I can prevent loss"
+- **Truth**: "Love does not require understanding; presence is not control"
+- **Wound**: Father's early death forced her into the caretaker role at 19; she learned that worthiness = sacrifice
+- **What She Cannot Say**: That she sometimes resented Ruth's dependency, and now that resentment feels like murder
+- **Arc**: Control → shattering → acceptance. She cannot hold everything together. She never could.
 
 ### Marcus Callahan (58)
-**Want**: To get through this quickly, return to his distant life, avoid emotional engagement.
-**Need**: To stop running, to reckon with what his absence cost.
-**Arc**: From detachment through guilt to presence. He doesn't magically become close to his family, but he stops using distance as armor. He stays for the funeral. He says he'll visit. Whether he does remains uncertain.
+- **Want**: To get through this quickly, return to his distant life, avoid emotional engagement
+- **Need**: To stop running, to reckon with what his absence cost
+- **Lie**: "Distance is wisdom; leaving protects everyone"
+- **Truth**: "Absence is also a choice with consequences"
+- **Wound**: Felt unseen in the family, the middle child overshadowed; leaving at 18 was escape disguised as ambition
+- **What He Cannot Say**: That he stayed away because he was afraid of becoming like them—and now fears he's worse
+- **Arc**: Detachment → guilt → presence. He stays for the funeral. Whether he returns remains uncertain.
 
 ### Helen Callahan (52)
-**Want**: To feel Ruth's presence, to commune with her spiritually, to find closure.
-**Need**: To accept that her "special connection" with Ruth was partly self-constructed.
-**Arc**: From certainty through devastation to humility. She thought she knew Ruth better than anyone. She was wrong. This makes her question her other certainties - including what she's hidden from Sophie. By the end, she tells Sophie one of her own secrets.
+- **Want**: To feel Ruth's presence, to commune with her spiritually, to find closure
+- **Need**: To accept that her "special connection" with Ruth was partly self-constructed
+- **Lie**: "Deep understanding transcends words; we knew each other's souls"
+- **Truth**: "Connection requires revelation; silence is not intimacy"
+- **Wound**: Being the youngest, she invented a special bond to feel significant; she needed Ruth to need her differently
+- **What She Cannot Say**: That she's hidden her own secret from Sophie—a miscarriage Sophie never knew about
+- **Arc**: Certainty → devastation → humility. By the end, she tells Sophie her own secret.
 
 ### Sophie Marchetti-Callahan (25)
-**Want**: To support her family, to understand death, to be helpful.
-**Need**: To accept that adulthood means living with uncertainty.
-**Arc**: From observation through disillusionment to maturity. She watches the adults crumble and realizes they never had the answers either. This is terrifying and, ultimately, liberating.
+- **Want**: To support her family, to understand death, to be helpful
+- **Need**: To accept that adulthood means living with uncertainty
+- **Lie**: "Adults have answers; I just need to reach that stage"
+- **Truth**: "No one fully knows; we all improvise"
+- **Wound**: Sheltered childhood created false confidence in knowable order
+- **What She Cannot Say**: That watching her family fall apart is also a relief—they're finally real
+- **Arc**: Observation → disillusionment → maturity. Terrifying and liberating.
 
-### Ray Marchetti (68)
-**Want**: To support Eleanor, to keep peace, to get through this.
-**Need**: To show Eleanor he sees her, not just the role she plays.
-**Arc**: Minor arc. Ray moves from practical problem-solving to emotional presence. In the Dark Night moment, he simply sits next to Eleanor without trying to fix anything. It's what she needed all along.
+### Ray Marchetti (68) — Supporting
+- **Want**: To support Eleanor, to keep peace, to get through this
+- **Need**: To show Eleanor he sees her, not just the role she plays
+- **Lie**: "Practical help is how I show love"
+- **Truth**: "Presence without fixing is what she needs"
+- **Wound**: His own family rewarded usefulness, not emotion; he learned to solve, not sit
+- **Arc**: Problem-solving → helplessness → presence. He simply sits next to Eleanor.
 
 ### Pastor David Oakes (73)
-**Want**: To help the family prepare for the funeral with grace.
-**Need**: To confess his own failure - he kept Ruth's secret even when he thought she should tell.
-**Arc**: Arrives as spiritual guide, leaves as fellow flawed human. He admits to Eleanor that Ruth asked him to tell them if she died suddenly. He couldn't do it directly. So he spoke carelessly on purpose. He needed them to find out, and he was too cowardly to simply say.
+- **Want**: To help the family prepare for the funeral with grace
+- **Need**: To confess his own cowardice—he kept Ruth's secret when he should have pushed her to tell
+- **Lie**: "Confidentiality is sacred; the secret was not mine to tell"
+- **Truth**: "Sometimes silence is complicity disguised as virtue"
+- **Wound**: A lifetime of holding others' secrets has calcified into habit; he's forgotten that confession goes both ways
+- **Arc**: Spiritual guide → revealed as flawed → fellow human. He admits he spoke carelessly on purpose.
 
 ---
 

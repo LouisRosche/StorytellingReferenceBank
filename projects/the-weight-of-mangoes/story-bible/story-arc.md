@@ -1,6 +1,11 @@
 # The Weight of Mangoes
 ## Story Arc
 
+**Genre**: Literary Fiction (Diaspora/Multi-generational)
+**Word Count Target**: 35,000-45,000 words (Novella)
+**Structure**: Scene-Sequel with Rasa framework; Circular
+**Timespan**: One afternoon/evening
+
 ---
 
 ## Premise
@@ -203,3 +208,70 @@ Three generations of an Indo-Caribbean family gather in Brooklyn for the matriar
 - Humor—this family loves each other, and love includes teasing
 - Silence as communication
 - The untranslatable—some things will not be explained to the reader
+
+---
+
+## TTS Production Notes
+
+This story requires maximum voice differentiation with cultural authenticity:
+
+### Voice Assignments
+
+| Speaker | Voice Requirements |
+|---------|-------------------|
+| **Narrator** | Caribbean-American female, late 40s. Warm contralto, measured pace. The voice of diaspora—between worlds. Not performative; lived. |
+| **Nirmala (Nani)** | Elderly Indo-Trinidadian, 80. Strong Trinidadian English with Hindi-influenced cadence. Warm but with iron beneath. Pace varies: quick when teasing, slow when remembering. |
+| **Kamla** | Middle-aged, code-switches. More American in public/stress, more Caribbean at home. Tired voice—decades of translating. |
+| **Marcus** | Young adult male, Brooklyn. Contemporary American with occasional Caribbean rhythms absorbed from family. Earnest, searching. |
+| **Maya** | Young adult female, fast-paced. Sharp, political. American with *deliberate* Caribbean inflections—she's reclaiming. |
+| **Sunil** | Middle-aged male, completely assimilated. California neutral. No Caribbean accent—that's the point. Clipped, professional, guarded. |
+| **Anita** | Middle-aged female, gentle. American with faint Caribbean undertones. The keeper. Quiet strength. |
+| **Jason** | Young adult male, California neutral. Uncertain, hesitant with family. The outsider. |
+
+### Dialect Guidance
+
+**Trinidadian English markers (for Nani, Kamla when emotional):**
+- "nah" as tag question ("come here, nah")
+- "leh meh" for "let me"
+- Present tense for past events when emotional
+- Dropped articles
+- Rising intonation patterns
+- "chuh" as dismissive sound
+
+**Do NOT:**
+- Use generic "island" accent
+- Make Caribbean speech comical
+- Flatten code-switching to binary on/off
+
+### Key Stress-Test Scenes
+
+1. **Chapter 1: Family arrivals** — Rapid dialogue shifts between 7 voices, each distinct
+2. **Chapter 3: Ajji's crossing** — Frame story narration; Nani tells grandmother's story; must differentiate Nani's voice from historical narrator
+3. **Chapter 5: The song** — Nani sings Hindi bhajan, forgets words, Anita picks up. Must decide: sung or spoken? If sung, use actual bhajan melody.
+4. **Chapter 6: The mango** — Extended sensory description; intimate two-person scene; pace slows significantly
+
+### Pacing Notes
+
+- **Chapters 1-2**: Normal conversational pace with tension beneath
+- **Chapter 3**: Slow, weighted, historical gravitas
+- **Chapter 4**: Fragmented, multiple quick scenes, rising conflict
+- **Chapter 5**: Emotional climax, then deliberate slowing for song
+- **Chapters 6-7**: Slow, intimate, resolution pace
+
+### Sound Design Integration
+
+**Ambient:**
+- Kitchen sounds (tava sizzling, pressure cooker, stirring) throughout Ch 1-2
+- Brooklyn street sounds (distant traffic, birds) when characters move outside
+- Rain on windows if weather shifts (check continuity)
+
+**Music cues:**
+- Opening: Caribbean ambient, nostalgic, -18dB beneath narration
+- Chapter 3 (Crossing): Subtle Indian classical (sitar or flute), -20dB
+- Chapter 5 (Song): If Nani sings, this should be a cappella; music cuts for authenticity
+- Closing: Return to Caribbean ambient, shifted to major key
+
+**SFX:**
+- Doorbell for arrivals
+- Old photographs being handled (paper rustling)
+- Mango being cut (Chapter 6) — this should be audible, distinct
