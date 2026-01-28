@@ -34,6 +34,10 @@
     "maya": {
       "persona_path": "personas/maya-aldridge.json",
       "notes": "Dead sister - voicemails, flashbacks only. Phone compression for voicemails."
+    },
+    "emma": {
+      "persona_path": "personas/emma-mercer.json",
+      "notes": "Sarah's daughter, 15. Smart, curious, emotionally perceptive. Teenager voice."
     }
   },
   "aliases": {
@@ -51,7 +55,8 @@
     "dr henley": "ruth",
     "owen mercer": "owen",
     "carla reyes": "carla",
-    "maya aldridge": "maya"
+    "maya aldridge": "maya",
+    "emma mercer": "emma"
   },
   "production_notes": {
     "crossfade_ms": 50,

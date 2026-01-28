@@ -6,10 +6,18 @@ Parses text to identify speakers and splits content into segments
 that can be rendered with different voice personas.
 
 Supported patterns:
-    - "Text," said Character.
-    - "Text," Character said.
-    - Character said, "Text."
-    - "Text." (narrator continues)
+    - [SPEAKER] tag format (screenplay style):
+        [NARRATOR]
+        Text here
+
+        [ELEANOR]
+        "Dialogue here"
+
+    - Prose attribution (children's book style):
+        "Text," said Character.
+        "Text," Character said.
+        Character said, "Text."
+        "Text." (narrator continues)
 
 Usage:
     python dialogue_parser.py manuscript.txt --speaker-map speakers.json
@@ -19,7 +27,7 @@ Speaker map format:
     {
         "narrator": "personas/narrator.json",
         "Luna": "personas/luna-voice.json",
-        "flower": "personas/flower-voice.json"
+        "ELEANOR": "personas/eleanor.json"
     }
 """
 
@@ -86,6 +94,100 @@ def normalize_speaker(speaker: str, aliases: Dict[str, str] = None) -> str:
     if lower in aliases:
         return aliases[lower]
     return lower
+
+
+def detect_manuscript_format(text: str) -> str:
+    """
+    Detect the manuscript format.
+
+    Returns:
+        'tagged': [SPEAKER] tag format (screenplay style)
+        'prose': Traditional prose attribution
+    """
+    # Check for [SPEAKER] tags - look for pattern like [NARRATOR] or [ELEANOR]
+    speaker_tags = re.findall(r'^\[([A-Z][A-Z\s]+)\]$', text, re.MULTILINE)
+    if len(speaker_tags) >= 3:  # At least a few speaker tags
+        return 'tagged'
+    return 'prose'
+
+
+def extract_tagged_segments(
+    text: str,
+    aliases: Dict[str, str] = None,
+) -> List[Segment]:
+    """
+    Extract segments from [SPEAKER] tag formatted text.
+
+    Format:
+        [NARRATOR]
+        Some narration text here.
+
+        [ELEANOR]
+        "Some dialogue here."
+
+    Returns list of Segments in document order.
+    """
+    if aliases is None:
+        aliases = {}
+
+    lines = text.split('\n')
+    segments = []
+
+    # Pattern for speaker tags
+    speaker_pattern = re.compile(r'^\[([A-Z][A-Z\s\-\'\.]+)\]$')
+
+    current_speaker = 'narrator'
+    current_text = []
+    current_start_line = 0
+
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+
+        # Check for speaker tag
+        match = speaker_pattern.match(stripped)
+        if match:
+            # Save previous segment if we have content
+            if current_text:
+                content = '\n'.join(current_text).strip()
+                if content:
+                    # Determine if dialogue (has quotes) or narration
+                    is_dialogue = current_speaker.lower() != 'narrator'
+
+                    # Normalize speaker
+                    speaker_normalized = normalize_speaker(current_speaker, aliases)
+
+                    segments.append(Segment(
+                        text=content,
+                        speaker=speaker_normalized,
+                        is_dialogue=is_dialogue,
+                        line_start=current_start_line,
+                        line_end=i - 1,
+                    ))
+
+            # Start new segment
+            current_speaker = match.group(1)
+            current_text = []
+            current_start_line = i + 1
+        else:
+            # Accumulate text
+            current_text.append(line)
+
+    # Don't forget the last segment
+    if current_text:
+        content = '\n'.join(current_text).strip()
+        if content:
+            is_dialogue = current_speaker.lower() != 'narrator'
+            speaker_normalized = normalize_speaker(current_speaker, aliases)
+
+            segments.append(Segment(
+                text=content,
+                speaker=speaker_normalized,
+                is_dialogue=is_dialogue,
+                line_start=current_start_line,
+                line_end=len(lines),
+            ))
+
+    return segments
 
 
 def extract_dialogue_segments(
@@ -329,6 +431,7 @@ def parse_manuscript(
     speaker_map: Optional[Dict[str, str]] = None,
     merge_adjacent: bool = True,
     aliases: Dict[str, str] = None,
+    force_format: Optional[str] = None,
 ) -> Tuple[List[Segment], Dict[str, dict]]:
     """
     Full manuscript parsing pipeline.
@@ -338,11 +441,22 @@ def parse_manuscript(
         speaker_map: Optional mapping of speaker -> persona path
         merge_adjacent: Merge adjacent segments with same speaker
         aliases: Character name aliases
+        force_format: Force 'tagged' or 'prose' format (auto-detect if None)
 
     Returns:
         Tuple of (segments, speaker_stats)
     """
-    segments = extract_dialogue_segments(text, aliases)
+    # Detect or use forced format
+    if force_format:
+        fmt = force_format
+    else:
+        fmt = detect_manuscript_format(text)
+
+    # Use appropriate parser
+    if fmt == 'tagged':
+        segments = extract_tagged_segments(text, aliases)
+    else:
+        segments = extract_dialogue_segments(text, aliases)
 
     if merge_adjacent:
         segments = merge_adjacent_segments(segments)

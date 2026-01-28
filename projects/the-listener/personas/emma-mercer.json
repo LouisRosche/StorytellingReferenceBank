@@ -1,0 +1,25 @@
+{
+  "id": "emma-mercer",
+  "name": "Emma Mercer",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Female, fifteen years old, bright alto. American teenager, smart and articulate beyond her years. Speaks quickly when excited, more carefully when sensing something important. Not whiny or stereotypical teen - thoughtful, curious, direct. Sometimes trails off mid-sentence when processing.",
+  "character_context": "Sarah's daughter. Emotionally perceptive but still a teenager learning to navigate adult complexity. Takes forensics class at school - fascinated by cold cases. Unknowingly touches on her mother's deepest wound when asking about unsolved murders.",
+  "voice_attributes": {
+    "age_range": "teen",
+    "gender": "female",
+    "pitch": "medium-high",
+    "pace": "variable",
+    "texture": "clear",
+    "accent": "American (educated)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["curious", "thoughtful", "tentative", "surprised", "apologetic"],
+  "use_cases": ["thriller", "family dialogue", "supporting"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": null,
+    "validation_status": "pending"
+  },
+  "notes": "Emma is the innocent who asks the dangerous question. Her forensics class interest puts her in the orbit of her aunt's murder without knowing it. Voice should be smart but not precocious - a real teenager, not a TV teenager."
+}
