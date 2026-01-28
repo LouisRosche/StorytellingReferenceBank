@@ -1,0 +1,25 @@
+{
+  "id": "ruth-henley",
+  "name": "Dr. Ruth Henley",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Female, early seventies, contralto. British accent softened by decades in America. Precise, academic, dry wit deployed strategically. Speaks slower than she used to but mind remains sharp. Warmth beneath professional remove. The voice of hard-won wisdom and professional conscience.",
+  "character_context": "Sarah's supervisor and mentor. Thirty-year relationship with Sarah's late mother. Sees through Sarah's deflection, challenges her firmly but kindly. Represents ethical center of therapeutic profession.",
+  "voice_attributes": {
+    "age_range": "elderly",
+    "gender": "female",
+    "pitch": "medium-low",
+    "pace": "measured",
+    "texture": "refined",
+    "accent": "British (softened)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["wise", "dry", "concerned", "challenging", "supportive"],
+  "use_cases": ["drama", "mentor dialogue", "professional scenes"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": null,
+    "validation_status": "pending"
+  },
+  "notes": "Mentor archetype. Her dialogue should feel like a different generation of therapist - more formal, but deeply humane. Dry humor is a defense mechanism she's aware of. Never unkind."
+}

@@ -1,0 +1,25 @@
+{
+  "id": "saltwater-narrator",
+  "name": "Literary Narrator - The Weight of Saltwater",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Perfect audio quality. Female narrator, mid-forties, American with subtle Mid-Atlantic refinement. Rich alto voice, measured and contemplative. Speaks as someone who understands grief from the inside. Unhurried pace that honors complex sentences. Finds the music in literary prose. Comfortable with silence, with weight, with the unsaid. Intimate delivery - reading to one person in a quiet room. Never performative; lets the words carry themselves.",
+  "character_context": "The narrative voice for a literary drama about family secrets and the unknowability of those we love. Must handle extended introspective passages, shifting emotional registers, and prose that demands attention to rhythm. The narrator witnesses but does not judge.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "female",
+    "pitch": "medium-low",
+    "pace": "measured, unhurried",
+    "texture": "warm, resonant",
+    "accent": "American (educated, slight Mid-Atlantic)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["contemplative", "melancholic", "tender", "grave", "wry", "quietly fierce"],
+  "use_cases": ["literary fiction", "family drama", "introspective passages", "extended prose"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "projects/the-weight-of-saltwater/golden/narrator.wav",
+    "validation_status": "pending"
+  },
+  "notes": "Primary voice for the novel. Must sustain attention through long sequel passages without dialogue. Test for monotony on extended introspection. Emotional shifts should be subtle - this is New England grief, not performed."
+}

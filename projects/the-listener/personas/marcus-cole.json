@@ -1,0 +1,25 @@
+{
+  "id": "marcus-cole",
+  "name": "Detective Marcus Cole",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Male, early sixties, bass register with cigarette gravel. Speaks in fragments, economical. Tired but sharp. World-weary cop who's seen too much. Questions sound like accusations. Never wastes words. Slight pause before important statements - habit from interrogation rooms. The exhaustion is real but doesn't slow the mind.",
+  "character_context": "Retired detective obsessed with cold case. He let Thomas Vane walk years ago. Now operates in moral gray areas. Hardboiled but not heartless - just damaged.",
+  "voice_attributes": {
+    "age_range": "elderly",
+    "gender": "male",
+    "pitch": "low",
+    "pace": "clipped",
+    "texture": "gravelly",
+    "accent": "American (urban)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["weary", "determined", "cynical", "protective", "bitter"],
+  "use_cases": ["thriller", "detective dialogue", "noir"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": null,
+    "validation_status": "pending"
+  },
+  "notes": "Supporting character. Noir register. Speaks differently than everyone else - shorter sentences, less polish. His dialogue should feel like it's from a different, harder world than the therapy office."
+}

@@ -83,9 +83,43 @@ Coverage tracking and expansion roadmap.
 
 ## Quality Status
 
-| Persona | Golden Ref | Regression | Last Validated |
-|---------|------------|------------|----------------|
-| All | 🔲 Pending | 🔲 Pending | — |
+### Infrastructure: COMPLETE
+
+Golden reference system ready for audio generation:
+
+- **Test passages**: 8 passages covering narrative, dialogue, emotional, technical, and genre-specific testing
+- **Documentation**: Full workflow, thresholds, troubleshooting
+- **Regression harness**: `scripts/persona_regression.py` with MFCC fingerprinting
+- **Audio specs**: 44.1 kHz, 16-bit mono, -16 LUFS
+
+See `personas/golden/README.md` for complete documentation.
+
+### Persona Status
+
+| Persona | Golden Ref | Tier | Last Validated |
+|---------|------------|------|----------------|
+| character-gruff-mentor | pending generation | - | - |
+| character-teen | pending generation | - | - |
+| narrator-british | pending generation | - | - |
+| narrator-caribbean | pending generation | - | - |
+| narrator-childrens | pending generation | - | - |
+| narrator-elder-authority | pending generation | - | - |
+| narrator-french | pending generation | - | - |
+| narrator-global-literary | pending generation | - | - |
+| narrator-indian-english | pending generation | - | - |
+| narrator-latinx-bilingual | pending generation | - | - |
+| narrator-literary | pending generation | - | - |
+| narrator-literary-female | pending generation | - | - |
+| narrator-nonbinary-contemporary | pending generation | - | - |
+| narrator-thriller | pending generation | - | - |
+| narrator-warm-female | pending generation | - | - |
+
+### Next Steps
+
+1. Generate candidate audio for each persona using `personas/golden/passages/standard-narrative.txt`
+2. Human review each candidate for quality
+3. Normalize and commit approved audio as golden references
+4. Update persona JSON files with `quality.golden_reference` paths
 
 ---
 
@@ -93,6 +127,7 @@ Coverage tracking and expansion roadmap.
 
 | Date | Change |
 |------|--------|
+| 2026-01-28 | Golden reference infrastructure complete (passages, docs, workflow) |
 | 2026-01-27 | Initial library status tracking |
 | 2026-01-27 | Created 6 expansion personas (P1 + P2 complete) |
 | 2026-01-27 | Diversity score 58% → 76% ✓ |

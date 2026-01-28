@@ -1,0 +1,69 @@
+{
+  "title": "The Listener",
+  "description": "Speaker-to-persona mapping for psychological thriller multi-voice TTS production",
+  "default_persona": "personas/narrator-thriller.json",
+  "speakers": {
+    "narrator": {
+      "persona_path": "personas/narrator-thriller.json",
+      "notes": "Third-person limited, close to Sarah. Controlled tension, observational."
+    },
+    "sarah": {
+      "persona_path": "personas/sarah-mercer.json",
+      "notes": "Protagonist dialogue. Measured, professional warmth, guarded personally."
+    },
+    "thomas": {
+      "persona_path": "personas/thomas-vane.json",
+      "notes": "Antagonist dialogue. Soft, slow, unsettling. Pauses before responding."
+    },
+    "cole": {
+      "persona_path": "personas/marcus-cole.json",
+      "notes": "Detective. Clipped, weary, gravelly. Noir register."
+    },
+    "owen": {
+      "persona_path": "personas/owen-mercer.json",
+      "notes": "Husband. Warm, animated, emotionally available."
+    },
+    "ruth": {
+      "persona_path": "personas/ruth-henley.json",
+      "notes": "Supervisor. British-inflected, dry, wise."
+    },
+    "carla": {
+      "persona_path": "personas/carla-reyes.json",
+      "notes": "Assistant. Quick, warm, observant."
+    },
+    "maya": {
+      "persona_path": "personas/maya-aldridge.json",
+      "notes": "Dead sister - voicemails, flashbacks only. Phone compression for voicemails."
+    }
+  },
+  "aliases": {
+    "dr. mercer": "sarah",
+    "dr. sarah mercer": "sarah",
+    "dr mercer": "sarah",
+    "vane": "thomas",
+    "thomas vane": "thomas",
+    "mr. vane": "thomas",
+    "detective cole": "cole",
+    "marcus cole": "cole",
+    "detective": "cole",
+    "dr. henley": "ruth",
+    "ruth henley": "ruth",
+    "dr henley": "ruth",
+    "owen mercer": "owen",
+    "carla reyes": "carla",
+    "maya aldridge": "maya"
+  },
+  "production_notes": {
+    "crossfade_ms": 50,
+    "dialogue_pause_ms": 300,
+    "chapter_end_pause_ms": 3000,
+    "thomas_pre_dialogue_pause_ms": 800,
+    "version": "psychological-thriller-v1",
+    "special_instructions": {
+      "thomas_pauses": "Add 600-1000ms pause before Thomas's dialogue. He never answers immediately.",
+      "voicemail_processing": "Maya's voicemails should have telephone compression artifacts.",
+      "tension_pacing": "During therapy scenes, slow overall pace by 15%. During threat scenes, quicken by 10%.",
+      "silence_beats": "Honor all [SILENCE: beat] cues - these are dramatic pauses, not errors."
+    }
+  }
+}

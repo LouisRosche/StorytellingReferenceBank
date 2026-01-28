@@ -1,0 +1,24 @@
+{
+  "id": "pastor-david-oakes",
+  "name": "Pastor David Oakes",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Perfect audio quality. Elderly man, early seventies. Slow, deliberate speech with weight behind each word. Maine accent softened by education and ministry. Pastoral warmth layered over weariness. Pauses are meaningful - thinking or praying, unclear which. Comfortable with silence in ways that unsettle others. The voice of someone who has held too many hands at too many bedsides. When confessing his own failures, simpler and more direct. Should sound like accumulated wisdom and accumulated doubt in equal measure.",
+  "character_context": "Pastor Oakes has served Port Clyde for 45 years. Ruth confided in him about her secret daughter decades ago. He kept the secret but also, deliberately, let it slip. He is not simply a messenger - he has his own complicity to reckon with.",
+  "voice_attributes": {
+    "age_range": "early 70s",
+    "gender": "male",
+    "pitch": "medium-low",
+    "pace": "slow, weighted",
+    "texture": "weathered, pastoral",
+    "accent": "Maine (softened by ministry)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["pastoral", "grave", "weary", "confessional", "kind"],
+  "use_cases": ["dialogue", "revelation scene", "confession"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "validation_status": "pending"
+  },
+  "notes": "Appears in Chapter 1 briefly, returns in Chapter 3 for the major revelation. His 'careless' slip should not sound careless to careful listeners. The confession later should reframe everything we heard him say before."
+}

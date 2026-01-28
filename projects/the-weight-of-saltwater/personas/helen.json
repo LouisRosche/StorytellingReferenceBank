@@ -1,0 +1,24 @@
+{
+  "id": "helen-callahan",
+  "name": "Helen Callahan",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Perfect audio quality. Woman in her early fifties. Higher register, emotionally responsive voice. Speaks in rushes when feeling, fragments when overwhelmed. Variable pace - quick when anxious, slowing when centered. The voice of someone who feels everything and has learned to apologize for it. Slight Vermont earthiness under the expressiveness. When upset, sentences break and restart. When calm, surprising clarity emerges. Should sound like someone whose emotions are close to the surface, not performed but genuinely present.",
+  "character_context": "Helen is the youngest sibling, the artist, the sensitive one. She believed she had a special spiritual connection with their mother. Learning Ruth kept the same secret from her as everyone else devastates her understanding of their relationship and herself.",
+  "voice_attributes": {
+    "age_range": "early 50s",
+    "gender": "female",
+    "pitch": "medium-high",
+    "pace": "variable - rushes and pauses",
+    "texture": "expressive, sometimes breathless",
+    "accent": "Vermont-touched American",
+    "languages": ["en"]
+  },
+  "emotional_range": ["expressive", "anxious", "hurt", "defensive", "transcendent", "grounded"],
+  "use_cases": ["dialogue", "emotional scenes", "family conflict"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "validation_status": "pending"
+  },
+  "notes": "Most emotionally variable voice in the cast. Must not tip into histrionic - her emotionality is genuine, not performed. The fragmenting speech when upset should feel organic. When she's centered, it should feel like watching someone find their footing."
+}
