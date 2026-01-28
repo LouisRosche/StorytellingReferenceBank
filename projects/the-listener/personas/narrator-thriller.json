@@ -1,0 +1,25 @@
+{
+  "id": "narrator-listener",
+  "name": "The Listener Narrator",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Third-person limited, close to Sarah. Female voice, late thirties, American neutral. Controlled tension throughout - calm surface with unease beneath. Pacing varies: slow for dread, quickens for revelation. Interior monologue delivered with intimacy, not performance. Observational, precise. Never melodramatic; trusts the text. Silences matter.",
+  "character_context": "The narrative voice sees through Sarah's eyes but with slight remove - we know what she notices, what she feels, but the narrator doesn't editorialize. Lets discomfort build through selection, not commentary.",
+  "voice_attributes": {
+    "age_range": "adult",
+    "gender": "female",
+    "pitch": "medium",
+    "pace": "variable",
+    "texture": "crisp",
+    "accent": "American (neutral)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["tense", "observational", "intimate", "urgent", "quiet dread"],
+  "use_cases": ["psychological thriller", "suspense narration", "close third person"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": null,
+    "validation_status": "pending"
+  },
+  "notes": "Primary narrative voice. Female narrator provides unity with Sarah's perspective without collapsing into first person. Should feel like Sarah's consciousness rendered externally. Dread through restraint, not performance."
+}

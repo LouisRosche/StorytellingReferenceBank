@@ -1,0 +1,25 @@
+{
+  "id": "maya-aldridge",
+  "name": "Maya Aldridge",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Female, mid-twenties, soprano - higher than Sarah, faster. Emotional, expressive, interrupts herself often. Laughs frequently when not afraid. When afraid: voice rises, speeds up, desperate edge. The voice of someone trying to be heard. Preserved in recordings and memory.",
+  "character_context": "Sarah's dead sister. Appears in voicemails, flashbacks, imagined conversations. Was the 'emotional' sister. Her fear was dismissed as drama until it was too late. In death, idealized but also haunting.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "female",
+    "pitch": "medium-high",
+    "pace": "rapid",
+    "texture": "bright",
+    "accent": "American (California)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["warm", "dramatic", "fearful", "loving", "desperate", "hurt"],
+  "use_cases": ["flashback", "voicemail", "memory sequence"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": null,
+    "validation_status": "pending"
+  },
+  "notes": "Ghost voice. Appears only in recordings, flashbacks, imagination. Should sound like Sarah but younger, less controlled, more alive. The voicemails should be heartbreaking in retrospect. Audio quality in voicemails: phone compression artifacts."
+}

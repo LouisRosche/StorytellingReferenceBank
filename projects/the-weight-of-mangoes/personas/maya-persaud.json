@@ -1,0 +1,19 @@
+{
+  "id": "character-maya-persaud",
+  "name": "Maya Persaud-Morrison",
+  "voice_prompt": "Perfect audio quality. Young woman, mid-twenties, Brooklyn-born. Sharp, quick, politically engaged. American English with deliberate Caribbean inflections—she's reclaiming rhythms her parents smoothed away. Higher energy than her brother, faster pace. A voice that challenges, questions, demands. The sound of the third generation refusing to assimilate quietly.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "female",
+    "pitch": "medium_high",
+    "pace": "fast",
+    "texture": "crisp",
+    "accent": "American (NYC) with deliberate Caribbean code-switching",
+    "languages": ["en"]
+  },
+  "emotional_range": ["passionate", "confrontational", "tender", "impatient", "fierce"],
+  "use_cases": ["dialogue", "young adult perspective"],
+  "model_variant": "1.7B-Base",
+  "quality_tier": "premium",
+  "notes": "The politicized granddaughter. Her Caribbean inflections are conscious performance/reclamation, unlike her grandmother's natural speech. Anger is easier for her than grief."
+}

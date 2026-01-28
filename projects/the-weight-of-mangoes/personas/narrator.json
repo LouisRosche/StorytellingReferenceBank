@@ -1,0 +1,19 @@
+{
+  "id": "narrator-mangoes",
+  "name": "Weight of Mangoes Narrator",
+  "voice_prompt": "Perfect audio quality. Female narrator, late forties, Caribbean-American with traces of Trinidadian rhythm in her cadence. Warm contralto, measured pace that slows for emotional moments. The voice of someone who has spent a lifetime between worlds, who carries both grief and gratitude. Intimate without being confessional. The rhythm of the prose should breathe—pauses for weight, for memory, for what cannot be said. Not performative Caribbean; authentic, lived, carrying the particular music of diaspora English.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "female",
+    "pitch": "medium",
+    "pace": "slow",
+    "texture": "warm",
+    "accent": "Caribbean-American (Trinidadian traces)",
+    "languages": ["en", "trinidadian-creole"]
+  },
+  "emotional_range": ["contemplative", "tender", "melancholic", "wry", "reverent"],
+  "use_cases": ["literary fiction", "diaspora narratives", "family drama", "cultural memoir"],
+  "model_variant": "1.7B-Base",
+  "quality_tier": "premium",
+  "notes": "Primary narrator for multi-generational diaspora story. Must handle code-switching between standard American English and Trinidadian English without caricature. The voice is the bridge between generations."
+}

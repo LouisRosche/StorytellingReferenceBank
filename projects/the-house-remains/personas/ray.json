@@ -1,0 +1,24 @@
+{
+  "id": "ray-marchetti",
+  "name": "Ray Marchetti",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Perfect audio quality. Man in his late sixties. Lower register, unhurried. Midwestern plainness - Ohio flattened vowels, no pretense. Speaks in short sentences, comfortable with silence. Working man's voice weathered by time, warmed by patience. No flourishes, no performance. When offering comfort, simple and direct. Should sound like someone who doesn't need to prove anything, who has learned that presence matters more than words.",
+  "character_context": "Ray is Eleanor's husband of 42 years, a retired electrician who married into Yankee repression and never quite understood it. He's the calm presence, the practical one. He loves Eleanor and has learned to wait for her to let him in.",
+  "voice_attributes": {
+    "age_range": "late 60s",
+    "gender": "male",
+    "pitch": "low",
+    "pace": "slow, unhurried",
+    "texture": "warm, grounded",
+    "accent": "Midwest (Ohio)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["steady", "patient", "quietly concerned", "tender", "grounding"],
+  "use_cases": ["dialogue", "practical interjections", "comfort scenes"],
+  "model_variant": "1.7B-Base",
+  "quality": {
+    "validation_status": "pending"
+  },
+  "notes": "Simplest voice in the cast - this is intentional. Ray's plainness is his character. Fewer lines but each should land with weight. He's the rest between emotional crescendos."
+}

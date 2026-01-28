@@ -1,0 +1,19 @@
+{
+  "id": "character-anita",
+  "name": "Anita Persaud",
+  "voice_prompt": "Perfect audio quality. Woman, fifty, born in Brooklyn. The American child who stayed. Softer than her siblings, a voice used to making peace. American English with the faint Caribbean rhythms absorbed from a childhood in her mother's kitchen. Medium pitch, gentle pace. The sound of someone who has spent a lifetime listening, recording, remembering. Quiet strength beneath gentleness.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "female",
+    "pitch": "medium",
+    "pace": "slow",
+    "texture": "soft",
+    "accent": "American with faint Caribbean undertones",
+    "languages": ["en"]
+  },
+  "emotional_range": ["gentle", "patient", "quietly fierce", "melancholic", "protective"],
+  "use_cases": ["dialogue", "family drama"],
+  "model_variant": "1.7B-Base",
+  "quality_tier": "premium",
+  "notes": "The keeper. Unmarried, childless, devoted to her mother. Her gentleness can be mistaken for weakness but is actually a form of endurance. She asks the questions others refuse to ask."
+}

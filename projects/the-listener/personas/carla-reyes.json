@@ -1,0 +1,25 @@
+{
+  "id": "carla-reyes",
+  "name": "Carla Reyes",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Female, late twenties, warm soprano. Parents from Guatemala, slight accent audible in certain words. Quick speech, lots of expression. Professional at work but personality shows through. Observant - notices things others miss. Voice rises when concerned.",
+  "character_context": "Administrative assistant at Sarah's practice. Sees everyone come and go. Notices Thomas is wrong before she can articulate why. First professional job; takes it seriously.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "female",
+    "pitch": "medium-high",
+    "pace": "quick",
+    "texture": "warm",
+    "accent": "American (slight Latina influence)",
+    "languages": ["en", "es"]
+  },
+  "emotional_range": ["professional", "warm", "worried", "observant", "cautious"],
+  "use_cases": ["thriller", "workplace dialogue", "supporting"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": null,
+    "validation_status": "pending"
+  },
+  "notes": "Minor but important voice. Represents 'normal' person's instinct about Thomas - she knows something's wrong without knowing what. Her warmth contrasts with office setting's tension."
+}

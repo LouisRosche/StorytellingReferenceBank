@@ -1,0 +1,19 @@
+{
+  "id": "character-jason",
+  "name": "Jason Persaud",
+  "voice_prompt": "Perfect audio quality. Young man, mid-twenties, raised in white suburban America by an assimilated father and white mother. Completely American voice—California neutral. Uncertain, slightly hesitant when speaking with family. A voice that has always felt outside. Medium pitch, careful pace. The sound of someone who wants to belong but doesn't know how. Quietly hurt beneath the neutrality.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "male",
+    "pitch": "medium",
+    "pace": "slow",
+    "texture": "soft",
+    "accent": "American (California neutral)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["uncertain", "hurt", "hopeful", "defensive", "isolated"],
+  "use_cases": ["dialogue", "alienation narrative"],
+  "model_variant": "1.7B-Base",
+  "quality_tier": "premium",
+  "notes": "The outsider grandson. Looks white, feels excluded from the family's cultural identity. His voice carries the particular wound of being made to feel 'not enough' of something he never chose. Rarely speaks in family gatherings."
+}

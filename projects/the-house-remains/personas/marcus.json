@@ -1,0 +1,24 @@
+{
+  "id": "marcus-callahan",
+  "name": "Marcus Callahan",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Perfect audio quality. Man in his late fifties. Lower register, measured pace. Dry, sardonic delivery with deliberate timing. The voice of someone who uses wit to maintain distance. Educated, no regional accent - Seattle-smoothed. Slight pause before punchlines, before deflections. When caught off-guard, goes quieter rather than louder. Vulnerability shows as simplicity - shorter sentences, smaller words. Should sound like someone who practiced casualness until it became armor.",
+  "character_context": "Marcus is the middle child who escaped at eighteen and built his entire identity around not being the Callahan son from Maine. He deflects with irony, observes instead of participates. His distance is defense. He always suspected his mother had secrets; being right brings no satisfaction.",
+  "voice_attributes": {
+    "age_range": "late 50s",
+    "gender": "male",
+    "pitch": "low-medium",
+    "pace": "measured, deliberate pauses",
+    "texture": "dry, smooth",
+    "accent": "American neutral (West Coast educated)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["sardonic", "detached", "wry", "quietly guilty", "unexpectedly tender", "lost"],
+  "use_cases": ["dialogue", "dry commentary", "rare vulnerable moments"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "validation_status": "pending"
+  },
+  "notes": "Contrast voice to Eleanor's control. His control manifests as distance rather than command. The sardonic delivery should never become sarcastic - it's defense, not attack. Vulnerable moments should feel earned precisely because they're rare."
+}

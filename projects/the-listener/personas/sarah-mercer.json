@@ -1,0 +1,25 @@
+{
+  "id": "sarah-mercer",
+  "name": "Dr. Sarah Mercer",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Female, late thirties, educated American neutral. Alto range with controlled warmth. Measured pace, precise diction. Professional voice paradoxically warmer than personal voice. Under stress: slower, more deliberate, each word careful. Surface composure with hairline fractures of fear beneath. Never shrill. Keeps control until she doesn't.",
+  "character_context": "Protagonist. Trauma therapist hiding her own unprocessed grief. Trained to listen, struggling to speak. The professional facade is armor; glimpses beneath should feel earned.",
+  "voice_attributes": {
+    "age_range": "adult",
+    "gender": "female",
+    "pitch": "medium-low",
+    "pace": "measured",
+    "texture": "smooth",
+    "accent": "American (educated, neutral)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["controlled", "professional", "vulnerable", "guarded", "fearful", "resolute"],
+  "use_cases": ["psychological thriller", "drama", "dialogue-heavy"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": null,
+    "validation_status": "pending"
+  },
+  "notes": "Protagonist voice. Contrast with Thomas: she maintains warmth while he maintains cold. Her control is protective; his is predatory. In therapy scenes, she should sound more natural; outside therapy, more guarded."
+}

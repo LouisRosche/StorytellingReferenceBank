@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Core Qwen3-TTS wrapper for audiobook production.
+Core TTS wrapper for audiobook production.
 
 Supports:
 - Loading voice personas from JSON
@@ -8,6 +8,7 @@ Supports:
 - Voice design (natural language prompts)
 - Long-form content chunking
 - ACX-compliant file naming
+- Multiple TTS providers (Qwen, ElevenLabs, OpenAI, Coqui)
 
 Usage:
     # Voice design from persona
@@ -21,6 +22,9 @@ Usage:
     # From text file
     python tts_generator.py --persona personas/examples/narrator-childrens.json \
         --text-file chapter.txt --output Chapter_01.wav
+
+    # Use a different provider
+    python tts_generator.py --provider elevenlabs --text "Hello" --output out.wav
 """
 
 import argparse
@@ -29,12 +33,13 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import Optional, Tuple, List, Generator
+from typing import Optional, Tuple, List, Generator, Union
 from dataclasses import dataclass
 
-# Lazy imports for optional dependencies
-_model = None
-_model_name = None
+# Lazy imports for provider system and optional dependencies
+_provider_instance = None
+_provider_id = None
+_provider_config = None
 
 
 @dataclass
@@ -47,6 +52,7 @@ class Persona:
     reference_audio_path: Optional[str] = None
     reference_audio_transcript: Optional[str] = None
     model_variant: str = "1.7B-Base"
+    provider: Optional[str] = None  # Allow persona to specify provider
 
     @classmethod
     def from_json(cls, path: str) -> "Persona":
@@ -63,61 +69,81 @@ class Persona:
             reference_audio_path=ref_audio.get("path"),
             reference_audio_transcript=ref_audio.get("transcript"),
             model_variant=data.get("model_variant", "1.7B-Base"),
+            provider=data.get("provider"),
         )
+
+
+def get_provider(
+    provider_id: Optional[str] = None,
+    config: Optional[dict] = None,
+    model_variant: Optional[str] = None,
+):
+    """
+    Get or create a TTS provider instance.
+
+    Caches provider instance to avoid reloading models.
+
+    Args:
+        provider_id: Provider to use ("qwen", "elevenlabs", "openai", "coqui")
+        config: Provider configuration dict
+        model_variant: Model variant for Qwen (legacy compatibility)
+
+    Returns:
+        TTSProvider instance
+    """
+    global _provider_instance, _provider_id, _provider_config
+
+    # Default to qwen provider
+    target_id = provider_id or "qwen"
+
+    # Build config
+    target_config = config or {}
+    if model_variant and target_id == "qwen":
+        target_config["model_variant"] = model_variant
+
+    # Check if we can reuse cached provider
+    if (
+        _provider_instance is not None
+        and _provider_id == target_id
+        and _provider_config == target_config
+    ):
+        return _provider_instance
+
+    # Import providers (lazy import to avoid loading until needed)
+    try:
+        from tts_providers import get_provider as _get_provider
+    except ImportError:
+        # Fallback for when providers module not available
+        raise ImportError(
+            "TTS providers module not found. Ensure tts_providers/ is in the scripts directory."
+        )
+
+    # Create new provider
+    _provider_instance = _get_provider(target_id, target_config)
+    _provider_id = target_id
+    _provider_config = target_config
+
+    return _provider_instance
 
 
 def get_model(model_variant: str = "1.7B-Base"):
     """
-    Lazy-load the Qwen3-TTS model.
+    Legacy function: Get the Qwen3-TTS model.
 
-    Caches model instance to avoid reloading.
+    This function is maintained for backward compatibility.
+    New code should use get_provider() instead.
+
+    Args:
+        model_variant: Model variant to load
+
+    Returns:
+        The underlying model (for Qwen provider)
     """
-    global _model, _model_name
+    provider = get_provider(provider_id="qwen", model_variant=model_variant)
+    provider.initialize()
 
-    variant_map = {
-        "1.7B-Base": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
-        "1.7B-VoiceDesign": "Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign",
-        "1.7B-CustomVoice": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
-        "0.6B": "Qwen/Qwen3-TTS-12Hz-0.6B-Base",
-    }
-
-    model_name = variant_map.get(model_variant, variant_map["1.7B-Base"])
-
-    if _model is not None and _model_name == model_name:
-        return _model
-
-    try:
-        import torch
-        from qwen_tts import Qwen3TTSModel
-    except ImportError as e:
-        print(f"Error: Missing dependency. Install with: pip install qwen-tts torch", file=sys.stderr)
-        raise SystemExit(1) from e
-
-    print(f"Loading model: {model_name}...", file=sys.stderr)
-
-    # Determine device and dtype
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
-
-    # Try flash attention if available
-    try:
-        _model = Qwen3TTSModel.from_pretrained(
-            model_name,
-            device_map=device,
-            dtype=dtype,
-            attn_implementation="flash_attention_2"
-        )
-    except Exception:
-        # Fall back without flash attention
-        _model = Qwen3TTSModel.from_pretrained(
-            model_name,
-            device_map=device,
-            dtype=dtype,
-        )
-
-    _model_name = model_name
-    print(f"Model loaded on {device}", file=sys.stderr)
-    return _model
+    # Return the internal model for backward compatibility
+    return provider._model
 
 
 def chunk_text(text: str, max_chars: int = 2000) -> List[str]:
@@ -157,6 +183,7 @@ def generate_voice_clone(
     ref_text: str,
     language: str = "English",
     model_variant: str = "1.7B-Base",
+    provider_id: Optional[str] = None,
 ) -> Tuple[list, int]:
     """
     Generate speech using voice cloning.
@@ -166,21 +193,26 @@ def generate_voice_clone(
         ref_audio: Path to reference audio file (3-15 seconds optimal)
         ref_text: Transcript of reference audio
         language: Target language
-        model_variant: Model to use
+        model_variant: Model to use (for Qwen provider)
+        provider_id: TTS provider to use (default: "qwen")
 
     Returns:
         Tuple of (waveform_array, sample_rate)
     """
-    model = get_model(model_variant)
-
-    wavs, sr = model.generate_voice_clone(
-        text=text,
-        language=language,
-        ref_audio=ref_audio,
-        ref_text=ref_text,
+    provider = get_provider(
+        provider_id=provider_id,
+        model_variant=model_variant if provider_id in (None, "qwen") else None,
     )
 
-    return wavs, sr
+    result = provider.generate_from_reference(
+        text=text,
+        reference_audio=ref_audio,
+        reference_text=ref_text,
+        language=language,
+        model_variant=model_variant,
+    )
+
+    return result.to_tuple()
 
 
 def generate_voice_design(
@@ -188,6 +220,7 @@ def generate_voice_design(
     voice_prompt: str,
     language: str = "English",
     model_variant: str = "1.7B-VoiceDesign",
+    provider_id: Optional[str] = None,
 ) -> Tuple[list, int]:
     """
     Generate speech using natural language voice description.
@@ -196,32 +229,50 @@ def generate_voice_design(
         text: Text to synthesize
         voice_prompt: Natural language description of desired voice
         language: Target language
-        model_variant: Model to use (defaults to VoiceDesign variant)
+        model_variant: Model to use (for Qwen provider, defaults to VoiceDesign variant)
+        provider_id: TTS provider to use (default: "qwen")
 
     Returns:
         Tuple of (waveform_array, sample_rate)
     """
-    model = get_model(model_variant)
-
-    wavs, sr = model.generate_voice_design(
-        text=text,
-        language=language,
-        instruct=voice_prompt,
+    provider = get_provider(
+        provider_id=provider_id,
+        model_variant=model_variant if provider_id in (None, "qwen") else None,
     )
 
-    return wavs, sr
+    result = provider.generate(
+        text=text,
+        voice=voice_prompt,
+        language=language,
+        model_variant=model_variant,
+    )
+
+    return result.to_tuple()
 
 
 def generate_from_persona(
     text: str,
     persona: Persona,
     language: str = "English",
+    provider_id: Optional[str] = None,
 ) -> Tuple[list, int]:
     """
     Generate speech using a loaded persona.
 
     Automatically chooses voice cloning or voice design based on persona config.
+
+    Args:
+        text: Text to synthesize
+        persona: Loaded Persona object
+        language: Target language
+        provider_id: TTS provider to use (default: persona.provider or "qwen")
+
+    Returns:
+        Tuple of (waveform_array, sample_rate)
     """
+    # Use persona-specified provider if available
+    target_provider = provider_id or persona.provider
+
     # If persona has reference audio, use voice cloning
     if persona.reference_audio_path and persona.reference_audio_transcript:
         return generate_voice_clone(
@@ -230,6 +281,7 @@ def generate_from_persona(
             ref_text=persona.reference_audio_transcript,
             language=language,
             model_variant=persona.model_variant,
+            provider_id=target_provider,
         )
 
     # Otherwise use voice design with the prompt
@@ -243,6 +295,7 @@ def generate_from_persona(
         voice_prompt=persona.voice_prompt,
         language=language,
         model_variant=model_variant,
+        provider_id=target_provider,
     )
 
 
@@ -255,6 +308,7 @@ def generate_long_form(
     language: str = "English",
     max_chunk_chars: int = 2000,
     progress_callback: Optional[callable] = None,
+    provider_id: Optional[str] = None,
 ) -> Generator[Tuple[list, int], None, None]:
     """
     Generate speech for long-form content with chunking.
@@ -271,6 +325,7 @@ def generate_long_form(
         language: Target language
         max_chunk_chars: Maximum characters per chunk
         progress_callback: Optional callback(chunk_num, total_chunks)
+        provider_id: TTS provider to use (default: "qwen")
 
     Yields:
         Tuple of (waveform_array, sample_rate) for each chunk
@@ -283,11 +338,11 @@ def generate_long_form(
             progress_callback(i + 1, total)
 
         if persona:
-            wavs, sr = generate_from_persona(chunk, persona, language)
+            wavs, sr = generate_from_persona(chunk, persona, language, provider_id)
         elif ref_audio and ref_text:
-            wavs, sr = generate_voice_clone(chunk, ref_audio, ref_text, language)
+            wavs, sr = generate_voice_clone(chunk, ref_audio, ref_text, language, provider_id=provider_id)
         elif voice_prompt:
-            wavs, sr = generate_voice_design(chunk, voice_prompt, language)
+            wavs, sr = generate_voice_design(chunk, voice_prompt, language, provider_id=provider_id)
         else:
             raise ValueError("Must provide persona, voice_prompt, or ref_audio+ref_text")
 
@@ -394,9 +449,18 @@ def acx_filename(title: str, chapter_num: Optional[int] = None, chapter_name: Op
         return f"{clean_title}.wav"
 
 
+def list_available_providers():
+    """List available TTS providers."""
+    try:
+        from tts_providers import list_providers
+        return list_providers()
+    except ImportError:
+        return {"qwen": "Qwen3-TTS (default)"}
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate speech using Qwen3-TTS",
+        description="Generate speech using TTS providers",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
@@ -405,6 +469,8 @@ def main():
     input_group = parser.add_mutually_exclusive_group(required=True)
     input_group.add_argument("--text", help="Text to synthesize")
     input_group.add_argument("--text-file", help="Path to text file")
+    input_group.add_argument("--list-providers", action="store_true",
+                             help="List available TTS providers and exit")
 
     # Voice options
     voice_group = parser.add_argument_group("voice options")
@@ -413,11 +479,17 @@ def main():
     voice_group.add_argument("--ref-audio", help="Reference audio for voice cloning")
     voice_group.add_argument("--ref-text", help="Transcript of reference audio")
 
+    # Provider options
+    provider_group = parser.add_argument_group("provider options")
+    provider_group.add_argument("--provider", default="qwen",
+                                help="TTS provider to use (default: qwen)")
+    provider_group.add_argument("--api-key", help="API key for cloud providers")
+
     # Output options
-    parser.add_argument("--output", "-o", required=True, help="Output audio file path")
+    parser.add_argument("--output", "-o", help="Output audio file path")
     parser.add_argument("--language", default="English", help="Target language (default: English)")
     parser.add_argument("--model", choices=["1.7B-Base", "1.7B-VoiceDesign", "1.7B-CustomVoice", "0.6B"],
-                        help="Model variant (auto-selected based on voice options if not specified)")
+                        help="Model variant for Qwen provider (auto-selected based on voice options if not specified)")
 
     # Processing options
     parser.add_argument("--chunk-size", type=int, default=2000,
@@ -426,6 +498,20 @@ def main():
                         help="Skip audio normalization")
 
     args = parser.parse_args()
+
+    # Handle --list-providers
+    if args.list_providers:
+        print("Available TTS Providers:")
+        print("-" * 40)
+        for provider_id, name in list_available_providers().items():
+            default = " (default)" if provider_id == "qwen" else ""
+            print(f"  {provider_id}: {name}{default}")
+        print("\nUse --provider <id> to select a provider.")
+        return
+
+    # Require --output for actual generation
+    if not args.output:
+        parser.error("--output is required for speech generation")
 
     # Load text
     if args.text:
@@ -444,11 +530,22 @@ def main():
     if args.ref_audio and not args.ref_text:
         parser.error("--ref-audio requires --ref-text")
 
+    # Build provider config
+    provider_config = {}
+    if args.api_key:
+        provider_config["api_key"] = args.api_key
+    if args.model and args.provider == "qwen":
+        provider_config["model_variant"] = args.model
+
     # Generate audio
-    print(f"Generating speech for {len(text)} characters...", file=sys.stderr)
+    print(f"Generating speech for {len(text)} characters using {args.provider}...", file=sys.stderr)
 
     def progress(current, total):
         print(f"Processing chunk {current}/{total}...", file=sys.stderr)
+
+    # Pre-initialize provider if config provided
+    if provider_config:
+        get_provider(provider_id=args.provider, config=provider_config)
 
     chunks = list(generate_long_form(
         text=text,
@@ -459,6 +556,7 @@ def main():
         language=args.language,
         max_chunk_chars=args.chunk_size,
         progress_callback=progress if len(text) > args.chunk_size else None,
+        provider_id=args.provider,
     ))
 
     # Concatenate if multiple chunks

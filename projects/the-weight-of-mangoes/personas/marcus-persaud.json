@@ -1,0 +1,19 @@
+{
+  "id": "character-marcus-persaud",
+  "name": "Marcus Persaud-Morrison",
+  "voice_prompt": "Perfect audio quality. Young man, late twenties, Brooklyn-born with Jamaican-American father and Indo-Trinidadian mother. Contemporary urban American voice with occasional Caribbean rhythms inherited from family speech patterns. Warm, curious, slightly earnest. A voice searching for something. Medium-low pitch, moderate pace. The sound of someone learning to claim an identity he was born into but never fully taught.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "male",
+    "pitch": "medium_low",
+    "pace": "medium",
+    "texture": "warm",
+    "accent": "American (NYC) with Caribbean traces",
+    "languages": ["en"]
+  },
+  "emotional_range": ["earnest", "curious", "gentle", "uncertain", "hopeful"],
+  "use_cases": ["dialogue", "young adult perspective"],
+  "model_variant": "1.7B-Base",
+  "quality_tier": "premium",
+  "notes": "Third-generation voice. The yearning for heritage is audible—he speaks carefully around his grandmother, trying to absorb her rhythms. With his generation, he's more casual, more contemporary."
+}
