@@ -275,7 +275,8 @@ def process_manuscript_multispeaker(
             persona_path = speaker_map.get_persona_path(seg.speaker)
             speaker_tag = f"[{seg.speaker}]" if seg.is_dialogue else f"({seg.speaker})"
             preview = seg.text[:50] + "..." if len(seg.text) > 50 else seg.text
-            print(f"  {i+1}. {speaker_tag} → {Path(persona_path).stem}", file=sys.stderr)
+            persona_name = Path(persona_path).stem if persona_path else "(default)"
+            print(f"  {i+1}. {speaker_tag} → {persona_name}", file=sys.stderr)
             print(f"      {preview}", file=sys.stderr)
         return {'segments': len(segments), 'dry_run': True}
 
