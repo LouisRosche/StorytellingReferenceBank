@@ -96,12 +96,44 @@ When specifying accents, layer with other attributes:
 
 **Format**: "[Accent descriptor], [additional qualities]"
 
-**Examples**:
-- "Thick Scottish accent, weathered and gravelly"
-- "Slight Southern drawl, warm and unhurried"
-- "Crisp British RP, cool and precise"
-- "Brooklyn accent, fast and streetwise"
-- "Soft Irish lilt, gentle and musical"
+### Western
+
+| Accent | Key Markers | TTS Prompt |
+|--------|-------------|------------|
+| Scottish | Rolled R's, clipped vowels | "Thick Scottish accent, weathered and gravelly" |
+| Southern US | Drawl, diphthong elongation | "Slight Southern drawl, warm and unhurried" |
+| British RP | Crisp consonants, non-rhotic | "Crisp British RP, cool and precise" |
+| Brooklyn/NY | Dropped R's, fast cadence | "Brooklyn accent, fast and streetwise" |
+| Irish | Lilting rhythm, soft T's | "Soft Irish lilt, gentle and musical" |
+| Maine/New England | Non-rhotic, flat A's, clipped | "Maine accent, understated, dry, unhurried" |
+| Midwest US | Flat vowels, even pace, plain | "Ohio Midwest, plain-spoken, no performance" |
+
+### Caribbean and Diaspora
+
+| Accent | Key Markers | TTS Prompt |
+|--------|-------------|------------|
+| Trinidadian English | Melodic intonation, rising sentence ends, rhythmic | "Trinidadian English, musical cadence, warm and rhythmic" |
+| Jamaican English | Syncopated rhythm, clipped consonants | "Jamaican English, rhythmic pacing, confident" |
+| Caribbean diaspora (US/UK) | Code-switching, accent surfaces under emotion | "American English with Caribbean warmth underneath, accent breaks through in emotional moments" |
+
+### South Asian
+
+| Accent | Key Markers | TTS Prompt |
+|--------|-------------|------------|
+| Indian English | Retroflex consonants, syllable-timed rhythm | "Indian English, precise diction, syllable-timed rhythm" |
+| Indian English (diaspora) | Hybrid intonation, code-switches with Hindi/Tamil/etc. | "American-educated Indian English, slight Indian musicality, surfaces when emotional or speaking to elders" |
+
+### Code-Switching
+
+When characters shift between registers or languages:
+
+| Pattern | Direction | TTS Application |
+|---------|-----------|-----------------|
+| Formal → vernacular | Under stress, intimacy | "Formal diction that loosens under emotion" |
+| English → heritage language | Endearments, exclamations, prayer | Embed transliterated words with accent context |
+| Educated → regional | With family, when angry | "Educated American that drops into [regional] with family" |
+
+**Example**: A Caribbean-American character speaks Standard American English at work, then shifts to Trinidadian cadence at home. In TTS, use separate voice prompts or embed context: "American English, but warmer and more rhythmic when speaking to family."
 
 ## Texture Vocabulary
 

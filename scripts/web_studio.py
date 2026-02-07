@@ -31,6 +31,17 @@ except ImportError:
     print("Gradio not installed. Install with: pip install gradio")
     sys.exit(1)
 
+# Add scripts dir to path for tts_providers import
+sys.path.insert(0, str(Path(__file__).parent))
+
+# Try to load tts_providers — graceful fallback if unavailable
+_TTS_AVAILABLE = False
+try:
+    from tts_providers import get_provider, list_providers, TTSCapability
+    _TTS_AVAILABLE = True
+except ImportError:
+    pass
+
 
 # Get project root
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -96,48 +107,85 @@ def load_persona_details(persona_path: str) -> str:
     return "{}"
 
 
-def generate_audio_stub(
+def _resolve_persona_path(persona_ref: str) -> Optional[Path]:
+    """Resolve a persona dropdown value to a JSON file path."""
+    if not persona_ref:
+        return None
+    parts = persona_ref.split("/")
+    if parts[0] == "examples":
+        return PROJECT_ROOT / "personas" / "examples" / f"{parts[1]}.json"
+    else:
+        return PROJECT_ROOT / "projects" / parts[0] / "personas" / f"{parts[1]}.json"
+
+
+def _load_voice_prompt(persona_path: Path) -> str:
+    """Load voice_prompt from a persona JSON file."""
+    if persona_path and persona_path.exists():
+        with open(persona_path) as f:
+            data = json.load(f)
+        return data.get("voice_prompt", "")
+    return ""
+
+
+def generate_audio(
     text: str,
     persona: str,
-    model: str,
+    provider_id: str,
     progress=gr.Progress()
 ) -> Tuple[Optional[str], str]:
-    """
-    Generate audio from text.
+    """Generate audio using the built-in tts_providers system."""
+    if not text or not text.strip():
+        return None, "No text provided."
 
-    This is a stub - replace with actual TTS integration.
-    """
-    # Placeholder for actual TTS generation
-    # In production, this would call Higgs V2, tts-audiobook-tool, etc.
+    log = []
+    log.append(f"Provider: {provider_id}")
+    log.append(f"Persona: {persona}")
+    log.append(f"Text: {len(text)} characters")
 
-    status_log = []
-    status_log.append(f"Model: {model}")
-    status_log.append(f"Persona: {persona}")
-    status_log.append(f"Text length: {len(text)} characters")
-    status_log.append("")
+    if not _TTS_AVAILABLE:
+        log.append("")
+        log.append("tts_providers not available. Install dependencies:")
+        log.append("  pip install qwen-tts torch soundfile numpy")
+        log.append("")
+        log.append("Available providers: qwen (local), elevenlabs, openai, coqui")
+        return None, "\n".join(log)
 
-    # Simulate progress
-    progress(0.1, desc="Loading model...")
-    status_log.append("Loading model... (simulated)")
+    try:
+        # Resolve persona
+        progress(0.1, desc="Loading persona...")
+        persona_path = _resolve_persona_path(persona)
+        voice_prompt = _load_voice_prompt(persona_path)
+        if voice_prompt:
+            log.append(f"Voice prompt loaded ({len(voice_prompt)} chars)")
+        else:
+            log.append("No persona selected, using provider default voice")
 
-    progress(0.3, desc="Loading persona...")
-    status_log.append("Loading persona... (simulated)")
+        # Get provider
+        progress(0.2, desc="Initializing provider...")
+        provider = get_provider(provider_id)
+        log.append(f"Provider: {provider.name}")
 
-    progress(0.5, desc="Generating audio...")
-    status_log.append("Generating audio... (simulated)")
+        # Generate
+        progress(0.4, desc="Generating audio...")
+        result = provider.generate(
+            text=text,
+            voice=voice_prompt if voice_prompt else None,
+        )
+        log.append(f"Generated: {result.duration_seconds:.1f}s at {result.sample_rate} Hz")
 
-    progress(0.8, desc="Post-processing...")
-    status_log.append("Post-processing... (simulated)")
+        # Save to temp file
+        progress(0.8, desc="Saving...")
+        output_path = os.path.join(tempfile.gettempdir(), "web_studio_output.wav")
+        provider.save_audio(result, output_path)
+        log.append(f"Saved: {output_path}")
 
-    progress(1.0, desc="Complete!")
-    status_log.append("")
-    status_log.append("⚠️ This is a stub. To enable actual TTS generation:")
-    status_log.append("1. Install tts-audiobook-tool or Higgs Audio")
-    status_log.append("2. Update generate_audio_stub() in this file")
-    status_log.append("3. Connect to your TTS backend")
+        progress(1.0, desc="Done")
+        return output_path, "\n".join(log)
 
-    # Return None for audio (stub), and status log
-    return None, "\n".join(status_log)
+    except Exception as e:
+        log.append(f"\nError: {e}")
+        log.append(f"\nEnsure the provider '{provider_id}' is installed and configured.")
+        return None, "\n".join(log)
 
 
 def create_interface():
@@ -166,10 +214,11 @@ def create_interface():
                         )
 
                     with gr.Column(scale=1):
+                        _providers = list(list_providers().keys()) if _TTS_AVAILABLE else ["qwen"]
                         model_select = gr.Dropdown(
-                            choices=["higgs-v2", "vibevoice-7b", "fish-s1-mini", "kokoro"],
-                            value="higgs-v2",
-                            label="TTS Model"
+                            choices=_providers,
+                            value=_providers[0] if _providers else "qwen",
+                            label="TTS Provider"
                         )
 
                         persona_select = gr.Dropdown(
@@ -184,7 +233,7 @@ def create_interface():
                     status_output = gr.Textbox(label="Status", lines=10)
 
                 generate_btn.click(
-                    fn=generate_audio_stub,
+                    fn=generate_audio,
                     inputs=[text_input, persona_select, model_select],
                     outputs=[audio_output, status_output]
                 )
@@ -214,9 +263,9 @@ def create_interface():
                         label="Voice Persona"
                     )
                     project_model = gr.Dropdown(
-                        choices=["higgs-v2", "vibevoice-7b", "fish-s1-mini"],
-                        value="higgs-v2",
-                        label="TTS Model"
+                        choices=_providers,
+                        value=_providers[0] if _providers else "qwen",
+                        label="TTS Provider"
                     )
 
                 produce_btn = gr.Button("Produce Audiobook", variant="primary")
@@ -361,8 +410,29 @@ def create_interface():
                 clone_output = gr.Audio(label="Cloned Voice Output")
                 clone_status = gr.Textbox(label="Status")
 
+                def clone_voice(ref_audio, name, text):
+                    if not _TTS_AVAILABLE:
+                        return None, "tts_providers not available. Install with: pip install qwen-tts torch"
+                    if not ref_audio:
+                        return None, "Provide reference audio."
+                    if not text:
+                        return None, "Provide test text."
+                    try:
+                        provider = get_provider("qwen")
+                        if not provider.supports(TTSCapability.VOICE_CLONING):
+                            return None, f"{provider.name} does not support voice cloning."
+                        result = provider.generate_from_reference(
+                            text=text,
+                            reference_audio=ref_audio,
+                        )
+                        out = os.path.join(tempfile.gettempdir(), "clone_test.wav")
+                        provider.save_audio(result, out)
+                        return out, f"Cloned voice '{name}': {result.duration_seconds:.1f}s"
+                    except Exception as e:
+                        return None, f"Error: {e}"
+
                 clone_btn.click(
-                    fn=lambda *args: (None, "Voice cloning is a stub. Connect to your TTS backend to enable."),
+                    fn=clone_voice,
                     inputs=[reference_audio, clone_name, test_text],
                     outputs=[clone_output, clone_status]
                 )
@@ -562,15 +632,16 @@ def create_interface():
                         noise_reduction = gr.Checkbox(label="Apply noise reduction", value=True)
                         room_tone = gr.Checkbox(label="Add room tone (head/tail)", value=True)
 
-                gr.Markdown("### TTS Backend")
+                gr.Markdown("### TTS Provider")
                 tts_backend = gr.Dropdown(
-                    choices=["tts-audiobook-tool", "higgs-audio", "custom"],
-                    value="tts-audiobook-tool",
-                    label="TTS Backend"
+                    choices=_providers,
+                    value=_providers[0] if _providers else "qwen",
+                    label="Default Provider"
                 )
-                backend_path = gr.Textbox(
-                    label="Backend Installation Path",
-                    placeholder="~/tools/tts-audiobook-tool"
+                provider_info = gr.Textbox(
+                    label="Provider Status",
+                    value="Available" if _TTS_AVAILABLE else "Not installed (pip install qwen-tts torch)",
+                    interactive=False
                 )
 
                 save_settings_btn = gr.Button("Save Settings")
@@ -588,16 +659,13 @@ def main():
 
     app = create_interface()
 
+    tts_status = "READY" if _TTS_AVAILABLE else "NOT INSTALLED (pip install qwen-tts torch)"
     print(f"""
-╔════════════════════════════════════════════════════════════════╗
-║                  Storytelling TTS Studio                       ║
-╠════════════════════════════════════════════════════════════════╣
-║  Local URL:    http://localhost:{args.port}                         ║
-║  Network URL:  http://YOUR_IP:{args.port}                           ║
-║                                                                ║
-║  Note: Audio generation is currently a stub.                  ║
-║  Connect your TTS backend (Higgs V2, etc.) to enable.         ║
-╚════════════════════════════════════════════════════════════════╝
+  Storytelling TTS Studio
+  Local:    http://localhost:{args.port}
+  Network:  http://YOUR_IP:{args.port}
+  TTS:      {tts_status}
+  Providers: {', '.join(list_providers().keys()) if _TTS_AVAILABLE else 'none'}
     """)
 
     app.launch(
