@@ -123,6 +123,86 @@ python audio_postprocess.py raw.wav -o final.mp3 \
 7. Room tone insertion (0.5s head, 3s tail)
 8. Export: 192 kbps CBR MP3, 44.1 kHz, mono
 
+### dialogue_parser.py
+
+Parse manuscripts into speaker-attributed segments for multi-voice TTS.
+
+```bash
+# Parse and show segments
+python dialogue_parser.py manuscript.txt
+
+# With speaker map validation
+python dialogue_parser.py manuscript.txt --speaker-map speakers.json
+
+# Export segments to JSON
+python dialogue_parser.py manuscript.txt -o segments.json
+
+# Create template speaker map from detected speakers
+python dialogue_parser.py manuscript.txt --create-map
+
+# Show speaker statistics
+python dialogue_parser.py manuscript.txt --stats
+```
+
+Supports two manuscript formats (auto-detected):
+- **Tagged**: `[SPEAKER]` tags (screenplay style)
+- **Prose**: `"Text," said Character.` attribution
+
+### multispeaker_tts.py
+
+Generate audio with different voices per character. Uses `dialogue_parser.py` for segmentation.
+
+```bash
+# Full multi-speaker production
+python multispeaker_tts.py manuscript.txt \
+    --speaker-map speakers.json --output output.wav
+
+# Dry run (preview segment→persona mapping)
+python multispeaker_tts.py manuscript.txt \
+    --speaker-map speakers.json --dry-run
+
+# Custom crossfade between speakers
+python multispeaker_tts.py manuscript.txt \
+    --speaker-map speakers.json --crossfade 150 --output output.wav
+```
+
+### inspect_manuscript.py
+
+Analyze manuscripts for TTS production readiness.
+
+```bash
+# Summary stats + problems
+python inspect_manuscript.py chapter.txt
+
+# With speaker map validation
+python inspect_manuscript.py chapter.txt --speaker-map speakers.json
+
+# Show only problems
+python inspect_manuscript.py chapter.txt --problems
+
+# Export segments to JSON for external tools
+python inspect_manuscript.py chapter.txt --export segments.json
+```
+
+Reports: segment count, word count, estimated duration, speaker distribution, long/short segments, unmapped speakers.
+
+### preflight_check.py
+
+Pre-production validation. Run before `batch_produce.py` to catch issues early.
+
+```bash
+# Check everything (deps, GPU, all projects)
+python preflight_check.py
+
+# Check specific project
+python preflight_check.py --project luna-the-little-cloud
+
+# Dependencies only
+python preflight_check.py --deps-only
+```
+
+Validates: Python dependencies, PyTorch/CUDA, GPU memory, speaker-map.json, persona files, manuscript parsing. Exit codes: 0 = pass, 1 = warnings, 2 = errors.
+
 ### batch_produce.py
 
 Full pipeline orchestrator: manuscript → distributable audiobook.
@@ -249,6 +329,23 @@ python acx_validator.py final/
 - **CPU-only**: Use 0.6B model with `--model 0.6B` flag
 - **Memory**: 16 GB RAM minimum
 
+### web_studio.py
+
+Gradio web interface for audiobook production. Access from any device on your network.
+
+```bash
+# Launch (default port 7860)
+python web_studio.py
+
+# Custom port
+python web_studio.py --port 8080
+
+# Create shareable public URL
+python web_studio.py --share
+```
+
+Tabs: Quick Generate, Project Production, Persona Editor, Voice Cloning, Voice Finder, Settings. TTS generation is currently a stub — connect your backend in `generate_audio_stub()`.
+
 ## Bespoke Personalities Tools
 
 ### persona_compatibility.py
@@ -321,6 +418,33 @@ python tts_generator.py --model 0.6B ...
   - Limits peaks to -3 dB
   - Adds room tone (0.5s head, 3s tail)
   - Exports as 192 kbps CBR MP3, 44.1 kHz, mono
+
+**Pipeline fails mid-production (e.g., crash at chapter 5 of 12)**
+
+`batch_produce.py` writes each stage to disk. To resume:
+1. Check `production_report.json` for the last completed stage/chapter
+2. Identify existing files in `raw_audio/` (Stage 2) and `final/` (Stage 3)
+3. Re-run only the missing chapters manually:
+
+```bash
+# Generate only chapter 5 onward
+for f in chapters/Chapter_0{5..9}.txt chapters/Chapter_1*.txt; do
+    python tts_generator.py --persona persona.json \
+        --text-file "$f" --output "raw_audio/$(basename ${f%.txt}).wav"
+done
+
+# Re-master all raw files (idempotent)
+python audio_postprocess.py raw_audio/ --output-dir final/
+
+# Re-validate
+python acx_validator.py final/
+```
+
+**Persona doesn't sound right after selection**
+
+1. Run `python persona_compatibility.py --story story.json --top 5` to see alternatives
+2. Test with a short passage before committing to full production
+3. Adjust the persona's `voice_prompt` in the JSON for fine-tuning
 
 **"No module named 'scipy'"**
 ```bash

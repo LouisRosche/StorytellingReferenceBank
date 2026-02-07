@@ -18,7 +18,7 @@ Complete checklist for producing audiobooks for commercial sale.
 
 **Full setup guide**: `docs/PRODUCTION-SETUP.md` · **Pipeline**: `scripts/batch_produce.py`
 
-- [ ] **TTS model installed**: Higgs V2 or equivalent
+- [ ] **TTS model installed**: Built-in Qwen3-TTS (`scripts/README.md`) or external backend (`docs/PRODUCTION-SETUP.md`)
 - [ ] **Audio processing chain verified**: Post-processing produces ACX-compliant output
 - [ ] **Backup system**: Project files backed up (cloud + local)
 - [ ] **Version control**: Git repo for manuscript and production files
