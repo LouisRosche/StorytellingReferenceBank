@@ -436,7 +436,7 @@ The recommended architecture follows the existing provider abstraction pattern u
 4. **Mixer**: Combine TTS output with generated audio using FFmpeg
 5. **Validator**: Ensure final output meets ACX specs
 
-See `docs/sound-design-architecture.md` for detailed implementation design.
+See `docs/sound-design-architecture.md` for detailed implementation design. See `audiobook-specs/sound-design-spec.md` for cue format specification.
 
 ---
 

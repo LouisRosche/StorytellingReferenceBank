@@ -97,10 +97,8 @@
 
 **End State**: More comfortable with uncertainty. Decides to ask Helen about her father - not now, but soon.
 
-## Voice Persona Notes (for TTS)
-- Clear, young adult voice
-- Measured pace - thinks before speaking
-- No uptalk despite age
-- Contemporary without being trendy
-- Quiet confidence when she speaks
-- Should sound like someone who's been listening her whole life
+## TTS Persona Link
+
+**Persona file**: `@personas/sophie.json`
+
+**Voice direction summary**: Clear, young adult voice. Measured pace — thinks before speaking. No uptalk despite age. Contemporary without being trendy. Quiet confidence when she speaks.

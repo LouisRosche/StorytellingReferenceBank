@@ -2,6 +2,8 @@
 
 Technical specification for integrating music and sound effects into audiobook production.
 
+**Related**: `docs/sound-design-architecture.md` (system design) · `docs/sound-design-research.md` (tool evaluation)
+
 ---
 
 ## Manuscript Markup Format

@@ -94,9 +94,8 @@
 
 **End State**: Still wounded, still processing, but no longer clenching. She touches Ruth's pillow. She allows herself to not understand.
 
-## Voice Persona Notes (for TTS)
-- Controlled alto, precise diction
-- Clipped rhythm, especially under stress
-- Minimal vocal fry or uptalk
-- When breaking: voice rises, rhythm fragments, the control audibly slipping
-- Should sound like someone who has practiced sounding authoritative
+## TTS Persona Link
+
+**Persona file**: `@personas/eleanor.json`
+
+**Voice direction summary**: Controlled alto, precise diction. Clipped rhythm, especially under stress. Minimal vocal fry or uptalk. When breaking: voice rises, rhythm fragments, control audibly slipping.

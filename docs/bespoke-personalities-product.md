@@ -336,8 +336,7 @@ AB_TEST_CONFIG = {
 | `personas/taxonomy.md` | Dimensional framework reference |
 | `personas/library-status.md` | Coverage tracking |
 | `scripts/persona_compatibility.py` | Story-persona scoring |
-| `scripts/persona_validator.py` | Regression + QC automation |
-| `scripts/golden_reference.py` | Reference audio management |
+| `scripts/persona_regression.py` | Regression testing + golden reference comparison |
 
 ---
 

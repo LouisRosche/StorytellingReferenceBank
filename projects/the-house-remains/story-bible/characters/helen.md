@@ -93,10 +93,8 @@
 
 **End State**: Still emotional, still Helen, but with more humility. She understands love is not mystical - it's showing up.
 
-## Voice Persona Notes (for TTS)
-- Higher register, variable pace
-- Emotional responsiveness should be audible - not histrionic, but present
-- Slight Vermont earthiness
-- When upset: rushed, fragmentary, breathless
-- When centered: surprising clarity
-- Should sound like someone who feels everything and wishes she didn't
+## TTS Persona Link
+
+**Persona file**: `@personas/helen.json`
+
+**Voice direction summary**: Higher register, variable pace. Emotional responsiveness audible — not histrionic, but present. Slight Vermont earthiness. When upset: rushed, fragmentary, breathless. When centered: surprising clarity.

@@ -2,6 +2,8 @@
 
 Technical architecture for integrating AI-powered sound design into the audiobook production pipeline.
 
+**Related**: `audiobook-specs/sound-design-spec.md` (cue format) · `docs/sound-design-research.md` (tool evaluation) · `audiobook-specs/acx-requirements.md` (compliance)
+
 ---
 
 ## Overview

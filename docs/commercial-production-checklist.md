@@ -16,6 +16,8 @@ Complete checklist for producing audiobooks for commercial sale.
 
 ### Technical Setup
 
+**Full setup guide**: `docs/PRODUCTION-SETUP.md` · **Pipeline**: `scripts/batch_produce.py`
+
 - [ ] **TTS model installed**: Higgs V2 or equivalent
 - [ ] **Audio processing chain verified**: Post-processing produces ACX-compliant output
 - [ ] **Backup system**: Project files backed up (cloud + local)
