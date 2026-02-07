@@ -344,7 +344,7 @@ python web_studio.py --port 8080
 python web_studio.py --share
 ```
 
-Tabs: Quick Generate, Project Production, Persona Editor, Voice Cloning, Voice Finder, Settings. TTS generation is currently a stub — connect your backend in `generate_audio_stub()`.
+Tabs: Quick Generate, Project Production, Persona Editor, Voice Cloning, Voice Finder, Settings. Uses `tts_providers/` (qwen, elevenlabs, openai, coqui). Falls back gracefully if providers not installed.
 
 ## Bespoke Personalities Tools
 
