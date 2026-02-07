@@ -95,9 +95,8 @@
 
 **End State**: At the funeral, he doesn't leave immediately. He tells Eleanor he'll visit. It's ambiguous whether he will, but the offer is genuine.
 
-## Voice Persona Notes (for TTS)
-- Lower register, measured pace
-- Dry delivery, slight pause before punchlines
-- Seattle-educated, no regional accent
-- When vulnerable: quieter, slower, simpler syntax
-- Should sound like someone who has rehearsed casualness
+## TTS Persona Link
+
+**Persona file**: `@personas/marcus.json`
+
+**Voice direction summary**: Lower register, measured pace. Dry delivery, slight pause before punchlines. Seattle-educated, no regional accent. When vulnerable: quieter, slower, simpler syntax.

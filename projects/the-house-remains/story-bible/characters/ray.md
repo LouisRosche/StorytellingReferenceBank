@@ -94,9 +94,8 @@
 
 **End State**: Closer to Eleanor, though nothing is resolved. The marriage has a new opening.
 
-## Voice Persona Notes (for TTS)
-- Lower register, unhurried
-- Ohio/Midwest plains accent - flattened vowels
-- Speaks in short sentences
-- No performance; plain delivery
-- Should sound like someone who doesn't need to prove anything
+## TTS Persona Link
+
+**Persona file**: `@personas/ray.json`
+
+**Voice direction summary**: Lower register, unhurried. Ohio/Midwest plains accent — flattened vowels. Short sentences. No performance; plain delivery.

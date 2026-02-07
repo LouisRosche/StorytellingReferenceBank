@@ -114,7 +114,7 @@ That belonging isn't about bloodline or knowledge—it's about presence, attenti
 
 ## TTS Persona Link
 
-**Persona file**: `@personas/marcus.json`
+**Persona file**: `@personas/marcus-persaud.json`
 
 **Voice direction summary**: Brooklyn-American with Caribbean influences. Deep, warm voice. When he uses Trini or Jamaican phrases, slight deliberateness—he's reaching for them consciously. Earnest without being soft.
 

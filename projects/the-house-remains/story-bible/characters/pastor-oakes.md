@@ -86,9 +86,8 @@
 
 **End State**: Officiates the funeral that includes Sarah. Speaks honestly about Ruth's complexity. His best sermon in years.
 
-## Voice Persona Notes (for TTS)
-- Elderly male, measured pace
-- Maine accent underneath educated diction
-- Pastoral warmth with weight
-- Pauses are deliberate, meaningful
-- Should sound like someone who has held too many hands at too many bedsides
+## TTS Persona Link
+
+**Persona file**: `@personas/pastor-oakes.json`
+
+**Voice direction summary**: Elderly male, measured pace. Maine accent underneath educated diction. Pastoral warmth with weight. Pauses deliberate, meaningful.

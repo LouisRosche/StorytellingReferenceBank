@@ -116,7 +116,7 @@ Copy this template for each major character. Store in project's `story-bible/cha
 
 ## TTS Persona Link
 
-**Persona file**: `@personas/examples/[filename].json`
+**Persona file**: `@personas/[character-name].json`
 
 **Voice direction summary**:
 <!-- Brief TTS prompt for quick reference -->
