@@ -108,7 +108,7 @@ Recommended processing order:
 - Gentle presence boost at 2-4 kHz (clarity)
 - Low-pass filter above 16 kHz (removes hiss)
 
-### 2. Compression
+### 2. Compression (ACX range; defaults in `audio_postprocess.py`)
 - Ratio: 2:1 to 4:1
 - Threshold: -20 to -15 dB
 - Attack: 10-30 ms
@@ -173,7 +173,7 @@ Qwen3-TTS outputs WAV by default. Requires post-processing for ACX compliance.
 2. Apply EQ, compression, de-esser
 3. Normalize to -20 dB RMS
 4. Limit peaks to -3 dB
-5. Add room tone (0.5 sec start, 2 sec end)
+5. Add room tone (0.5s start, 3s end)
 6. Export as MP3 (192 kbps CBR, 44.1 kHz, Mono)
 7. Verify compliance (ACX Check or similar)
 ```

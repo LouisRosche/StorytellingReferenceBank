@@ -1,6 +1,6 @@
 # Production Setup Guide
 
-Optimal workflow for high-quality audiobook production with a powerful GPU.
+External workflow options for audiobook production with a powerful GPU. For the built-in pipeline (Qwen3-TTS default), see `scripts/README.md`.
 
 ## Hardware Requirements
 
