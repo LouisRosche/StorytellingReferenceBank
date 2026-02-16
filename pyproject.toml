@@ -25,6 +25,7 @@ web = [
 # Development and testing
 dev = [
     "pytest>=7.0.0",
+    "ruff>=0.4.0",
 ]
 # Voice regression testing
 regression = [

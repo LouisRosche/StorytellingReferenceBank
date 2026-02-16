@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install numpy soundfile pydub scipy
+          pip install pytest
+
+      - name: Run tests
+        run: python -m pytest scripts/tests/ -v -m "not gpu"
+
+      - name: Validate personas
+        run: python scripts/validate_personas.py
+
+      - name: Pre-flight check (deps only)
+        run: python scripts/preflight_check.py --deps-only
