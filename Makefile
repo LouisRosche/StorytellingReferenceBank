@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-tts test preflight validate dry-run lint clean help
+.PHONY: install install-dev install-tts install-tts-lite test preflight validate dry-run lint clean help
 
 PYTHON ?= python3
 VENV ?= .venv
@@ -22,10 +22,13 @@ install: ## Install core dependencies
 install-dev: install ## Install core + dev dependencies
 	pip install pytest ruff
 
-install-tts: install ## Install core + TTS engine (requires GPU)
+install-tts-lite: install ## Install core + Kokoro (lightweight, 2-3 GB VRAM)
+	pip install "kokoro>=0.9.4"
+
+install-tts: install ## Install core + Qwen3-TTS (full quality, 8-16 GB VRAM)
 	pip install qwen-tts
 
-install-all: install-dev install-tts ## Install everything
+install-all: install-dev install-tts install-tts-lite ## Install everything
 	pip install gradio librosa
 
 # ── Validation ────────────────────────────────────────────────

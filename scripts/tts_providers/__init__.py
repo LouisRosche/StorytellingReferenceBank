@@ -52,6 +52,7 @@ from .qwen_provider import QwenTTSProvider
 from .elevenlabs_provider import ElevenLabsProvider
 from .openai_provider import OpenAITTSProvider
 from .coqui_provider import CoquiTTSProvider
+from .kokoro_provider import KokoroTTSProvider
 
 
 # Registry of available providers
@@ -60,6 +61,7 @@ _PROVIDERS: Dict[str, Type[TTSProvider]] = {
     "elevenlabs": ElevenLabsProvider,
     "openai": OpenAITTSProvider,
     "coqui": CoquiTTSProvider,
+    "kokoro": KokoroTTSProvider,
 }
 
 # Default provider
@@ -230,6 +232,7 @@ __all__ = [
     "ElevenLabsProvider",
     "OpenAITTSProvider",
     "CoquiTTSProvider",
+    "KokoroTTSProvider",
 
     # Factory functions
     "get_provider",

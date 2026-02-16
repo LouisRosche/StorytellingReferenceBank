@@ -14,7 +14,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# TTS generation (requires GPU)
+# Lightweight TTS for draft runs (2-3 GB VRAM)
+tts-lite = [
+    "kokoro>=0.9.4",
+]
+# Full TTS generation (requires GPU, 8-16 GB VRAM)
 tts = [
     "qwen-tts>=0.1.0",
 ]
