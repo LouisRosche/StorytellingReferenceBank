@@ -1,0 +1,50 @@
+[project]
+name = "storytelling-reference-bank"
+version = "0.1.0"
+description = "Professional storytelling toolkit with TTS audiobook production"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy>=1.24.0",
+    "soundfile>=0.12.0",
+    "pydub>=0.25.0",
+    "scipy>=1.10.0",
+]
+
+[project.optional-dependencies]
+# TTS generation (requires GPU)
+tts = [
+    "qwen-tts>=0.1.0",
+]
+# Web studio interface
+web = [
+    "gradio>=4.0.0",
+]
+# Development and testing
+dev = [
+    "pytest>=7.0.0",
+]
+# Voice regression testing
+regression = [
+    "librosa>=0.10.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["scripts/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v"
+markers = [
+    "gpu: marks tests that require a GPU (deselect with '-m \"not gpu\"')",
+    "slow: marks tests that take more than 30 seconds",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]

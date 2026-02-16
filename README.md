@@ -31,11 +31,13 @@ projects/        Active works
 | Produce audiobook | `scripts/batch_produce.py` |
 | Validate ACX compliance | `scripts/acx_validator.py` |
 
-## Requirements
+## Setup
+
+**First time?** See [Getting Started](docs/GETTING-STARTED.md) — from clone to first production run.
 
 - Python 3.10+
 - GPU recommended for TTS (CPU fallback available)
-- See `requirements.txt` and `docs/PRODUCTION-SETUP.md`
+- See `requirements.txt` and `docs/PRODUCTION-SETUP.md` for hardware details
 
 ## License
 

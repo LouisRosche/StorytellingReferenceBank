@@ -64,6 +64,7 @@ Topic-to-file reference. One authoritative source per topic.
 
 | Topic | Source |
 |-------|--------|
+| **Getting started** | `docs/GETTING-STARTED.md` |
 | Commercial checklist | `docs/commercial-production-checklist.md` |
 | Hardware/setup | `docs/PRODUCTION-SETUP.md` |
 | Scripts overview | `scripts/README.md` |
