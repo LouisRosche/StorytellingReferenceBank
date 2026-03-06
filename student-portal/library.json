@@ -1,0 +1,205 @@
+{
+  "version": "1.0",
+  "title": "Storytelling Reference Bank",
+  "subtitle": "A curated toolkit for writers at every stage",
+  "categories": [
+    {
+      "id": "foundation",
+      "label": "Foundation",
+      "icon": "◈",
+      "color": "#C2410C",
+      "description": "Principles of craft drawn from writers across millennia and traditions. Engage critically — including with whose voices are centered.",
+      "items": [
+        {
+          "id": "craft-of-lasting-work",
+          "title": "The Craft of Lasting Work",
+          "path": "../references/the-craft-of-lasting-work.md",
+          "hook": "From Plato to Toni Morrison — what separates forgettable writing from work that outlives its author. The canon here skews Western and European; read it with that in mind alongside the global frameworks.",
+          "readingTime": 12,
+          "difficulty": "essential",
+          "tags": ["theory", "craft", "endurance"]
+        },
+        {
+          "id": "master-techniques",
+          "title": "Master Techniques",
+          "path": "../references/master-techniques.md",
+          "hook": "The Iceberg, The Slant, The Paradox, The Voice. Fourteen practical tools with diagnostic questions and worked examples.",
+          "readingTime": 10,
+          "difficulty": "essential",
+          "tags": ["techniques", "diagnostics", "practice"]
+        }
+      ]
+    },
+    {
+      "id": "structure",
+      "label": "Story Architecture",
+      "icon": "⬡",
+      "color": "#1D4ED8",
+      "description": "Frameworks from multiple traditions — Western, Japanese, South Asian, West African. Each solves a different structural problem. None is the default.",
+      "items": [
+        {
+          "id": "three-act",
+          "title": "Three-Act Structure",
+          "path": "../templates/structures/three-act.md",
+          "hook": "A dominant Western framework — 25% Setup, 50% Confrontation, 25% Resolution — with precise beat positions and common failure modes.",
+          "readingTime": 3,
+          "difficulty": "beginner",
+          "tags": ["structure", "western", "macro"]
+        },
+        {
+          "id": "save-the-cat",
+          "title": "Save the Cat — 15 Beats",
+          "path": "../templates/structures/save-the-cat.md",
+          "hook": "Blake Snyder's beat-by-beat map. More granular than Three-Act — use it for precision planning and diagnosing structural sag.",
+          "readingTime": 5,
+          "difficulty": "beginner",
+          "tags": ["structure", "beats", "precision"]
+        },
+        {
+          "id": "scene-sequel",
+          "title": "Scene-Sequel Pacing",
+          "path": "../templates/structures/scene-sequel.md",
+          "hook": "Micro-structure for individual scenes. Controls reader breathing room and keeps momentum from collapsing.",
+          "readingTime": 5,
+          "difficulty": "intermediate",
+          "tags": ["pacing", "scenes", "micro-structure"]
+        },
+        {
+          "id": "kishotenketsu",
+          "title": "Kishotenketsu",
+          "path": "../templates/structures/kishotenketsu.md",
+          "hook": "A Japanese four-act structure that creates revelation without conflict. Not an alternative to Three-Act — a different premise entirely about how meaning forms.",
+          "readingTime": 4,
+          "difficulty": "intermediate",
+          "tags": ["structure", "japanese", "no-conflict"]
+        },
+        {
+          "id": "global-frameworks",
+          "title": "Global Frameworks",
+          "path": "../templates/structures/global-frameworks.md",
+          "hook": "Rasa (Indian aesthetic theory, ~200 BCE), Jo-ha-kyū (Japanese temporal rhythm, ~1400 CE), Griot (West African oral tradition, ~13th century). Complete, sophisticated frameworks in their own right — not supplements to anything.",
+          "readingTime": 10,
+          "difficulty": "intermediate",
+          "tags": ["global", "rasa", "griot", "jo-ha-kyu"]
+        }
+      ]
+    },
+    {
+      "id": "character-world",
+      "label": "Character & World",
+      "icon": "◉",
+      "color": "#047857",
+      "description": "Tools for building people worth caring about and worlds worth inhabiting.",
+      "items": [
+        {
+          "id": "character-sheet",
+          "title": "Character Development Sheet",
+          "path": "../templates/characters/character-sheet.md",
+          "hook": "From core wound to behavioral tic — a working template for building characters who feel true rather than designed. Reading time: 2 min. Working time: 20–30 min per character.",
+          "readingTime": 2,
+          "difficulty": "essential",
+          "tags": ["characters", "template", "development"]
+        },
+        {
+          "id": "world-building",
+          "title": "World-Building Framework",
+          "path": "../templates/worlds/world-building-framework.md",
+          "hook": "From physical geography to economy to myth — a working template for worlds that feel lived-in. Reading time: 4 min. Working time: 45+ min if you go deep.",
+          "readingTime": 4,
+          "difficulty": "intermediate",
+          "tags": ["world-building", "setting", "framework"]
+        },
+        {
+          "id": "series-bible",
+          "title": "Series Bible",
+          "path": "../templates/series/series-bible.md",
+          "hook": "The living document for multi-book series — arc tracking, character registry, continuity log, world rules. Focus on the narrative sections; the business and production pages are for later.",
+          "readingTime": 4,
+          "difficulty": "intermediate",
+          "tags": ["series", "continuity", "template", "multi-book"]
+        }
+      ]
+    },
+    {
+      "id": "genre",
+      "label": "Genre",
+      "icon": "◇",
+      "color": "#6D28D9",
+      "description": "What each genre promises readers — and what it demands from writers. Know the rules before you break them.",
+      "items": [
+        {
+          "id": "genre-guide",
+          "title": "Genre Guide",
+          "path": "../style-guides/genre-guide.md",
+          "hook": "Conventions, reader expectations, and subversion strategies for every major genre — literary, thriller, romance, fantasy, SF, mystery, horror, memoir, non-fiction.",
+          "readingTime": 15,
+          "difficulty": "intermediate",
+          "tags": ["genre", "conventions", "reader-expectations"]
+        },
+        {
+          "id": "childrens-picture-book",
+          "title": "Children's Picture Book",
+          "path": "../style-guides/childrens-picture-book.md",
+          "hook": "The 600-word, 32-page constraint. More demanding than it looks — every word is a commitment, every page a turn.",
+          "readingTime": 6,
+          "difficulty": "intermediate",
+          "tags": ["genre", "picture-book", "constraint"]
+        }
+      ]
+    },
+    {
+      "id": "revision",
+      "label": "Revision",
+      "icon": "↺",
+      "color": "#B91C1C",
+      "description": "How to see your own work clearly and make it better — without losing what's alive in it.",
+      "items": [
+        {
+          "id": "revision-workflow",
+          "title": "Revision Workflow",
+          "path": "../templates/revision-workflow.md",
+          "hook": "Phased approach: structural first, then scene, then line. Don't polish before you've cut. Don't cut before you understand the shape.",
+          "readingTime": 8,
+          "difficulty": "intermediate",
+          "tags": ["revision", "editing", "process"]
+        }
+      ]
+    },
+    {
+      "id": "science-stories",
+      "label": "Science Stories",
+      "icon": "◯",
+      "color": "#0E7490",
+      "description": "How to write scientist characters that feel real — using NGSS science practices as dramatic engines, not classroom props.",
+      "items": [
+        {
+          "id": "scientist-story-guide",
+          "title": "Scientist Story Planning Guide",
+          "path": "../references/ngss-scientist-story-guide.md",
+          "hook": "How to make a student feel science from the inside — the uncertainty, the obsession, the fights with colleagues, the moment the world reorganizes itself.",
+          "readingTime": 28,
+          "difficulty": "intermediate",
+          "tags": ["science", "ngss", "biography", "drama"]
+        },
+        {
+          "id": "scientist-story-template",
+          "title": "Scientist Story Template",
+          "path": "../templates/structures/scientist-story.md",
+          "hook": "Fill-in planning framework for a scientist narrative aligned to NGSS science practices and Missouri Learning Standards.",
+          "readingTime": 10,
+          "difficulty": "beginner",
+          "tags": ["science", "template", "ngss", "mls"]
+        },
+        {
+          "id": "cross-curricular-matrix",
+          "title": "Cross-Curricular Story Matrix",
+          "path": "../references/cross-curricular-story-matrix.md",
+          "hook": "Story planning that weaves science, history, ELA, and math standards into a single narrative. Worked examples included.",
+          "readingTime": 20,
+          "difficulty": "advanced",
+          "tags": ["cross-curricular", "standards", "integration"]
+        }
+      ]
+    }
+  ]
+}
