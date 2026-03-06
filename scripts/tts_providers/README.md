@@ -29,11 +29,14 @@ result = provider.generate("Hello, world!", voice="Rachel")
 | Provider | ID | Type | Voice Cloning | Voice Design | Requirements |
 |----------|-----|------|---------------|--------------|--------------|
 | Qwen3-TTS | `qwen` | Local | Yes | Yes | GPU recommended, `pip install qwen-tts torch` |
+| **Kokoro** | `kokoro` | **Local** | **No** | **No** | **2-3 GB VRAM, `pip install kokoro>=0.9.4`** |
 | ElevenLabs | `elevenlabs` | Cloud | Yes | Yes | API key, `pip install elevenlabs` |
 | OpenAI TTS | `openai` | Cloud | No | No | API key, `pip install openai` |
 | Coqui/XTTS | `coqui` | Local | Yes* | No | GPU recommended, `pip install TTS` |
 
 *Coqui voice cloning requires XTTS model
+
+**Recommended workflow**: Use Kokoro for draft runs and persona auditions (fast, low VRAM), then Qwen for final production (higher quality, voice design from prompts).
 
 ## Provider Capabilities
 
@@ -154,6 +157,30 @@ result = provider.generate(
     speed=1.0,  # 0.25 to 4.0
 )
 ```
+
+### Kokoro (Lightweight / Draft Mode)
+
+```python
+# Default (American English, af_heart voice)
+provider = get_provider("kokoro")
+result = provider.generate("Hello, world!")
+
+# Specific voice
+result = provider.generate("Hello!", voice="am_adam")
+
+# Different language
+provider = get_provider("kokoro", default_language="French")
+result = provider.generate("Bonjour le monde!")
+
+# Custom speed
+result = provider.generate("Slow and clear.", voice="af_bella", speed=0.85)
+```
+
+**Voices**: 50+ pre-trained voices. See `provider.list_voices()` or [Hugging Face model card](https://huggingface.co/hexgrad/Kokoro-82M).
+
+**Languages**: American English, British English, Spanish, French, Hindi, Italian, Japanese, Portuguese, Mandarin Chinese.
+
+**Limitations**: No voice cloning, no voice design from natural language prompts. Persona `voice_prompt` fields are ignored — Kokoro selects from fixed voice IDs. Use for speed; switch to Qwen for final quality.
 
 ### Coqui/XTTS
 

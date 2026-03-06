@@ -37,59 +37,73 @@ Personas with `sim(p1, p2) > 0.70` are redundant. Consolidate or differentiate.
 
 ## Coverage Matrix
 
-### Current Library (9 personas)
+### Current Library (15 personas)
 
 ```
-         | G   | A      | P    | S      | T        | R   | L     |
----------|-----|--------|------|--------|----------|-----|-------|
-mentor   | M   | elder  | low  | slow   | gravelly | UK  | en    |
-children | F   | young  | med  | med    | warm     | NA  | en    |
-literary | M   | middle | low  | slow   | warm     | NA  | en    |
-indian   | N   | middle | med  | med    | warm     | IN  | en,hi |
-latinx   | N   | young  | med  | med    | warm     | NA  | en,es |
-elder    | N   | elder  | low  | slow   | warm     | -   | en    |
-global   | N   | middle | med  | med    | warm     | AF  | en    |
-nonbin   | N   | young  | med  | med    | clear    | NA  | en    |
-caribb   | N   | middle | med  | slow   | warm     | CA  | en    |
+             | G   | A      | P    | S      | T        | R   | L     |
+-------------|-----|--------|------|--------|----------|-----|-------|
+mentor       | M   | elder  | low  | slow   | gravelly | UK  | en    |
+children     | F   | young  | med  | med    | warm     | NA  | en    |
+literary     | M   | middle | low  | slow   | warm     | NA  | en    |
+literary-f   | F   | middle | med  | med    | warm     | NA  | en    |
+warm-f       | F   | young  | med  | med    | smooth   | NA  | en    |
+thriller     | M   | middle | low  | med    | crisp    | NA  | en    |
+british      | M   | middle | med  | med    | crisp    | UK  | en    |
+indian       | N   | middle | med  | med    | warm     | IN  | en,hi |
+latinx       | N   | young  | med  | med    | warm     | NA  | en,es |
+elder        | N   | elder  | low  | slow   | warm     | -   | en    |
+global       | N   | middle | med  | med    | warm     | AF  | en    |
+nonbin       | N   | young  | med  | med    | clear    | NA  | en    |
+caribb       | N   | middle | med  | slow   | warm     | CA  | en    |
+french       | N   | middle | med  | med    | smooth   | EU  | en,fr |
+teen         | N   | teen   | high | med    | clear    | NA  | en    |
 ```
 
-### Coverage Gaps
+### Current Coverage
+
+```
+Gender:   M=4 F=3 N=8  → Balanced
+Age:      teen=1 young=4 middle=7 elder=2 → Full range (child missing)
+Pitch:    low=4 med=9 high=1 → Improved (vlow, vhigh missing)
+Texture:  warm=6 crisp=2 clear=2 smooth=2 gravelly=1 → Diversified
+Accent:   NA=8 UK=2 AF=1 IN=1 CA=1 EU=1 → +European (AU, AS missing)
+Language: en=15 es=1 hi=1 fr=1 → +French (de, zh, ja, ko, pt, ru, it missing)
+```
+
+### Remaining Gaps
 
 | Dimension | Missing Values | Priority |
 |-----------|----------------|----------|
-| Gender | F (only 1/9) | HIGH |
-| Age | teen, child | MEDIUM |
-| Pitch | vlow, high, vhigh | MEDIUM |
+| Age | child | MEDIUM |
+| Pitch | vlow, vhigh | LOW |
 | Pace | fast, vfast | LOW |
-| Texture | smooth, breathy, husky | MEDIUM |
-| Accent | AU, EU, AS | MEDIUM |
-| Language | fr, de, zh, ja, ko, pt, ru, it | HIGH |
+| Texture | breathy, husky | LOW |
+| Accent | AU, AS | MEDIUM |
+| Language | de, zh, ja, ko, pt, ru, it | HIGH |
 
 ---
 
-## Expansion Plan
+## Expansion History
 
-### +6 Personas for 80% Coverage
+### Phase 1: +6 Personas (Complete)
 
-| ID | G | A | P | T | R | L | Fills Gap |
+| ID | G | A | P | T | R | L | Filled Gap |
 |----|---|---|---|---|---|---|-----------|
-| `narrator-literary-f` | F | middle | med | warm | NA | en | Gender |
-| `narrator-warm-f` | F | young | med | smooth | NA | en | Gender, Texture |
+| `narrator-literary-female` | F | middle | med | warm | NA | en | Gender |
+| `narrator-warm-female` | F | young | med | smooth | NA | en | Gender, Texture |
 | `narrator-thriller` | M | middle | low | crisp | NA | en | Texture |
 | `narrator-british` | M | middle | med | crisp | UK | en | Accent variety |
 | `narrator-french` | N | middle | med | smooth | EU | en,fr | Language |
 | `character-teen` | N | teen | high | clear | NA | en | Age, Pitch |
 
-### Post-Expansion Coverage
+### Phase 2: Planned
 
-```
-Gender:   M=4 F=3 N=8  → Balanced
-Age:      teen=1 young=4 middle=7 elder=2 → Full range
-Pitch:    low=4 med=9 high=1 → Improved
-Texture:  warm=6 crisp=2 clear=2 smooth=2 gravelly=1 → Diversified
-Accent:   NA=8 UK=2 AF=1 IN=1 CA=1 EU=1 → +European
-Language: en=15 es=1 hi=1 fr=1 → +French
-```
+| ID | G | A | P | T | R | L | Fills Gap |
+|----|---|---|---|---|---|---|-----------|
+| `narrator-comedy` | - | - | - | - | - | en | Genre specialist |
+| `narrator-horror` | - | - | - | - | - | en | Genre specialist |
+| `narrator-australian` | - | - | - | - | AU | en | Accent |
+| `character-child` | - | child | high | - | - | en | Age |
 
 ---
 
@@ -128,7 +142,7 @@ epic:        [heroic, ancient, vast, wonder, grave]
 ```
 diversity = (unique_values_used / total_possible_values) × 100
 
-Current: (28 / 48) × 100 = 58%
+Current: (37 / 48) × 100 = 76%  ✓
 Target:  ≥75%
 ```
 
@@ -137,7 +151,7 @@ Target:  ≥75%
 ```
 redundancy = count(pairs where sim > 0.70) / total_pairs
 
-Current: 3 / 36 = 8.3%
+Current: 9 / 105 = 8.6%  ✓
 Target:  ≤10%
 ```
 
