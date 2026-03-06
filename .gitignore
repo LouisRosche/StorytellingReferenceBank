@@ -33,3 +33,4 @@ Thumbs.db
 .env
 *.pem
 credentials.json
+student-portal/codes-admin.json
