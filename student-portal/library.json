@@ -108,6 +108,15 @@
           "readingTime": 4,
           "difficulty": "intermediate",
           "tags": ["world-building", "setting", "framework"]
+        },
+        {
+          "id": "series-bible",
+          "title": "Series Bible",
+          "path": "../templates/series/series-bible.md",
+          "hook": "The living document for multi-book series — arc tracking, character registry, continuity log, world rules. Focus on the narrative sections; the business and production pages are for later.",
+          "readingTime": 4,
+          "difficulty": "intermediate",
+          "tags": ["series", "continuity", "template", "multi-book"]
         }
       ]
     },

@@ -535,6 +535,105 @@
       color: var(--ink-mid);
     }
 
+    /* CATEGORY LANDING PAGE */
+    .cat-landing {
+      padding: 2rem 2.5rem 4rem;
+      max-width: 720px;
+    }
+
+    .cat-landing-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cat-landing-title {
+      font-family: var(--font-text);
+      font-size: 1.4rem;
+      font-weight: normal;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cat-landing-icon { opacity: 0.65; }
+
+    .cat-landing-desc {
+      margin-top: 0.5rem;
+      font-size: 0.88rem;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      max-width: 560px;
+    }
+
+    .landing-item-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      margin-bottom: 0.875rem;
+    }
+
+    .landing-item-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .landing-card-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .landing-item-title {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .landing-read-indicator {
+      font-size: 0.75rem;
+      color: var(--gold);
+      font-weight: normal;
+    }
+
+    .landing-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-shrink: 0;
+    }
+
+    .landing-item-hook {
+      font-family: var(--font-text);
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      font-style: italic;
+    }
+
+    /* CONTENT HOOK */
+    .content-hook {
+      margin-bottom: 2rem;
+      padding: 0.875rem 1.25rem;
+      background: var(--bg-alt);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-family: var(--font-text);
+      font-size: 0.93rem;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      font-style: italic;
+    }
+
     /* CONTENT VIEWER */
     #content-view {
       display: flex;
@@ -909,6 +1008,7 @@ async function sha256(text) {
 let library = null;
 let readSet = new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]'));
 let currentItemId = null;
+let currentCatId  = null;
 
 function saveRead() {
   localStorage.setItem(READ_KEY, JSON.stringify([...readSet]));
@@ -1092,13 +1192,57 @@ function renderWelcome() {
 }
 
 function openCategory(catId) {
+  currentCatId = catId;
+  const group = document.querySelector(`.category-group[data-cat="${catId}"]`);
+  if (group) group.classList.remove('collapsed');
+  renderCategoryLanding(catId);
+}
+
+/* ════════════════════════════════════════════
+   CATEGORY LANDING
+═════════════════════════════════════════════ */
+function renderCategoryLanding(catId) {
   const cat = library.categories.find(c => c.id === catId);
-  if (cat && cat.items.length > 0) {
-    loadItem(cat.items[0].id);
-    // Expand the category in sidebar
-    const group = document.querySelector(`.category-group[data-cat="${catId}"]`);
-    if (group) group.classList.remove('collapsed');
+  if (!cat) return;
+
+  currentItemId = null;
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+
+  let itemCards = '';
+  for (const item of cat.items) {
+    const isRead = readSet.has(item.id);
+    itemCards += `
+      <div class="landing-item-card" onclick="loadItem('${item.id}')">
+        <div class="landing-card-top">
+          <div class="landing-item-title">${item.title}${isRead ? ' <span class="landing-read-indicator">✓</span>' : ''}</div>
+          <div class="landing-card-meta">
+            <span class="badge badge-${item.difficulty}">${item.difficulty}</span>
+            <span class="read-time">${item.readingTime} min</span>
+          </div>
+        </div>
+        <div class="landing-item-hook">${item.hook}</div>
+      </div>
+    `;
   }
+
+  document.getElementById('lib-main').innerHTML = `
+    <div id="content-view">
+      <div class="content-toolbar">
+        <button class="back-btn" onclick="backToWelcome()">← Library</button>
+        <span class="breadcrumb"><span>${cat.label}</span></span>
+        <div class="toolbar-spacer"></div>
+        <span style="font-size:0.78rem;color:var(--ink-light);">${cat.items.length} resources</span>
+      </div>
+      <div class="cat-landing">
+        <div class="cat-landing-header">
+          <div class="cat-landing-title"><span class="cat-landing-icon">${cat.icon}</span> ${cat.label}</div>
+          <p class="cat-landing-desc">${cat.description}</p>
+        </div>
+        ${itemCards}
+      </div>
+    </div>
+  `;
+  document.getElementById('lib-main').scrollTop = 0;
 }
 
 /* ════════════════════════════════════════════
@@ -1115,27 +1259,34 @@ async function loadItem(itemId) {
   if (!item) return;
 
   currentItemId = itemId;
+  currentCatId  = cat.id;
 
-  // Update sidebar active state
+  // Update sidebar active state and expand category
   document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
   const sidebarEl = document.getElementById(`sidebar-${itemId}`);
   if (sidebarEl) {
     sidebarEl.classList.add('active');
     sidebarEl.scrollIntoView({ block: 'nearest' });
   }
+  const group = document.querySelector(`.category-group[data-cat="${cat.id}"]`);
+  if (group) group.classList.remove('collapsed');
+
+  const toolbar = `
+    <div class="content-toolbar">
+      <button class="back-btn" onclick="backToCategory('${cat.id}')">← ${cat.label}</button>
+      <span class="breadcrumb">${cat.label} <span>/</span> ${item.title}</span>
+      <div class="toolbar-spacer"></div>
+      <div class="content-badges">
+        <span class="badge badge-${item.difficulty}">${item.difficulty}</span>
+        <span class="badge" style="background:var(--bg-alt);color:var(--ink-light);">${item.readingTime} min</span>
+      </div>
+    </div>
+  `;
 
   // Show loading
   document.getElementById('lib-main').innerHTML = `
     <div id="content-view">
-      <div class="content-toolbar">
-        <button class="back-btn" onclick="backToWelcome()">← Library</button>
-        <span class="breadcrumb">${cat.label} <span>/</span> ${item.title}</span>
-        <div class="toolbar-spacer"></div>
-        <div class="content-badges">
-          <span class="badge badge-${item.difficulty}">${item.difficulty}</span>
-          <span class="badge" style="background:var(--bg-alt);color:var(--ink-light);">${item.readingTime} min</span>
-        </div>
-      </div>
+      ${toolbar}
       <div class="loading-state"><div class="spinner"></div> Loading…</div>
     </div>
   `;
@@ -1148,16 +1299,9 @@ async function loadItem(itemId) {
 
     document.getElementById('lib-main').innerHTML = `
       <div id="content-view">
-        <div class="content-toolbar">
-          <button class="back-btn" onclick="backToWelcome()">← Library</button>
-          <span class="breadcrumb">${cat.label} <span>/</span> ${item.title}</span>
-          <div class="toolbar-spacer"></div>
-          <div class="content-badges">
-            <span class="badge badge-${item.difficulty}">${item.difficulty}</span>
-            <span class="badge" style="background:var(--bg-alt);color:var(--ink-light);">${item.readingTime} min</span>
-          </div>
-        </div>
+        ${toolbar}
         <div class="content-area">
+          <div class="content-hook">${item.hook}</div>
           <div class="prose">${html}</div>
         </div>
       </div>
@@ -1176,10 +1320,7 @@ async function loadItem(itemId) {
   } catch (err) {
     document.getElementById('lib-main').innerHTML = `
       <div id="content-view">
-        <div class="content-toolbar">
-          <button class="back-btn" onclick="backToWelcome()">← Library</button>
-          <span class="breadcrumb">${cat.label} <span>/</span> ${item.title}</span>
-        </div>
+        ${toolbar}
         <div class="error-state">
           <p>Could not load this file.</p>
           <p style="margin-top:0.5rem;color:var(--ink-light);font-size:0.8rem;">
@@ -1193,8 +1334,15 @@ async function loadItem(itemId) {
 
 function backToWelcome() {
   currentItemId = null;
+  currentCatId  = null;
   document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
   renderWelcome();
+}
+
+function backToCategory(catId) {
+  currentItemId = null;
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+  renderCategoryLanding(catId);
 }
 
 /* ════════════════════════════════════════════
