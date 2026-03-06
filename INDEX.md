@@ -10,12 +10,19 @@ Topic-to-file reference. One authoritative source per topic.
 | Practical techniques | `references/master-techniques.md` |
 | Revision process | `templates/revision-workflow.md` |
 
-## NGSS Scientist Stories (Grades 5–12)
+## Missouri Learning Standards — All Subjects (Grades 5–12)
 
-| Topic | Source |
-|-------|--------|
-| Full NGSS standards reference (grades 5–12) | `references/ngss-standards-5-12.md` |
-| Scientist story planning guide + scientist roster | `references/ngss-scientist-story-guide.md` |
+For a 5–12 public charter school in St. Louis, MO. Cross-curricular scientist story planning.
+
+| Subject | Source |
+|---------|--------|
+| Science (NGSS / MLS-S): full standards, STL hooks | `references/ngss-standards-5-12.md` |
+| English Language Arts (MLS-ELA): all strands, RST/WHST | `references/mls-ela-5-12.md` |
+| Social Studies (MLS-SS): history, civics, economics, geography | `references/mls-social-studies-5-12.md` |
+| Mathematics (MLS-Math): practices + content K–12 | `references/mls-math-5-12.md` |
+| Fine Arts, Health/PE, World Languages | `references/mls-arts-health-languages-5-12.md` |
+| Cross-curricular planning matrix + worked scientist examples | `references/cross-curricular-story-matrix.md` |
+| Scientist story planning guide + roster (20+ scientists) | `references/ngss-scientist-story-guide.md` |
 | Scientist story planning template | `templates/structures/scientist-story.md` |
 
 ## Story Structure
