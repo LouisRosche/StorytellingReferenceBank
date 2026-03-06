@@ -8,7 +8,10 @@ Topic-to-file reference. One authoritative source per topic.
 |-------|--------|
 | Why work endures | `references/the-craft-of-lasting-work.md` |
 | Practical techniques | `references/master-techniques.md` |
+| Dialogue craft | `references/dialogue-craft.md` |
+| Common pitfalls (diagnostic) | `references/common-pitfalls.md` |
 | Revision process | `templates/revision-workflow.md` |
+| Scene planning (per-scene card) | `templates/scene-card.md` |
 
 ## Missouri Learning Standards — All Subjects (Grades 5–12)
 

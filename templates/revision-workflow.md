@@ -2,6 +2,8 @@
 
 Systematic process for moving from draft to production-ready manuscript.
 
+**Diagnostic companion**: `@references/common-pitfalls.md` — what goes wrong at each level and how to fix it.
+
 ## Core Principle
 
 **Big picture first, details last.** Fixing a typo in a scene you'll cut is wasted effort. Work from structure down to sentences.
@@ -11,7 +13,7 @@ Systematic process for moving from draft to production-ready manuscript.
 | Pass | Focus | Questions | Tools |
 |------|-------|-----------|-------|
 | **1. Structure** | Does the story work? | Is the arc complete? Does tension build? Are promises paid off? | Framework overlay |
-| **2. Scene** | Does each scene earn its place? | Goal-conflict-outcome? Does it advance plot AND character? | Scene cards |
+| **2. Scene** | Does each scene earn its place? | Goal-conflict-outcome? Does it advance plot AND character? | Scene cards (`@templates/scene-card.md`) |
 | **3. Line** | Does the prose serve the story? | Is this the right word? Does rhythm match emotion? | Read aloud |
 | **4. Polish** | Is it clean? | Typos, consistency, format | Spell check, style sheet |
 
