@@ -10,6 +10,14 @@ Topic-to-file reference. One authoritative source per topic.
 | Practical techniques | `references/master-techniques.md` |
 | Revision process | `templates/revision-workflow.md` |
 
+## NGSS Scientist Stories (Grades 5–12)
+
+| Topic | Source |
+|-------|--------|
+| Full NGSS standards reference (grades 5–12) | `references/ngss-standards-5-12.md` |
+| Scientist story planning guide + scientist roster | `references/ngss-scientist-story-guide.md` |
+| Scientist story planning template | `templates/structures/scientist-story.md` |
+
 ## Story Structure
 
 | Topic | Source |
@@ -19,6 +27,7 @@ Topic-to-file reference. One authoritative source per topic.
 | Scene-Sequel pacing | `templates/structures/scene-sequel.md` |
 | Kishotenketsu | `templates/structures/kishotenketsu.md` |
 | Rasa, Jo-ha-kyū, Griot | `templates/structures/global-frameworks.md` |
+| Scientist Story (NGSS-aligned) | `templates/structures/scientist-story.md` |
 
 ## Genre
 
