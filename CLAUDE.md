@@ -26,6 +26,10 @@ What makes work endure:
 
 Techniques: `@references/master-techniques.md`
 
+Dialogue: `@references/dialogue-craft.md`
+
+What's failing (diagnostic): `@references/common-pitfalls.md`
+
 ## Navigation
 
 **Complete file index**: `@INDEX.md` — topic-to-file lookup for all resources.
@@ -85,7 +89,7 @@ Voice cloning: `@docs/voice-cloning-workflow.md`
 1. **New project**: `projects/[name]/` with `drafts/`, `story-bible/`, `personas/`
 2. **Structure**: Select framework from `templates/structures/`
 3. **Draft**: Progressive disclosure — load only relevant context
-4. **Revise**: `@templates/revision-workflow.md`
+4. **Revise**: `@templates/revision-workflow.md` (per-scene: `@templates/scene-card.md`)
 5. **Preflight**: `scripts/preflight_check.py`
 6. **Produce**: `scripts/batch_produce.py` or `scripts/web_studio.py`
 
