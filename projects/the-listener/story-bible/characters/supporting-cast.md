@@ -176,27 +176,27 @@
 
 **Name**: Emma Mercer
 **Role**: Minor (stakes embodiment)
-**Age**: 9
+**Age**: 15
 **Gender**: Female
-**Occupation**: Fourth grader, junior bookworm
+**Occupation**: Tenth grader
 
 ### Physical Description
 
-**Appearance**: Small for her age, Sarah's chestnut hair but Owen's brown eyes. Usually in leggings and graphic tees featuring book characters. Glasses for reading.
+**Appearance**: Sarah's chestnut hair but Owen's brown eyes and easy openness. Taller than Sarah remembers her being. Usually in jeans and hoodies. Glasses for reading, often lost.
 
-**Voice**: Child soprano, precocious vocabulary (Owen's influence), rapid when excited, quiet when worried.
+**Voice**: Owen's animated quality but Sarah's precision creeping in. Fast when excited, deliberately flat when being a teenager about something.
 
 ### Psychology
 
-Emma is not a viewpoint character. She represents what Sarah stands to lose and why control matters to her. Emma is observant, asks uncomfortable questions, notices when Mom is "being weird."
+Emma is not a viewpoint character. She represents what Sarah stands to lose. At 15 she's old enough to notice things and ask direct questions — old enough that Sarah can no longer deflect with simple comfort. Emma knows about Maya in outline. She asks about what she wasn't told.
 
 ### Voice Pattern
 
 **Sample dialogue**:
 ```
 [EMMA]: "Mom, why do you keep looking out the window?"
-[EMMA]: "Can I stay up? I'm at the good part. Please?"
-[EMMA]: "Daddy says you're sad about Aunt Maya. I don't remember her. Is that bad?"
+[EMMA]: "We never talk about it. Doesn't that drive you crazy?"
+[EMMA]: "I'm sorry, Mom. I didn't know it was still like that."
 ```
 
 **TTS Persona file**: `@personas/emma-mercer.json`
