@@ -131,14 +131,15 @@
 - Thomas Vane interviewed as "acquaintance." Released.
 - Case goes cold within six months.
 
-**7 years before story**:
+**15 years before story**:
+- Emma born (Sarah and Owen together, not yet married)
+
+**8 years before story**:
 - Sarah completes trauma therapy specialization
-- Marries Owen
-- Never discusses Maya's death in detail with him
+- Marries Owen; never discusses Maya's death in full with him
 
 **5 years before story**:
-- Emma born
-- Sarah believes she's moved on
+- Sarah believes she has moved on
 
 **2 years before story**:
 - Detective Cole retires
