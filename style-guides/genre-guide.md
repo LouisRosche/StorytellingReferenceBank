@@ -451,6 +451,60 @@ Craft and TTS notes by genre.
 
 ---
 
+## Young Adult (YA)
+
+**Defining characteristic**: Identity formation drives the narrative; protagonist agency and emotional intensity are non-negotiable.
+
+### Craft Priorities
+
+| Priority | Application |
+|----------|-------------|
+| **Protagonist agency** | Characters drive the story — choices matter, have consequences, and are respected by the narrative |
+| **Identity as theme** | External plot is a vehicle for "who am I becoming?" — the internal arc is the real story |
+| **Emotional intensity** | Stakes feel total; YA readers experience emotions fully, not ironically — do not soften them |
+| **Voice specificity** | Narrator voice must be distinctive, credible, and non-condescending; YA lives and dies here |
+| **Authentic relationships** | Friendships, family dynamics, and first romantic relationships must feel real, not convenient |
+| **Earned clarity** | YA doesn't mean simplified — characters should be complex but not obscured |
+
+### Structure Notes
+
+- Three-Act works well with strong protagonist-driven beats
+- Save the Cat's B-story (friendship/mentor) is almost always present and weighted heavily
+- Identity arc runs parallel to plot arc; they must converge at the climax
+- Series common: manage standalone arc and series arc simultaneously
+
+### Subgenres
+
+| Subgenre | Focus | Notes |
+|----------|-------|-------|
+| **Contemporary** | Real-world identity, relationships | Voice and emotional authenticity paramount |
+| **Fantasy** | Identity through magical or world-stakes | World-building serves character arc |
+| **SF** | Identity amid speculative futures | Extrapolation as metaphor for adolescence |
+| **Thriller/Mystery** | Agency under threat | Protagonist must solve or survive through their own choices |
+| **Horror** | Fear as identity test | Emotional stakes amplified by developmental vulnerability |
+| **Romance** | First love, self-definition through relationship | HEA/HFN optional; growth required |
+| **Historical** | Identity constrained by period and power | Period detail grounds emotional truth |
+
+### TTS Considerations
+
+**Narrator style**: Young without condescension, emotionally authentic
+- Voice must sound young and credible — affect-y performance breaks trust immediately
+- Dialogue-heavy genre: character voice differentiation is critical
+- Emotional scenes: authenticity over polish; let the text land without overworking it
+- Narrative pace: generally faster than adult literary fiction
+- Never editorialize or soften — honor the character's experience as total
+
+**Example persona prompt**:
+> "Narrator in mid-to-late teens, or an adult who inhabits that register without performing it. Clear, direct, emotionally present. Pace is brisk but not rushed — these characters feel everything and think fast. Dialogue voices are distinct, especially friends vs. family vs. love interest. For emotional peaks: stay inside it, don't pull back. The irony is earned, not deployed to protect the reader."
+
+### Common Word Counts
+
+- Standalone: 50,000-80,000
+- Upper YA / longer contemporary: up to 90,000
+- Series entries: sometimes longer, series arc permitting
+
+---
+
 ## TTS Production Quick Reference
 
 | Genre | Pace | Emotional Range | Pauses | Character Voices |
@@ -464,3 +518,4 @@ Craft and TTS notes by genre.
 | Horror | Slow → fast | Dread to release | Long (tension) | Restrained |
 | Memoir | Reflective | Authentic | Thoughtful | Author-match |
 | Self-help | Clear | Encouraging | Instructional | Warm authority |
+| YA | Variable | Wide emotional range | Medium | Essential character voices |

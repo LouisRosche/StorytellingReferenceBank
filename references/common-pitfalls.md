@@ -180,7 +180,7 @@ A draft that isn't working is usually failing at one identifiable level. Start w
 
 **Symptom**: Extended passages of characters processing, feeling, deciding — without anything externally happening.
 
-**Why it fails**: Scene (action) and Sequel (reaction) must alternate. Continuous sequel produces reader fatigue; it's all feeling, no event.
+**Why it fails**: Scene (action) and Sequel (reaction) must alternate. Continuous sequel produces reader fatigue; it's all feeling, no event. See `@templates/structures/scene-sequel.md` for the full Scene-Sequel framework.
 
 **Diagnostic**: Mark every passage where no external conflict occurs. If you have more than a page of unbroken interior processing, check the ratio.
 

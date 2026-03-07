@@ -62,6 +62,8 @@ Copy this template for each major character. Store in project's `story-bible/cha
 
 ## Voice and Speech
 
+<!-- Differentiation techniques, subtext, attribution, TTS delivery: @references/dialogue-craft.md -->
+
 **Vocabulary level**: (Simple / Average / Educated / Erudite)
 
 **Sentence structure**: (Fragments / Short / Mixed / Complex)
