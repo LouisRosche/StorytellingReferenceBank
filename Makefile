@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-tts install-tts-lite test preflight validate dry-run lint clean help
+.PHONY: install install-dev install-tts install-tts-lite test preflight validate dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint clean help
 
 PYTHON ?= python3
 VENV ?= .venv
@@ -62,6 +62,39 @@ inspect: ## Inspect Luna manuscript
 	$(PYTHON) scripts/inspect_manuscript.py \
 		projects/luna-the-little-cloud/drafts/manuscript-v1-tts.txt \
 		--speaker-map projects/luna-the-little-cloud/speaker-map.json
+
+dry-run-listener: ## Dry-run The Listener project (no GPU needed)
+	$(PYTHON) scripts/batch_produce.py \
+		projects/the-listener/drafts/chapter-03.txt \
+		--persona projects/the-listener/personas/narrator-thriller.json \
+		--dry-run --verbose
+
+inspect-listener: ## Inspect The Listener manuscript
+	$(PYTHON) scripts/inspect_manuscript.py \
+		projects/the-listener/drafts/chapter-03.txt \
+		--speaker-map projects/the-listener/speaker-map.json
+
+dry-run-mangoes: ## Dry-run The Weight of Mangoes project (no GPU needed)
+	$(PYTHON) scripts/batch_produce.py \
+		projects/the-weight-of-mangoes/drafts/chapter-01.txt \
+		--persona projects/the-weight-of-mangoes/personas/narrator.json \
+		--dry-run --verbose
+
+inspect-mangoes: ## Inspect The Weight of Mangoes manuscript
+	$(PYTHON) scripts/inspect_manuscript.py \
+		projects/the-weight-of-mangoes/drafts/chapter-01.txt \
+		--speaker-map projects/the-weight-of-mangoes/speaker-map.json
+
+dry-run-house: ## Dry-run The House Remains project (no GPU needed)
+	$(PYTHON) scripts/batch_produce.py \
+		projects/the-house-remains/drafts/chapter-01.txt \
+		--persona projects/the-house-remains/personas/narrator.json \
+		--dry-run --verbose
+
+inspect-house: ## Inspect The House Remains manuscript
+	$(PYTHON) scripts/inspect_manuscript.py \
+		projects/the-house-remains/drafts/chapter-01.txt \
+		--speaker-map projects/the-house-remains/speaker-map.json
 
 # ── Code Quality ──────────────────────────────────────────────
 

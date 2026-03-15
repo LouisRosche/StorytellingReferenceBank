@@ -105,10 +105,17 @@ For a 5–12 public charter school in St. Louis, MO. Cross-curricular scientist 
 | `persona_regression.py` | Voice consistency testing |
 | `web_studio.py` | Gradio web interface |
 
+## Contributing
+
+| Topic | Source |
+|-------|--------|
+| How to contribute | `CONTRIBUTING.md` |
+
 ## Archive
 
 | Document | Purpose |
 |----------|---------|
+| `docs/archive/OPPORTUNITIES-ANALYSIS-2026-03.md` | Forward-looking opportunities & priority matrix |
 | `docs/archive/TTS-PIPELINE-EVALUATION-2026-01.md` | TTS engine comparison |
 | `docs/archive/REPO-AUDIT-SWOT-2026-01.md` | Repository strengths/gaps analysis |
 | `docs/archive/framework-validation-2026-01.md` | Framework coverage validation |
