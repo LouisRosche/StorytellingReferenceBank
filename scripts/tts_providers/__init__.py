@@ -23,10 +23,11 @@ Quick Start:
     provider.save_audio(result, "output.wav")
 
 Available Providers:
-    - qwen: Local Qwen3-TTS model (default)
-    - elevenlabs: ElevenLabs cloud API
-    - openai: OpenAI TTS API
-    - coqui: Coqui TTS / XTTS local models
+    - qwen: Local Qwen3-TTS model (default, production-ready)
+    - kokoro: Local Kokoro TTS model (production-ready)
+    - elevenlabs: ElevenLabs cloud API (EXPERIMENTAL — generate() not implemented)
+    - openai: OpenAI TTS API (EXPERIMENTAL — generate() not implemented)
+    - coqui: Coqui TTS / XTTS local models (EXPERIMENTAL — generate() not implemented)
 
 Adding Custom Providers:
     1. Create a class that inherits from TTSProvider

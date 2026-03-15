@@ -49,5 +49,8 @@ scipy>=1.10.0  # DSP filters for audio_postprocess.py
 # Voice regression testing (MFCC fingerprinting fallback)
 # librosa>=0.10.0
 
+# Web studio interface (Gradio)
+# gradio>=4.0.0
+
 # Development dependencies
 # pytest>=7.0.0
