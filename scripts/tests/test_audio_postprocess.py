@@ -243,3 +243,142 @@ class TestFullMasteringChain:
         out1 = process_audio(audio.copy(), SAMPLE_RATE, params)
         out2 = process_audio(audio.copy(), SAMPLE_RATE, params)
         np.testing.assert_array_equal(out1, out2)
+
+
+# ---------------------------------------------------------------------------
+# Content detection
+# ---------------------------------------------------------------------------
+
+from audio_postprocess import detect_content_type, get_content_params, CONTENT_PRESETS
+
+
+class TestContentDetection:
+    """Test auto-detection of content type from manuscript text."""
+
+    def test_detects_childrens_with_page_turns(self):
+        text = """Once upon a time there was a little bear.
+
+[PAGE TURN]
+
+The bear went for a walk in the forest.
+
+[PAGE TURN]
+
+"Hello!" said the bear.
+
+[PAGE TURN]
+
+The end.
+"""
+        assert detect_content_type(text) == "childrens"
+
+    def test_detects_childrens_by_short_length(self):
+        # Under 1500 words should be detected as children's
+        text = "A short story. " * 100  # ~300 words
+        assert detect_content_type(text) == "childrens"
+
+    def test_detects_thriller(self):
+        # Needs 5+ thriller words and dialogue ratio > 0.2
+        thriller_prose = "The detective crept through the darkness. " * 200
+        dialogue = '\n"Where is the murder weapon?" she asked.\n' * 100
+        filler = "He examined the crime scene for blood and evidence of the killer. " * 200
+        text = thriller_prose + dialogue + filler
+        # Ensure word count > 2000 so it's not caught as children's
+        assert len(text.split()) > 2000
+        result = detect_content_type(text)
+        assert result == "thriller"
+
+    def test_detects_nonfiction(self):
+        # Low dialogue ratio, long paragraphs (avg > 80 words)
+        paragraph = ("The economic implications of this policy are far-reaching and "
+                      "significant across multiple sectors of the global economy. "
+                      "Researchers have documented extensive evidence supporting "
+                      "these conclusions through rigorous empirical analysis. ") * 25
+        text = (paragraph + "\n\n") * 10
+        assert len(text.split()) > 2000
+        result = detect_content_type(text)
+        assert result == "nonfiction"
+
+    def test_detects_literary_as_default(self):
+        # Generic prose that doesn't match other categories
+        text = ("She walked along the river, watching the light change on the water. " * 200 +
+                '\n"It was beautiful," she said.\n' * 10)
+        assert len(text.split()) > 2000
+        result = detect_content_type(text)
+        assert result == "literary"
+
+
+class TestContentPresets:
+    """Test that get_content_params returns correct ProcessingParams."""
+
+    def test_returns_params_for_childrens(self):
+        params = get_content_params("childrens")
+        assert isinstance(params, ProcessingParams)
+        assert params.comp_ratio == 2.0
+
+    def test_returns_params_for_thriller(self):
+        params = get_content_params("thriller")
+        assert isinstance(params, ProcessingParams)
+        assert params.comp_ratio == 3.0
+
+    def test_returns_params_for_nonfiction(self):
+        params = get_content_params("nonfiction")
+        assert isinstance(params, ProcessingParams)
+        assert params.comp_ratio == 3.5
+
+    def test_returns_params_for_literary(self):
+        params = get_content_params("literary")
+        assert isinstance(params, ProcessingParams)
+        assert params.comp_ratio == 2.0
+
+    def test_unknown_type_returns_default(self):
+        params = get_content_params("unknown_genre")
+        assert isinstance(params, ProcessingParams)
+        # Should be the default ProcessingParams, not a preset
+        default = ProcessingParams()
+        assert params.target_rms_db == default.target_rms_db
+
+    def test_all_presets_present(self):
+        expected_types = {"childrens", "literary", "thriller", "nonfiction"}
+        assert set(CONTENT_PRESETS.keys()) == expected_types
+
+
+class TestPresetDifferences:
+    """Verify presets actually differ from each other."""
+
+    def test_thriller_has_tighter_compression_than_literary(self):
+        thriller = CONTENT_PRESETS["thriller"]
+        literary = CONTENT_PRESETS["literary"]
+        # Tighter = higher ratio
+        assert thriller.comp_ratio > literary.comp_ratio
+
+    def test_nonfiction_has_tighter_compression_than_literary(self):
+        nonfiction = CONTENT_PRESETS["nonfiction"]
+        literary = CONTENT_PRESETS["literary"]
+        assert nonfiction.comp_ratio > literary.comp_ratio
+
+    def test_thriller_has_higher_target_rms_than_literary(self):
+        thriller = CONTENT_PRESETS["thriller"]
+        literary = CONTENT_PRESETS["literary"]
+        # Higher (less negative) target RMS = louder
+        assert thriller.target_rms_db > literary.target_rms_db
+
+    def test_childrens_differs_from_thriller(self):
+        childrens = CONTENT_PRESETS["childrens"]
+        thriller = CONTENT_PRESETS["thriller"]
+        # They should differ in at least compression ratio
+        assert childrens.comp_ratio != thriller.comp_ratio
+
+    def test_each_preset_is_distinct(self):
+        """No two presets should be identical."""
+        types = list(CONTENT_PRESETS.keys())
+        for i in range(len(types)):
+            for j in range(i + 1, len(types)):
+                a = CONTENT_PRESETS[types[i]]
+                b = CONTENT_PRESETS[types[j]]
+                # At least one param must differ
+                differs = (a.comp_threshold_db != b.comp_threshold_db or
+                           a.comp_ratio != b.comp_ratio or
+                           a.target_rms_db != b.target_rms_db or
+                           a.limiter_ceiling_db != b.limiter_ceiling_db)
+                assert differs, f"{types[i]} and {types[j]} presets are identical"

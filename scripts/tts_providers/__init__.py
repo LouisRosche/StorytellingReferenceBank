@@ -11,7 +11,7 @@ Quick Start:
     provider = get_provider()
 
     # Or specify a provider
-    provider = get_provider("elevenlabs", api_key="your-key")
+    provider = get_provider("kokoro")
 
     # Generate speech
     result = provider.generate(
@@ -23,11 +23,8 @@ Quick Start:
     provider.save_audio(result, "output.wav")
 
 Available Providers:
-    - qwen: Local Qwen3-TTS model (default, production-ready)
-    - kokoro: Local Kokoro TTS model (production-ready)
-    - elevenlabs: ElevenLabs cloud API (EXPERIMENTAL — generate() not implemented)
-    - openai: OpenAI TTS API (EXPERIMENTAL — generate() not implemented)
-    - coqui: Coqui TTS / XTTS local models (EXPERIMENTAL — generate() not implemented)
+    - qwen: Local Qwen3-TTS model (default, full-featured)
+    - kokoro: Local Kokoro TTS model (lightweight, fast)
 
 Adding Custom Providers:
     1. Create a class that inherits from TTSProvider
@@ -50,18 +47,12 @@ from .base import (
 
 # Provider implementations
 from .qwen_provider import QwenTTSProvider
-from .elevenlabs_provider import ElevenLabsProvider
-from .openai_provider import OpenAITTSProvider
-from .coqui_provider import CoquiTTSProvider
 from .kokoro_provider import KokoroTTSProvider
 
 
 # Registry of available providers
 _PROVIDERS: Dict[str, Type[TTSProvider]] = {
     "qwen": QwenTTSProvider,
-    "elevenlabs": ElevenLabsProvider,
-    "openai": OpenAITTSProvider,
-    "coqui": CoquiTTSProvider,
     "kokoro": KokoroTTSProvider,
 }
 
@@ -100,7 +91,7 @@ def get_provider(
 
     Args:
         provider_id: Provider identifier (default: "qwen")
-            Available: "qwen", "elevenlabs", "openai", "coqui"
+            Available: "qwen", "kokoro"
         config: Provider configuration (ProviderConfig or dict)
         **kwargs: Additional config options merged into config dict
 
@@ -110,9 +101,6 @@ def get_provider(
     Example:
         # Default provider
         provider = get_provider()
-
-        # Specific provider with config
-        provider = get_provider("elevenlabs", api_key="your-key")
 
         # With full config
         provider = get_provider("qwen", {
@@ -153,12 +141,11 @@ def list_providers() -> Dict[str, str]:
     """
     result = {}
     for provider_id, provider_class in _PROVIDERS.items():
-        # Create temporary instance to get name
         try:
             temp = provider_class.__new__(provider_class)
             temp.config = ProviderConfig()
             result[provider_id] = temp.name
-        except:
+        except Exception:
             result[provider_id] = provider_class.__name__
     return result
 
@@ -192,8 +179,6 @@ def generate_speech(
     """
     Generate speech using the default or specified provider.
 
-    Convenience function for simple use cases.
-
     Args:
         text: Text to synthesize
         voice: Voice ID or description
@@ -203,13 +188,6 @@ def generate_speech(
 
     Returns:
         TTSResult with generated audio
-
-    Example:
-        result = generate_speech(
-            "Hello, world!",
-            voice="A warm, friendly narrator",
-            output_path="greeting.wav"
-        )
     """
     tts = get_provider(provider)
     return tts.generate(
@@ -230,9 +208,6 @@ __all__ = [
 
     # Provider implementations
     "QwenTTSProvider",
-    "ElevenLabsProvider",
-    "OpenAITTSProvider",
-    "CoquiTTSProvider",
     "KokoroTTSProvider",
 
     # Factory functions

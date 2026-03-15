@@ -61,6 +61,9 @@ class ProductionConfig:
     manuscript_path: str
     persona_path: str
 
+    # Multispeaker
+    speaker_map_path: Optional[str] = None  # Path to speaker-map.json
+
     # Metadata
     title: Optional[str] = None
     author: Optional[str] = None
@@ -76,6 +79,7 @@ class ProductionConfig:
     page_turns: bool = False
     pause_duration: float = 2.0
     language: str = "English"
+    content_type: Optional[str] = None  # auto, childrens, literary, thriller, nonfiction
 
     # Pipeline control
     no_tts: bool = False  # Skip TTS generation
@@ -142,7 +146,7 @@ class ProductionReport:
 
 def stage_prep(config: ProductionConfig, report: ProductionReport, verbose: bool = False) -> Path:
     """
-    Stage 1: Prepare manuscript - split into chapters, generate credits.
+    Stage 1: Prepare manuscript - split into chapters, extract cues, detect content type.
 
     Returns path to prep directory containing chapter text files.
     """
@@ -151,6 +155,8 @@ def stage_prep(config: ProductionConfig, report: ProductionReport, verbose: bool
         create_opening_credits,
         create_closing_credits,
     )
+    from dialogue_parser import extract_sound_cues, strip_sound_cues
+    from audio_postprocess import detect_content_type
 
     if verbose:
         print("\n" + "="*60)
@@ -160,9 +166,41 @@ def stage_prep(config: ProductionConfig, report: ProductionReport, verbose: bool
     prep_dir = Path(config.output_dir) / "prep"
     prep_dir.mkdir(parents=True, exist_ok=True)
 
+    # Read manuscript for cue extraction and content detection
+    with open(config.manuscript_path, 'r', encoding='utf-8') as f:
+        raw_text = f.read()
+
+    # Extract sound design cues before splitting
+    sound_cues = extract_sound_cues(raw_text)
+    if sound_cues:
+        cues_path = Path(config.output_dir) / "sound_cues.json"
+        with open(cues_path, 'w', encoding='utf-8') as f:
+            json.dump([c.to_dict() for c in sound_cues], f, indent=2)
+        report.config["sound_cues"] = str(cues_path)
+        report.config["sound_cue_count"] = len(sound_cues)
+        if verbose:
+            print(f"  Extracted {len(sound_cues)} sound design cues → {cues_path}")
+
+    # Auto-detect content type for mastering presets
+    if config.content_type and config.content_type != "auto":
+        detected_type = config.content_type
+    else:
+        detected_type = detect_content_type(raw_text)
+    report.config["content_type"] = detected_type
+    if verbose:
+        print(f"  Content type: {detected_type}")
+
+    # Strip sound cues from text before splitting for TTS
+    clean_text = strip_sound_cues(raw_text)
+
+    # Write cleaned manuscript for splitting
+    clean_manuscript = prep_dir / "manuscript_clean.txt"
+    with open(clean_manuscript, 'w', encoding='utf-8') as f:
+        f.write(clean_text)
+
     # Split manuscript
     manifest = process_manuscript(
-        input_path=config.manuscript_path,
+        input_path=str(clean_manuscript),
         output_dir=str(prep_dir),
         title=config.title,
         page_turns=config.page_turns,
@@ -220,9 +258,119 @@ def stage_prep(config: ProductionConfig, report: ProductionReport, verbose: bool
     return prep_dir
 
 
+def _tts_single_speaker(config, report, raw_dir, verbose):
+    """Generate single-speaker TTS for all chapters."""
+    from tts_generator import Persona, generate_from_persona, save_audio
+
+    persona = Persona.from_json(config.persona_path)
+    if verbose:
+        print(f"  Mode: single-speaker ({persona.name})")
+
+    for chapter in report.chapters:
+        if verbose:
+            print(f"  Generating Chapter {chapter.number}: {chapter.title}")
+        try:
+            with open(chapter.text_file, 'r') as f:
+                text = f.read()
+            wavs, sr = generate_from_persona(text, persona, config.language)
+            raw_path = raw_dir / f"Chapter_{chapter.number:02d}.wav"
+            save_audio(wavs, sr, str(raw_path), normalize=False)
+            chapter.raw_audio_file = str(raw_path)
+            chapter.tts_generated = True
+            if verbose:
+                print(f"    → {raw_path}")
+        except Exception as e:
+            chapter.error = str(e)
+            report.errors.append(f"Chapter {chapter.number} TTS failed: {e}")
+            if verbose:
+                print(f"    ERROR: {e}")
+
+    # Credits use the default persona
+    _tts_credits(config, report, raw_dir, verbose, persona)
+
+
+def _tts_multispeaker(config, report, raw_dir, verbose):
+    """Generate multi-speaker TTS using speaker-map routing."""
+    from tts_generator import Persona, save_audio
+    from multispeaker_tts import SpeakerMap, generate_multispeaker_audio
+    from dialogue_parser import parse_manuscript
+
+    speaker_map = SpeakerMap.from_json(config.speaker_map_path)
+    if verbose:
+        print(f"  Mode: multispeaker ({len(speaker_map.speakers)} speakers)")
+
+    for chapter in report.chapters:
+        if verbose:
+            print(f"  Generating Chapter {chapter.number}: {chapter.title}")
+        try:
+            with open(chapter.text_file, 'r') as f:
+                text = f.read()
+
+            # Parse into speaker segments
+            segments, stats = parse_manuscript(
+                text,
+                aliases=speaker_map.aliases,
+            )
+
+            if verbose:
+                speakers_in_ch = list(stats.keys())
+                print(f"    Speakers: {', '.join(speakers_in_ch)}")
+
+            # Generate multispeaker audio
+            wavs, sr = generate_multispeaker_audio(
+                segments,
+                speaker_map,
+                language=config.language,
+                verbose=verbose,
+            )
+
+            raw_path = raw_dir / f"Chapter_{chapter.number:02d}.wav"
+            save_audio(wavs, sr, str(raw_path), normalize=False)
+            chapter.raw_audio_file = str(raw_path)
+            chapter.tts_generated = True
+            if verbose:
+                print(f"    → {raw_path}")
+
+        except Exception as e:
+            chapter.error = str(e)
+            report.errors.append(f"Chapter {chapter.number} TTS failed: {e}")
+            if verbose:
+                print(f"    ERROR: {e}")
+
+    # Credits use the default persona from the speaker map
+    default_persona_path = speaker_map.default_persona
+    from tts_generator import Persona
+    persona = Persona.from_json(default_persona_path)
+    _tts_credits(config, report, raw_dir, verbose, persona)
+
+
+def _tts_credits(config, report, raw_dir, verbose, persona):
+    """Generate TTS for opening/closing credits."""
+    from tts_generator import generate_from_persona, save_audio
+
+    for credit_type, raw_key in [("opening_text", "opening_raw"), ("closing_text", "closing_raw")]:
+        credit_path = report.credits.get(credit_type)
+        if not credit_path:
+            continue
+        label = credit_type.replace("_text", "").replace("_", " ").title()
+        if verbose:
+            print(f"  Generating {label} Credits")
+        try:
+            with open(credit_path, 'r') as f:
+                text = f.read()
+            wavs, sr = generate_from_persona(text, persona, config.language)
+            raw_path = raw_dir / f"{label.replace(' ', '_')}_Credits.wav"
+            save_audio(wavs, sr, str(raw_path), normalize=False)
+            report.credits[raw_key] = str(raw_path)
+        except Exception as e:
+            report.errors.append(f"{label} credits TTS failed: {e}")
+
+
 def stage_tts(config: ProductionConfig, report: ProductionReport, verbose: bool = False) -> Path:
     """
     Stage 2: Generate TTS audio for all chapters and credits.
+
+    Routes to single-speaker or multispeaker pipeline based on config.speaker_map_path.
 
     Returns path to raw audio directory.
     """
@@ -233,8 +381,6 @@ def stage_tts(config: ProductionConfig, report: ProductionReport, verbose: bool 
             print("="*60)
         return Path(config.output_dir) / "raw_audio"
 
-    from tts_generator import Persona, generate_from_persona, save_audio
-
     if verbose:
         print("\n" + "="*60)
         print("STAGE 2: TTS - Generating audio")
@@ -243,66 +389,10 @@ def stage_tts(config: ProductionConfig, report: ProductionReport, verbose: bool 
     raw_dir = Path(config.output_dir) / "raw_audio"
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    # Load persona
-    persona = Persona.from_json(config.persona_path)
-    if verbose:
-        print(f"  Using persona: {persona.name}")
-
-    # Generate chapter audio
-    for i, chapter in enumerate(report.chapters):
-        if verbose:
-            print(f"  Generating Chapter {chapter.number}: {chapter.title}")
-
-        try:
-            # Read chapter text
-            with open(chapter.text_file, 'r') as f:
-                text = f.read()
-
-            # Generate audio
-            wavs, sr = generate_from_persona(text, persona, config.language)
-
-            # Save raw audio
-            raw_path = raw_dir / f"Chapter_{chapter.number:02d}.wav"
-            save_audio(wavs, sr, str(raw_path), normalize=False)
-
-            chapter.raw_audio_file = str(raw_path)
-            chapter.tts_generated = True
-
-            if verbose:
-                print(f"    → {raw_path}")
-
-        except Exception as e:
-            chapter.error = str(e)
-            report.errors.append(f"Chapter {chapter.number} TTS failed: {e}")
-            if verbose:
-                print(f"    ERROR: {e}")
-
-    # Generate credits audio
-    if report.credits.get("opening_text"):
-        if verbose:
-            print("  Generating Opening Credits")
-        try:
-            with open(report.credits["opening_text"], 'r') as f:
-                text = f.read()
-            wavs, sr = generate_from_persona(text, persona, config.language)
-            raw_path = raw_dir / "Opening_Credits.wav"
-            save_audio(wavs, sr, str(raw_path), normalize=False)
-            report.credits["opening_raw"] = str(raw_path)
-        except Exception as e:
-            report.errors.append(f"Opening credits TTS failed: {e}")
-
-    if report.credits.get("closing_text"):
-        if verbose:
-            print("  Generating Closing Credits")
-        try:
-            with open(report.credits["closing_text"], 'r') as f:
-                text = f.read()
-            wavs, sr = generate_from_persona(text, persona, config.language)
-            raw_path = raw_dir / "Closing_Credits.wav"
-            save_audio(wavs, sr, str(raw_path), normalize=False)
-            report.credits["closing_raw"] = str(raw_path)
-        except Exception as e:
-            report.errors.append(f"Closing credits TTS failed: {e}")
+    if config.speaker_map_path:
+        _tts_multispeaker(config, report, raw_dir, verbose)
+    else:
+        _tts_single_speaker(config, report, raw_dir, verbose)
 
     return raw_dir
 
@@ -328,7 +418,7 @@ def stage_master(config: ProductionConfig, report: ProductionReport, verbose: bo
                 chapter.final_audio_file = chapter.raw_audio_file
         return final_dir
 
-    from audio_postprocess import process_file, ProcessingParams
+    from audio_postprocess import process_file, ProcessingParams, get_content_params
 
     if verbose:
         print("\n" + "="*60)
@@ -338,7 +428,11 @@ def stage_master(config: ProductionConfig, report: ProductionReport, verbose: bo
     final_dir = Path(config.output_dir) / "final"
     final_dir.mkdir(parents=True, exist_ok=True)
 
-    params = ProcessingParams()
+    # Use content-type preset if detected
+    content_type = report.config.get("content_type", "literary")
+    params = get_content_params(content_type)
+    if verbose:
+        print(f"  Mastering preset: {content_type}")
 
     # Process chapters
     for chapter in report.chapters:
@@ -601,6 +695,7 @@ def run_pipeline(config: ProductionConfig, verbose: bool = False) -> ProductionR
         config={
             "manuscript": config.manuscript_path,
             "persona": config.persona_path,
+            "speaker_map": config.speaker_map_path,
             "page_turns": config.page_turns,
             "language": config.language,
         },
@@ -652,6 +747,9 @@ def main():
     parser.add_argument("--copyright-year", type=int, help="Copyright year")
     parser.add_argument("--copyright-holder", help="Copyright holder")
 
+    # Multispeaker
+    parser.add_argument("--speaker-map", help="Path to speaker-map.json for multi-voice production")
+
     # Processing options
     parser.add_argument("--page-turns", action="store_true",
                         help="Insert pauses at page turns (picture books)")
@@ -659,6 +757,10 @@ def main():
                         help="Page-turn pause duration in seconds (default: 2.0)")
     parser.add_argument("--language", default="English",
                         help="Language for TTS (default: English)")
+    parser.add_argument("--content-type",
+                        choices=["auto", "childrens", "literary", "thriller", "nonfiction"],
+                        default="auto",
+                        help="Content type for mastering presets (default: auto-detect)")
 
     # Pipeline control
     parser.add_argument("--dry-run", "--no-tts", action="store_true",
@@ -687,10 +789,16 @@ def main():
         print(f"Error: Persona not found: {args.persona}", file=sys.stderr)
         sys.exit(1)
 
+    # Validate speaker map if provided
+    if args.speaker_map and not os.path.exists(args.speaker_map):
+        print(f"Error: Speaker map not found: {args.speaker_map}", file=sys.stderr)
+        sys.exit(1)
+
     # Build config
     config = ProductionConfig(
         manuscript_path=args.manuscript,
         persona_path=args.persona,
+        speaker_map_path=args.speaker_map,
         output_dir=args.output_dir,
         title=args.title,
         author=args.author,
@@ -701,6 +809,7 @@ def main():
         page_turns=args.page_turns,
         pause_duration=args.pause_duration,
         language=args.language,
+        content_type=args.content_type,
         no_tts=args.dry_run,
         no_postprocess=args.no_postprocess,
         no_validate=args.no_validate,

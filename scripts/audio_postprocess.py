@@ -98,6 +98,100 @@ class ProcessingParams:
         return asdict(self)
 
 
+# --- Content-type presets ---
+# Auto-detected by batch_produce.py from manuscript analysis.
+
+CONTENT_PRESETS = {
+    "childrens": ProcessingParams(
+        # Bright, clear, wide dynamic range for expressive reading
+        comp_threshold_db=-20.0,
+        comp_ratio=2.0,
+        target_rms_db=-20.0,
+        room_tone_head_sec=0.5,
+        room_tone_tail_sec=3.0,
+    ),
+    "literary": ProcessingParams(
+        # Preserve dynamics and breath — minimal processing
+        comp_threshold_db=-26.0,
+        comp_ratio=2.0,
+        target_rms_db=-20.0,
+        room_tone_head_sec=0.5,
+        room_tone_tail_sec=3.0,
+    ),
+    "thriller": ProcessingParams(
+        # Tighter compression for consistent intensity, no whisper drop-off
+        comp_threshold_db=-22.0,
+        comp_ratio=3.0,
+        comp_attack_ms=5.0,
+        target_rms_db=-19.0,
+        limiter_ceiling_db=-3.0,
+        room_tone_head_sec=0.5,
+        room_tone_tail_sec=3.0,
+    ),
+    "nonfiction": ProcessingParams(
+        # Even, lecture-like levels — heavier compression for consistency
+        comp_threshold_db=-22.0,
+        comp_ratio=3.5,
+        comp_attack_ms=8.0,
+        target_rms_db=-19.0,
+        room_tone_head_sec=0.5,
+        room_tone_tail_sec=3.0,
+    ),
+}
+
+
+def detect_content_type(text: str) -> str:
+    """
+    Auto-detect content type from manuscript text for mastering preset selection.
+
+    Heuristics:
+    - Children's: short (< 2000 words), [PAGE TURN] markers, simple vocabulary
+    - Thriller: dark vocabulary, short sentences, high dialogue ratio
+    - Nonfiction: long paragraphs, low dialogue, formal language
+    - Literary: default fallback (gentle processing)
+    """
+    words = text.split()
+    word_count = len(words)
+
+    # Children's: short + page turns
+    if word_count < 2000 and "[PAGE TURN]" in text:
+        return "childrens"
+    if word_count < 1500:
+        return "childrens"
+
+    # Count dialogue lines vs total
+    lines = [ln.strip() for ln in text.split('\n') if ln.strip()]
+    dialogue_lines = sum(
+        1 for ln in lines if ln.startswith('"') or ln.startswith('\u201c')
+    )
+    dialogue_ratio = dialogue_lines / max(len(lines), 1)
+
+    # Thriller signals
+    thriller_words = {
+        'blood', 'gun', 'knife', 'murder', 'death', 'scream', 'shadow',
+        'darkness', 'killer', 'chase', 'fear', 'threat', 'danger', 'weapon',
+        'escape', 'detective', 'suspect', 'crime', 'victim', 'terror',
+    }
+    text_lower = text.lower()
+    thriller_hits = sum(1 for w in thriller_words if w in text_lower)
+    if thriller_hits >= 5 and dialogue_ratio > 0.2:
+        return "thriller"
+
+    # Nonfiction signals: low dialogue, long paragraphs
+    if dialogue_ratio < 0.05:
+        paragraphs = text.split('\n\n')
+        avg_para_len = sum(len(p.split()) for p in paragraphs) / max(len(paragraphs), 1)
+        if avg_para_len > 80:
+            return "nonfiction"
+
+    return "literary"
+
+
+def get_content_params(content_type: str) -> ProcessingParams:
+    """Get mastering params for a content type. Falls back to default."""
+    return CONTENT_PRESETS.get(content_type, ProcessingParams())
+
+
 def load_audio(file_path: str) -> Tuple[np.ndarray, int]:
     """Load audio file and return samples + sample rate."""
     try:

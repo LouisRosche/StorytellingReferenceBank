@@ -305,6 +305,182 @@ The caf\u00e9 was quiet. She ordered an \u00e9clair.
         assert len(segments) >= 1
 
 
+from dialogue_parser import extract_sound_cues, strip_sound_cues, SoundCue
+
+
+class TestExtractSoundCues:
+    """Test extraction of sound design cues from manuscript text."""
+
+    def test_extracts_sfx_cue(self):
+        text = '[SFX: door_creak]'
+        cues = extract_sound_cues(text)
+        assert len(cues) == 1
+        assert cues[0].cue_type == 'SFX'
+        assert cues[0].content == 'door_creak'
+
+    def test_extracts_music_cue(self):
+        text = '[MUSIC: soft_piano]'
+        cues = extract_sound_cues(text)
+        assert len(cues) == 1
+        assert cues[0].cue_type == 'MUSIC'
+        assert cues[0].content == 'soft_piano'
+
+    def test_extracts_ambiance_cue(self):
+        text = '[AMBIANCE: forest_birds]'
+        cues = extract_sound_cues(text)
+        assert len(cues) == 1
+        assert cues[0].cue_type == 'AMBIANCE'
+        assert cues[0].content == 'forest_birds'
+
+    def test_extracts_silence_cue(self):
+        text = '[SILENCE: 2s]'
+        cues = extract_sound_cues(text)
+        assert len(cues) == 1
+        assert cues[0].cue_type == 'SILENCE'
+        assert cues[0].content == '2s'
+
+    def test_extracts_multiple_cues_in_order(self):
+        text = """[NARRATOR]
+The door opened.
+
+[SFX: door_creak]
+
+[NARRATOR]
+Wind howled outside.
+
+[AMBIANCE: wind_howling]
+
+[SILENCE: 1s]
+"""
+        cues = extract_sound_cues(text)
+        assert len(cues) == 3
+        assert cues[0].cue_type == 'SFX'
+        assert cues[1].cue_type == 'AMBIANCE'
+        assert cues[2].cue_type == 'SILENCE'
+        # Positions should be in ascending order
+        assert cues[0].position < cues[1].position < cues[2].position
+
+    def test_no_cues_returns_empty(self):
+        text = """[NARRATOR]
+Just plain text with no sound cues.
+"""
+        cues = extract_sound_cues(text)
+        assert len(cues) == 0
+
+    def test_case_insensitive(self):
+        text = '[sfx: footsteps]'
+        cues = extract_sound_cues(text)
+        assert len(cues) == 1
+        assert cues[0].cue_type == 'SFX'
+
+    def test_generation_hint_captured(self):
+        text = '[SFX: door_creak] <!-- @generate: wooden door creaking slowly -->'
+        cues = extract_sound_cues(text)
+        assert len(cues) == 1
+        assert cues[0].generation_hint == 'wooden door creaking slowly'
+
+    def test_no_generation_hint_is_none(self):
+        text = '[SFX: door_creak]'
+        cues = extract_sound_cues(text)
+        assert len(cues) == 1
+        assert cues[0].generation_hint is None
+
+    def test_generation_hint_with_music(self):
+        text = (
+            '[MUSIC: tension_build]'
+            ' <!-- @generate: low rumbling tension building over 5 seconds -->'
+        )
+        cues = extract_sound_cues(text)
+        assert len(cues) == 1
+        assert cues[0].cue_type == 'MUSIC'
+        assert cues[0].generation_hint is not None
+        assert 'tension' in cues[0].generation_hint
+
+
+class TestStripSoundCues:
+    """Test removal of sound cues from text."""
+
+    def test_strips_sfx_cue(self):
+        text = 'Before.\n\n[SFX: door_creak]\n\nAfter.'
+        cleaned = strip_sound_cues(text)
+        assert '[SFX' not in cleaned
+        assert 'Before.' in cleaned
+        assert 'After.' in cleaned
+
+    def test_strips_all_cue_types(self):
+        text = """Text one.
+
+[SFX: boom]
+
+[MUSIC: piano]
+
+[AMBIANCE: rain]
+
+[SILENCE: 3s]
+
+Text two."""
+        cleaned = strip_sound_cues(text)
+        assert '[SFX' not in cleaned
+        assert '[MUSIC' not in cleaned
+        assert '[AMBIANCE' not in cleaned
+        assert '[SILENCE' not in cleaned
+        assert 'Text one.' in cleaned
+        assert 'Text two.' in cleaned
+
+    def test_collapses_blank_lines(self):
+        text = 'Line one.\n\n[SFX: boom]\n\n\n\nLine two.'
+        cleaned = strip_sound_cues(text)
+        # Should not have more than one blank line in a row
+        assert '\n\n\n' not in cleaned
+
+    def test_strips_generation_hints_too(self):
+        text = 'Before.\n\n[SFX: creak] <!-- @generate: old wooden door -->\n\nAfter.'
+        cleaned = strip_sound_cues(text)
+        assert '@generate' not in cleaned
+        assert '<!--' not in cleaned
+
+    def test_empty_text(self):
+        cleaned = strip_sound_cues('')
+        assert cleaned == ''
+
+    def test_text_without_cues_unchanged(self):
+        text = 'Just regular text.\n\nNo cues here.'
+        cleaned = strip_sound_cues(text)
+        assert 'Just regular text.' in cleaned
+        assert 'No cues here.' in cleaned
+
+
+class TestSoundCueDataclass:
+    """Test the SoundCue dataclass."""
+
+    def test_fields(self):
+        cue = SoundCue(cue_type='SFX', content='boom', position=0)
+        assert cue.cue_type == 'SFX'
+        assert cue.content == 'boom'
+        assert cue.position == 0
+        assert cue.generation_hint is None
+
+    def test_generation_hint_field(self):
+        cue = SoundCue(cue_type='MUSIC', content='piano', position=10,
+                        generation_hint='gentle piano melody')
+        assert cue.generation_hint == 'gentle piano melody'
+
+    def test_to_dict(self):
+        cue = SoundCue(cue_type='SFX', content='boom', position=42,
+                        generation_hint='explosion sound')
+        d = cue.to_dict()
+        assert isinstance(d, dict)
+        assert d['cue_type'] == 'SFX'
+        assert d['content'] == 'boom'
+        assert d['position'] == 42
+        assert d['generation_hint'] == 'explosion sound'
+
+    def test_to_dict_without_hint(self):
+        cue = SoundCue(cue_type='SILENCE', content='2s', position=0)
+        d = cue.to_dict()
+        assert d['generation_hint'] is None
+
+
 def run_tests():
     """Run all tests without pytest."""
     import traceback
@@ -317,6 +493,9 @@ def run_tests():
         TestNormalizeSpeaker,
         TestParseManuscript,
         TestEdgeCases,
+        TestExtractSoundCues,
+        TestStripSoundCues,
+        TestSoundCueDataclass,
     ]
 
     passed = 0

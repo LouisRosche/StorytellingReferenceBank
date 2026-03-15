@@ -41,6 +41,18 @@ from typing import List, Optional, Dict, Tuple
 
 
 @dataclass
+class SoundCue:
+    """A sound design cue extracted from manuscript text."""
+    cue_type: str        # SFX, MUSIC, AMBIANCE, SILENCE
+    content: str         # Raw content string (e.g., "door_creak", "2s")
+    position: int        # Character offset in original text
+    generation_hint: Optional[str] = None  # @generate directive if present
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass
 class Segment:
     """A text segment with speaker attribution."""
     text: str
@@ -51,6 +63,47 @@ class Segment:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+# Sound design cue pattern — matches [SFX: ...], [MUSIC: ...], [AMBIANCE: ...], [SILENCE: ...]
+# Optionally captures <!-- @generate: ... --> directives on the next line.
+SOUND_CUE_PATTERN = re.compile(
+    r'\[(?P<type>SFX|MUSIC|AMBIANCE|SILENCE):\s*(?P<content>[^\]]+)\]'
+    r'(?:\s*<!--\s*@(?:generate):\s*(?P<hint>[^>]+?)\s*-->)?',
+    re.MULTILINE | re.IGNORECASE
+)
+
+
+def extract_sound_cues(text: str) -> List[SoundCue]:
+    """
+    Extract all sound design cues from manuscript text.
+
+    Returns:
+        List of SoundCue objects in document order.
+    """
+    cues = []
+    for m in SOUND_CUE_PATTERN.finditer(text):
+        cues.append(SoundCue(
+            cue_type=m.group('type').upper(),
+            content=m.group('content').strip(),
+            position=m.start(),
+            generation_hint=m.group('hint').strip() if m.group('hint') else None,
+        ))
+    return cues
+
+
+def strip_sound_cues(text: str) -> str:
+    """
+    Remove all sound design cues from text before sending to TTS.
+
+    Strips [SFX:], [MUSIC:], [AMBIANCE:], [SILENCE:] tags and any
+    associated <!-- @generate: ... --> directives. Collapses resulting
+    blank lines.
+    """
+    cleaned = SOUND_CUE_PATTERN.sub('', text)
+    # Collapse runs of blank lines to a single blank line
+    cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
+    return cleaned.strip()
 
 
 # Speech verbs for dialogue detection
