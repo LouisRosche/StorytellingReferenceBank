@@ -124,7 +124,7 @@ templates/worlds/         # World-building framework
 templates/series/         # Series bible template
 style-guides/             # Genre conventions
 references/               # Craft principles
-personas/                 # TTS voice library (15 voices)
+personas/                 # TTS voice library (19 voices)
   examples/               # Persona JSON definitions
   golden/                 # Regression test infrastructure
   schema.json             # Persona file format

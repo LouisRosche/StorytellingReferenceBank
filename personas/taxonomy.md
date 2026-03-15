@@ -37,7 +37,7 @@ Personas with `sim(p1, p2) > 0.70` are redundant. Consolidate or differentiate.
 
 ## Coverage Matrix
 
-### Current Library (15 personas)
+### Current Library (19 personas)
 
 ```
              | G   | A      | P    | S      | T        | R   | L     |
@@ -57,28 +57,31 @@ nonbin       | N   | young  | med  | med    | clear    | NA  | en    |
 caribb       | N   | middle | med  | slow   | warm     | CA  | en    |
 french       | N   | middle | med  | med    | smooth   | EU  | en,fr |
 teen         | N   | teen   | high | med    | clear    | NA  | en    |
+comedy       | N   | young  | med  | med-fast | smooth | NA  | en    |
+horror       | N   | middle | low  | slow   | husky    | NA  | en    |
+australian   | N   | middle | med  | med    | warm     | AU  | en    |
+child        | N   | child  | vhigh| fast   | clear    | NA  | en    |
 ```
 
 ### Current Coverage
 
 ```
-Gender:   M=4 F=3 N=8  → Balanced
-Age:      teen=1 young=4 middle=7 elder=2 → Full range (child missing)
-Pitch:    low=4 med=9 high=1 → Improved (vlow, vhigh missing)
-Texture:  warm=6 crisp=2 clear=2 smooth=2 gravelly=1 → Diversified
-Accent:   NA=8 UK=2 AF=1 IN=1 CA=1 EU=1 → +European (AU, AS missing)
-Language: en=15 es=1 hi=1 fr=1 → +French (de, zh, ja, ko, pt, ru, it missing)
+Gender:   M=4 F=3 N=12  → Balanced
+Age:      child=1 teen=1 young=4 middle=8 elder=2 → Full range ✓
+Pitch:    low=4 med=11 high=1 vhigh=1 → Improved
+Texture:  warm=7 crisp=2 clear=3 smooth=3 gravelly=1 husky=1 → Diversified
+Accent:   NA=9 UK=2 AF=1 IN=1 CA=1 EU=1 AU=1 → +Australian ✓
+Language: en=19 es=1 hi=1 fr=1 → (de, zh, ja, ko, pt, ru, it missing)
 ```
 
 ### Remaining Gaps
 
 | Dimension | Missing Values | Priority |
 |-----------|----------------|----------|
-| Age | child | MEDIUM |
-| Pitch | vlow, vhigh | LOW |
-| Pace | fast, vfast | LOW |
-| Texture | breathy, husky | LOW |
-| Accent | AU, AS | MEDIUM |
+| Pitch | vlow | LOW |
+| Pace | vfast | LOW |
+| Texture | breathy | LOW |
+| Accent | AS | MEDIUM |
 | Language | de, zh, ja, ko, pt, ru, it | HIGH |
 
 ---
@@ -96,14 +99,14 @@ Language: en=15 es=1 hi=1 fr=1 → +French (de, zh, ja, ko, pt, ru, it missing)
 | `narrator-french` | N | middle | med | smooth | EU | en,fr | Language |
 | `character-teen` | N | teen | high | clear | NA | en | Age, Pitch |
 
-### Phase 2: Planned
+### Phase 2: +4 Personas (Complete)
 
-| ID | G | A | P | T | R | L | Fills Gap |
+| ID | G | A | P | T | R | L | Filled Gap |
 |----|---|---|---|---|---|---|-----------|
-| `narrator-comedy` | - | - | - | - | - | en | Genre specialist |
-| `narrator-horror` | - | - | - | - | - | en | Genre specialist |
-| `narrator-australian` | - | - | - | - | AU | en | Accent |
-| `character-child` | - | child | high | - | - | en | Age |
+| `narrator-comedy` | N | young | med | smooth | NA | en | Genre specialist |
+| `narrator-horror` | N | middle | low | husky | NA | en | Genre specialist, Texture |
+| `narrator-australian` | N | middle | med | warm | AU | en | Accent |
+| `character-child` | N | child | vhigh | clear | NA | en | Age, Pitch |
 
 ---
 
@@ -142,7 +145,7 @@ epic:        [heroic, ancient, vast, wonder, grave]
 ```
 diversity = (unique_values_used / total_possible_values) × 100
 
-Current: (37 / 48) × 100 = 76%  ✓
+Current: (40 / 48) × 100 = 82%  ✓
 Target:  ≥75%
 ```
 

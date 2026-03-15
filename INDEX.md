@@ -92,18 +92,18 @@ For a 5–12 public charter school in St. Louis, MO. Cross-curricular scientist 
 
 | Script | Purpose |
 |--------|---------|
-| `batch_produce.py` | Full pipeline orchestration |
-| `tts_generator.py` | TTS generation |
-| `audio_postprocess.py` | ACX-compliant mastering |
-| `acx_validator.py` | Compliance checking |
-| `manuscript_to_chapters.py` | Manuscript splitting |
-| `dialogue_parser.py` | Multi-speaker extraction |
-| `multispeaker_tts.py` | Multi-voice generation |
-| `inspect_manuscript.py` | Manuscript analysis |
-| `preflight_check.py` | Pre-production validation |
-| `persona_compatibility.py` | Story-persona matching |
-| `persona_regression.py` | Voice consistency testing |
-| `web_studio.py` | Gradio web interface |
+| `scripts/batch_produce.py` | Full pipeline orchestration |
+| `scripts/tts_generator.py` | TTS generation |
+| `scripts/audio_postprocess.py` | ACX-compliant mastering |
+| `scripts/acx_validator.py` | Compliance checking |
+| `scripts/manuscript_to_chapters.py` | Manuscript splitting |
+| `scripts/dialogue_parser.py` | Multi-speaker extraction |
+| `scripts/multispeaker_tts.py` | Multi-voice generation |
+| `scripts/inspect_manuscript.py` | Manuscript analysis |
+| `scripts/preflight_check.py` | Pre-production validation |
+| `scripts/persona_compatibility.py` | Story-persona matching |
+| `scripts/persona_regression.py` | Voice consistency testing |
+| `scripts/web_studio.py` | Gradio web interface |
 
 ## Contributing
 
