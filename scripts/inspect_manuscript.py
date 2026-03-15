@@ -32,6 +32,13 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from dialogue_parser import parse_manuscript, Segment
 
+# Optional readability analysis
+try:
+    import textstat
+    TEXTSTAT_AVAILABLE = True
+except ImportError:
+    TEXTSTAT_AVAILABLE = False
+
 
 def estimate_duration(text: str, wpm: int = 150) -> float:
     """Estimate speaking duration in seconds."""
@@ -117,7 +124,7 @@ def analyze_segments(
                     'severity': 'info'
                 })
 
-    return {
+    result = {
         'summary': {
             'total_segments': len(segments),
             'total_words': total_words,
@@ -128,6 +135,39 @@ def analyze_segments(
         },
         'speakers': speaker_stats,
         'problems': problems,
+    }
+
+    # Add readability metrics when textstat is available
+    if TEXTSTAT_AVAILABLE:
+        full_text = " ".join(seg.text for seg in segments)
+        result['readability'] = analyze_readability(full_text)
+
+    return result
+
+
+def analyze_readability(text: str) -> Dict:
+    """
+    Compute readability metrics using textstat.
+
+    These metrics map directly to audience targeting:
+    - Flesch Reading Ease > 80: children/easy (picture books)
+    - Flesch Reading Ease 60-80: standard adult fiction
+    - Flesch Reading Ease 30-60: advanced/literary
+    - Flesch Reading Ease < 30: academic/technical
+
+    The Flesch-Kincaid grade level maps to US school grade,
+    which feeds persona_compatibility.py's audience matching.
+    """
+    return {
+        'flesch_reading_ease': textstat.flesch_reading_ease(text),
+        'flesch_kincaid_grade': textstat.flesch_kincaid_grade(text),
+        'gunning_fog': textstat.gunning_fog(text),
+        'automated_readability_index': textstat.automated_readability_index(text),
+        'coleman_liau_index': textstat.coleman_liau_index(text),
+        'dale_chall_score': textstat.dale_chall_readability_score(text),
+        'difficult_words': textstat.difficult_words(text),
+        'text_standard': textstat.text_standard(text, float_output=False),
+        'reading_time_minutes': textstat.reading_time(text, ms_per_char=14.69) / 60000,
     }
 
 
@@ -169,6 +209,30 @@ def print_stats(analysis: Dict):
         print(f"    {bar} {pct:.1f}%")
         print(f"    {stats['segments']} segments, {stats['words']} words, ~{format_duration(stats['duration'])}")
         print(f"    Dialogue: {stats['dialogue_segments']}, Narration: {stats['narration_segments']}")
+
+    # Readability metrics (when textstat is available)
+    if 'readability' in analysis:
+        r = analysis['readability']
+        print("\n" + "-" * 50)
+        print("READABILITY")
+        print("-" * 50)
+        print(f"  Grade level: {r['text_standard']}")
+        print(f"  Flesch Reading Ease: {r['flesch_reading_ease']:.1f}")
+        print(f"  Flesch-Kincaid Grade: {r['flesch_kincaid_grade']:.1f}")
+        print(f"  Gunning Fog Index: {r['gunning_fog']:.1f}")
+        print(f"  Difficult words: {r['difficult_words']}")
+
+        # Audience inference
+        fre = r['flesch_reading_ease']
+        if fre > 80:
+            audience = "children / easy reading"
+        elif fre > 60:
+            audience = "standard adult fiction"
+        elif fre > 30:
+            audience = "advanced / literary"
+        else:
+            audience = "academic / technical"
+        print(f"  Inferred audience: {audience}")
 
 
 def print_segments(segments: List[Segment], analysis: Dict):

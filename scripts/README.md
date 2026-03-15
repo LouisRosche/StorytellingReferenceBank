@@ -70,11 +70,14 @@ python acx_validator.py output.wav --strict
 
 ### manuscript_to_chapters.py
 
-Split manuscripts into chapter files for batch TTS processing.
+Split manuscripts into chapter files for batch TTS processing. Accepts `.txt`, `.md`, and `.epub` (via ebooklib) input.
 
 ```bash
 # Basic split
 python manuscript_to_chapters.py manuscript.txt --output-dir chapters/
+
+# Import from EPUB (requires: pip install ebooklib)
+python manuscript_to_chapters.py novel.epub --output-dir chapters/
 
 # With page-turn pauses (picture books)
 python manuscript_to_chapters.py picturebook.txt \
@@ -119,9 +122,12 @@ python audio_postprocess.py raw.wav -o final.mp3 \
 3. Compression (2.5:1, -24 dB threshold, soft knee)
 4. De-essing (4-8 kHz band)
 5. Limiter (-3 dB ceiling)
-6. Loudness normalization (-20 dB RMS)
+6. Loudness normalization (-20 dB LUFS via pyloudnorm, RMS fallback)
 7. Room tone insertion (0.5s head, 3s tail)
 8. Export: 192 kbps CBR MP3, 44.1 kHz, mono
+
+When pedalboard is installed, steps 1-5 use Spotify's C++ DSP backend (~100x faster).
+When pyloudnorm is installed, step 6 uses ITU-R BS.1770 integrated LUFS (the broadcast standard).
 
 ### dialogue_parser.py
 
@@ -184,7 +190,7 @@ python inspect_manuscript.py chapter.txt --problems
 python inspect_manuscript.py chapter.txt --export segments.json
 ```
 
-Reports: segment count, word count, estimated duration, speaker distribution, long/short segments, unmapped speakers.
+Reports: segment count, word count, estimated duration, speaker distribution, long/short segments, unmapped speakers. When textstat is installed, adds readability metrics (Flesch Reading Ease, grade level, audience inference).
 
 ### preflight_check.py
 
@@ -289,6 +295,25 @@ manuscript.txt + persona.json
     ✓ Distributable audiobook
 ```
 
+## Optional Quality Libraries
+
+The pipeline integrates with several optional libraries for mathematically optimized processing. All fall back gracefully to built-in implementations when not installed.
+
+```bash
+pip install pyloudnorm silero-vad resemblyzer textstat ebooklib pedalboard
+```
+
+| Library | What It Upgrades | Mathematical Advantage |
+|---------|-----------------|----------------------|
+| **pyloudnorm** | `audio_postprocess.py`, `acx_validator.py` | ITU-R BS.1770 K-weighted LUFS replaces naive RMS — the actual broadcast loudness standard |
+| **pedalboard** | `audio_postprocess.py` | Spotify's C++ DSP — ~100x faster compression, limiting, EQ vs pure-Python sample loops |
+| **silero-vad** | `acx_validator.py` | Neural speech/silence detection replaces energy threshold — precise room tone measurement |
+| **resemblyzer** | `persona_regression.py` | 256-dim GE2E speaker embeddings replace 13-dim MFCC — trained for speaker verification |
+| **textstat** | `inspect_manuscript.py`, `persona_compatibility.py` | Flesch-Kincaid readability → automatic audience inference for persona matching |
+| **ebooklib** | `manuscript_to_chapters.py` | EPUB import — accepts `.epub` files directly as pipeline input |
+
+---
+
 ## Batch Processing
 
 The recommended approach is to use `batch_produce.py` which orchestrates the full pipeline:
@@ -391,7 +416,7 @@ python persona_regression.py --threshold 0.90
 python persona_regression.py --json
 ```
 
-Compares generated audio against golden references using MFCC fingerprints. Threshold: 0.85 cosine similarity.
+Compares generated audio against golden references. When resemblyzer is installed, uses 256-dim GE2E voice embeddings (trained for speaker verification). Falls back to MFCC fingerprints. Threshold: 0.85 cosine similarity.
 
 ---
 

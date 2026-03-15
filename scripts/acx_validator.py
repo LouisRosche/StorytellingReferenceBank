@@ -31,6 +31,20 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 
+# Optional high-quality backends
+try:
+    import pyloudnorm as pyln
+    PYLOUDNORM_AVAILABLE = True
+except ImportError:
+    PYLOUDNORM_AVAILABLE = False
+
+try:
+    from silero_vad import load_silero_vad, get_speech_timestamps
+    import torch
+    SILERO_VAD_AVAILABLE = True
+except ImportError:
+    SILERO_VAD_AVAILABLE = False
+
 # ACX Specifications
 ACX_SPECS = {
     "rms_min_db": -23.0,
@@ -192,6 +206,22 @@ def get_mp3_info(file_path: str) -> Dict[str, Any]:
         return {}
 
 
+def calculate_lufs(samples, sample_rate: int) -> Optional[float]:
+    """
+    Calculate integrated loudness in LUFS (ITU-R BS.1770-4).
+
+    Returns None if pyloudnorm is not available.
+    """
+    if not PYLOUDNORM_AVAILABLE:
+        return None
+    import numpy as np
+    meter = pyln.Meter(sample_rate)
+    try:
+        return meter.integrated_loudness(samples)
+    except Exception:
+        return None
+
+
 def calculate_rms_db(samples) -> float:
     """Calculate RMS level in dB."""
     import numpy as np
@@ -256,19 +286,64 @@ def calculate_noise_floor_db(samples, sample_rate: int, silence_threshold_db: fl
     return float(np.min(window_rms))
 
 
+def check_room_tone_vad(samples, sample_rate: int) -> tuple:
+    """
+    Neural voice activity detection for room tone measurement (silero-vad).
+
+    Uses a pre-trained neural network to precisely detect speech boundaries,
+    giving much more accurate room tone measurements than energy thresholds.
+
+    Returns:
+        Tuple of (start_silence_seconds, end_silence_seconds)
+    """
+    # Silero VAD requires 16kHz input
+    if sample_rate != 16000:
+        from scipy.signal import resample as scipy_resample
+        num_samples_16k = int(len(samples) * 16000 / sample_rate)
+        samples_16k = scipy_resample(samples, num_samples_16k)
+    else:
+        samples_16k = samples
+
+    audio_tensor = torch.tensor(samples_16k, dtype=torch.float32)
+    model = load_silero_vad()
+    speech_timestamps = get_speech_timestamps(audio_tensor, model, sampling_rate=16000)
+
+    duration_16k = len(samples_16k) / 16000
+
+    if not speech_timestamps:
+        # No speech detected — entire file is silence
+        return duration_16k, 0.0
+
+    # Start silence = time before first speech
+    first_speech_sec = speech_timestamps[0]['start'] / 16000
+    # End silence = time after last speech
+    last_speech_end_sec = speech_timestamps[-1]['end'] / 16000
+    end_silence = duration_16k - last_speech_end_sec
+
+    return first_speech_sec, max(0.0, end_silence)
+
+
 def check_room_tone(samples, sample_rate: int) -> tuple:
     """
     Check for room tone at start and end.
+
+    Uses silero-vad neural network when available for precise speech
+    boundary detection. Falls back to energy threshold otherwise.
 
     Returns:
         Tuple of (start_silence_seconds, end_silence_seconds)
     """
     import numpy as np
 
-    # Threshold for "silence" (-40 dB)
-    silence_threshold = 10 ** (-40 / 20)
+    # Prefer neural VAD when available
+    if SILERO_VAD_AVAILABLE:
+        try:
+            return check_room_tone_vad(samples, sample_rate)
+        except Exception:
+            pass  # Fall through to energy-based detection
 
-    # Window for detection (10ms)
+    # Fallback: energy threshold detection
+    silence_threshold = 10 ** (-40 / 20)
     window_size = int(sample_rate * 0.01)
 
     # Check start
@@ -419,6 +494,35 @@ def validate_audio(file_path: str, strict: bool = False) -> ValidationReport:
             actual_value=round(rms_db, 1),
             expected_value=f"{ACX_SPECS['rms_min_db']} to {ACX_SPECS['rms_max_db']} dB",
         ))
+
+    # LUFS Level (ITU-R BS.1770 — broadcast standard, more accurate than RMS)
+    lufs = calculate_lufs(samples, sr)
+    if lufs is not None:
+        report.metadata["lufs"] = round(lufs, 2)
+        if ACX_SPECS["rms_min_db"] <= lufs <= ACX_SPECS["rms_max_db"]:
+            report.add_check(CheckResult(
+                name="Integrated Loudness (LUFS)",
+                severity=Severity.PASS,
+                message=f"LUFS level OK: {lufs:.1f} LUFS",
+                actual_value=round(lufs, 1),
+                expected_value=f"{ACX_SPECS['rms_min_db']} to {ACX_SPECS['rms_max_db']} LUFS",
+            ))
+        elif lufs < ACX_SPECS["rms_min_db"]:
+            report.add_check(CheckResult(
+                name="Integrated Loudness (LUFS)",
+                severity=Severity.FAIL,
+                message=f"LUFS too quiet: {lufs:.1f} LUFS (minimum {ACX_SPECS['rms_min_db']} LUFS)",
+                actual_value=round(lufs, 1),
+                expected_value=f"{ACX_SPECS['rms_min_db']} to {ACX_SPECS['rms_max_db']} LUFS",
+            ))
+        else:
+            report.add_check(CheckResult(
+                name="Integrated Loudness (LUFS)",
+                severity=Severity.FAIL,
+                message=f"LUFS too loud: {lufs:.1f} LUFS (maximum {ACX_SPECS['rms_max_db']} LUFS)",
+                actual_value=round(lufs, 1),
+                expected_value=f"{ACX_SPECS['rms_min_db']} to {ACX_SPECS['rms_max_db']} LUFS",
+            ))
 
     # Peak Level
     peak_db = calculate_peak_db(samples)
