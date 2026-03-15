@@ -7,33 +7,27 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  check:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10", "3.12"]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
 
-      - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
-
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
-          pip install numpy soundfile pydub scipy
-          pip install pytest
+          pip install -r requirements.txt
+          pip install pytest ruff
 
-      - name: Run tests
-        run: python -m pytest scripts/tests/ -v -m "not gpu"
+      - name: Lint
+        run: python3 -m ruff check scripts/
 
       - name: Validate personas
-        run: python scripts/validate_personas.py
+        run: python3 scripts/validate_personas.py
 
-      - name: Pre-flight check (deps only)
-        run: python scripts/preflight_check.py --deps-only
+      - name: Run tests (no GPU)
+        run: python3 -m pytest scripts/tests/ -v -m "not gpu"

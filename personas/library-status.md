@@ -4,25 +4,29 @@ Coverage tracking and expansion roadmap.
 
 ---
 
-## Current Library (15 personas)
+## Current Library (19 personas)
 
 | ID | Gender | Age | Accent | Languages | Status |
 |----|--------|-----|--------|-----------|--------|
 | character-gruff-mentor | M | elderly | Scottish | en | ✓ Active |
+| character-teen | N | teen | American | en | ✓ Active |
+| character-child | N | child | American | en | ✓ Active |
 | narrator-childrens | F | young | American | en | ✓ Active |
 | narrator-literary | M | middle | American | en | ✓ Active |
+| narrator-literary-female | F | middle | American | en | ✓ Active |
 | narrator-indian-english | N | middle | Indian | en, hi | ✓ Active |
 | narrator-latinx-bilingual | N | young | Latinx | en, es | ✓ Active |
 | narrator-elder-authority | N | elderly | Neutral | en | ✓ Active |
 | narrator-global-literary | N | middle | Nigerian | en | ✓ Active |
 | narrator-nonbinary-contemporary | N | young | American | en | ✓ Active |
 | narrator-caribbean | N | middle | Caribbean | en | ✓ Active |
-| narrator-literary-female | F | middle | American | en | ✓ Active |
 | narrator-warm-female | F | young | American | en | ✓ Active |
 | narrator-thriller | M | young | American | en | ✓ Active |
 | narrator-british | M | middle | British | en | ✓ Active |
 | narrator-french | N | middle | French | en, fr | ✓ Active |
-| character-teen | N | teen | American | en | ✓ Active |
+| narrator-comedy | N | young | American | en | ✓ Active |
+| narrator-horror | N | middle | American | en | ✓ Active |
+| narrator-australian | N | middle | Australian | en | ✓ Active |
 
 ---
 
@@ -30,13 +34,13 @@ Coverage tracking and expansion roadmap.
 
 | Dimension | Coverage | Target | Status |
 |-----------|----------|--------|--------|
-| Gender (M/F/N) | 4/3/8 | 4/3/8 | ✓ Balanced |
-| Age (5 values) | 4/5 | 5/5 | ⚠ Missing child |
-| Pitch (5 values) | 3/5 | 4/5 | ✓ Added high |
-| Accent (8 regions) | 6/8 | 7/8 | ✓ Added UK, EU |
+| Gender (M/F/N) | 4/3/12 | 4/3/12 | ✓ Balanced |
+| Age (5 values) | 5/5 | 5/5 | ✓ Child added |
+| Pitch (5 values) | 4/5 | 4/5 | ✓ Very high added |
+| Accent (8 regions) | 7/8 | 7/8 | ✓ Added AU/NZ |
 | Languages (10) | 4/10 | 5/10 | ✓ Added fr |
 
-**Overall Diversity Score**: 76% (Target: ≥75%) ✓
+**Overall Diversity Score**: 82% (Target: ≥75%) ✓
 
 ---
 
@@ -58,14 +62,14 @@ Coverage tracking and expansion roadmap.
 | `narrator-french` | French language | ✓ Created |
 | `character-teen` | Teen age + high pitch | ✓ Created |
 
-### Priority 3 (Next phase)
+### Priority 3 (Coverage) — COMPLETE
 
 | ID | Gap Filled | Status |
 |----|------------|--------|
-| `narrator-comedy` | Humor specialist | 🔲 Planned |
-| `narrator-horror` | Dark/horror genre | 🔲 Planned |
-| `narrator-australian` | AU/NZ accent | 🔲 Planned |
-| `character-child` | Child voice (under 12) | 🔲 Planned |
+| `narrator-comedy` | Humor specialist | ✓ Created |
+| `narrator-horror` | Dark/horror genre | ✓ Created |
+| `narrator-australian` | AU/NZ accent | ✓ Created |
+| `character-child` | Child voice (under 12) | ✓ Created |
 
 ---
 
@@ -113,6 +117,10 @@ See `personas/golden/README.md` for complete documentation.
 | narrator-nonbinary-contemporary | pending generation | - | - |
 | narrator-thriller | pending generation | - | - |
 | narrator-warm-female | pending generation | - | - |
+| narrator-comedy | pending generation | - | - |
+| narrator-horror | pending generation | - | - |
+| narrator-australian | pending generation | - | - |
+| character-child | pending generation | - | - |
 
 ### Next Steps
 
@@ -127,6 +135,10 @@ See `personas/golden/README.md` for complete documentation.
 
 | Date | Change |
 |------|--------|
+| 2026-03-15 | Created 4 Priority 3 personas (comedy, horror, australian, child) |
+| 2026-03-15 | Diversity score 76% → 82% ✓ |
+| 2026-03-15 | All age values now covered (child added) |
+| 2026-03-15 | AU/NZ accent region covered |
 | 2026-01-28 | Golden reference infrastructure complete (passages, docs, workflow) |
 | 2026-01-27 | Initial library status tracking |
 | 2026-01-27 | Created 6 expansion personas (P1 + P2 complete) |
