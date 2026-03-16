@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe, generateDownloadToken } from "@/lib/stripe";
+import { stripe, STRIPE_WEBHOOK_SECRET, generateDownloadToken } from "@/lib/stripe";
+import { getSiteUrl } from "@/lib/env";
 import { getStorybook } from "@/lib/storybooks";
+import { savePurchase, hasProcessedEvent } from "@/lib/db";
+import { sendFulfillmentEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -18,10 +21,11 @@ export async function POST(request: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      STRIPE_WEBHOOK_SECRET
     );
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Webhook verification failed";
+    const message =
+      err instanceof Error ? err.message : "Webhook verification failed";
     console.error("Webhook signature verification failed:", message);
     return NextResponse.json({ error: message }, { status: 400 });
   }
@@ -29,58 +33,94 @@ export async function POST(request: NextRequest) {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
-      const { slug, format, narratorId } = session.metadata || {};
+
+      // Idempotency: skip if we've already processed this session
+      if (hasProcessedEvent(session.id)) {
+        console.log("Skipping duplicate event for session:", session.id);
+        return NextResponse.json({ received: true, duplicate: true });
+      }
+
+      const metadata = session.metadata || {};
+      const { slug, format, narratorId } = metadata;
 
       if (!slug || !format) {
-        console.error("Missing metadata in checkout session:", session.id);
-        break;
+        console.error(
+          "Missing required metadata in checkout session:",
+          session.id,
+          metadata
+        );
+        return NextResponse.json(
+          { error: "Missing metadata (slug or format)" },
+          { status: 422 }
+        );
       }
 
       const book = getStorybook(slug);
       if (!book) {
         console.error("Book not found for slug:", slug);
-        break;
-      }
-
-      // Generate signed download tokens
-      const purchaseId = session.id;
-      const tokens: Record<string, string> = {};
-
-      if (format === "ebook" || format === "bundle") {
-        tokens.ebook = generateDownloadToken(purchaseId, slug, "ebook");
-      }
-      if (format === "audiobook" || format === "bundle") {
-        tokens.audiobook = generateDownloadToken(
-          purchaseId,
-          slug,
-          "audiobook"
+        return NextResponse.json(
+          { error: `Book not found: ${slug}` },
+          { status: 422 }
         );
       }
 
-      // In production: send email with download links, store purchase in DB.
-      // For now, log the fulfillment data.
-      console.log("=== PURCHASE FULFILLED ===");
-      console.log("Session:", purchaseId);
-      console.log("Book:", book.title);
-      console.log("Format:", format);
-      console.log("Narrator:", narratorId || "default");
-      console.log("Customer email:", session.customer_details?.email);
-      console.log("Download tokens:", tokens);
+      const customerEmail = session.customer_details?.email || "";
 
-      // Build download URLs for email
-      const siteUrl =
-        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+      // Generate signed download tokens (14-day expiry)
+      const tokens: Record<string, string> = {};
+      if (format === "ebook" || format === "bundle") {
+        tokens.ebook = generateDownloadToken(session.id, slug, "ebook");
+      }
+      if (format === "audiobook" || format === "bundle") {
+        tokens.audiobook = generateDownloadToken(session.id, slug, "audiobook");
+      }
+
+      // Build download URLs
+      const siteUrl = getSiteUrl();
       const downloadLinks = Object.entries(tokens).map(([fmt, token]) => ({
         format: fmt,
         url: `${siteUrl}/api/download?token=${token}`,
       }));
-      console.log("Download links:", downloadLinks);
+
+      // Persist purchase
+      savePurchase({
+        id: crypto.randomUUID(),
+        stripeSessionId: session.id,
+        email: customerEmail,
+        slug,
+        format,
+        narratorId: narratorId || "",
+        downloadTokens: tokens,
+        createdAt: new Date().toISOString(),
+        fulfilled: true,
+      });
+
+      // Send fulfillment email
+      if (customerEmail) {
+        await sendFulfillmentEmail({
+          to: customerEmail,
+          bookTitle: book.title,
+          format,
+          downloadLinks,
+        });
+      } else {
+        console.warn("No customer email for session:", session.id);
+      }
+
+      console.log("Purchase fulfilled:", {
+        session: session.id,
+        book: book.title,
+        format,
+        narrator: narratorId || "default",
+        email: customerEmail,
+      });
 
       break;
     }
 
     default:
-      console.log("Unhandled event type:", event.type);
+      // Acknowledge unhandled events without error
+      break;
   }
 
   return NextResponse.json({ received: true });

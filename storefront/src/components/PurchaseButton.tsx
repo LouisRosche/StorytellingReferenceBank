@@ -30,28 +30,40 @@ export default function PurchaseButton({
         body: JSON.stringify({ slug, format, narratorId }),
       });
 
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        alert(data?.error || `Checkout failed (${response.status}). Please try again.`);
+        return;
+      }
+
       const data = await response.json();
 
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert(data.error || "Something went wrong. Please try again.");
+        alert("Something went wrong. Please try again.");
       }
     } catch {
-      alert("Network error. Please try again.");
+      alert("Network error. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <button onClick={handlePurchase} disabled={loading} className={className}>
+    <button
+      onClick={handlePurchase}
+      disabled={loading}
+      aria-label={`Purchase ${label} for $${(priceInCents / 100).toFixed(2)}`}
+      className={className}
+    >
       {loading ? (
         <span className="flex items-center gap-2">
           <svg
             className="animate-spin h-4 w-4"
             viewBox="0 0 24 24"
             fill="none"
+            aria-hidden="true"
           >
             <circle
               className="opacity-25"

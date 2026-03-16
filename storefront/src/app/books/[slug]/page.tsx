@@ -4,6 +4,7 @@ import { useState } from "react";
 import { storybooks } from "@/lib/storybooks";
 import type { Narrator, Storybook } from "@/lib/storybooks";
 import NarratorSelector from "@/components/NarratorSelector";
+import AudioPreview from "@/components/AudioPreview";
 import PurchaseButton from "@/components/PurchaseButton";
 import { useParams } from "next/navigation";
 
@@ -22,23 +23,14 @@ function BookDetail({ book }: { book: Storybook }) {
       </a>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-4">
-        {/* Cover / Visual */}
-        <div className="aspect-[3/4] bg-gradient-to-br from-primary-100 to-warm-100 rounded-2xl flex items-center justify-center">
-          <div className="text-center p-12">
-            <span className="text-8xl block mb-6">
-              {book.slug.includes("luna")
-                ? "☁️"
-                : book.slug.includes("rain")
-                ? "💧"
-                : "🌙"}
-            </span>
-            <h1 className="font-display text-3xl font-bold text-gray-800">
-              {book.title}
-            </h1>
-            {book.subtitle && (
-              <p className="text-gray-600 mt-2 italic">{book.subtitle}</p>
-            )}
-          </div>
+        {/* Cover */}
+        <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={book.coverImage}
+            alt={`Cover of ${book.title}`}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Details */}
@@ -76,13 +68,18 @@ function BookDetail({ book }: { book: Storybook }) {
             ))}
           </div>
 
-          {/* Narrator selection */}
+          {/* Narrator selection + audio preview */}
           {book.narrators.length > 0 && (
-            <NarratorSelector
-              narrators={book.narrators}
-              selected={selectedNarrator?.id}
-              onSelect={setSelectedNarrator}
-            />
+            <div className="space-y-4">
+              <NarratorSelector
+                narrators={book.narrators}
+                selected={selectedNarrator?.id}
+                onSelect={setSelectedNarrator}
+              />
+              {selectedNarrator && (
+                <AudioPreview narrator={selectedNarrator} />
+              )}
+            </div>
           )}
 
           {/* Purchase options */}

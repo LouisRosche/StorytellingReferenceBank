@@ -33,23 +33,28 @@ export interface Storybook {
   };
 }
 
-// Narrators sourced from the persona library
+// Narrators sourced from the persona library.
+// "Sunny" maps to the Luna project's warm bedtime narrator;
+// "Claire" maps to the literary-female narrator;
+// "Pip" maps to the child character voice.
 export const narrators: Narrator[] = [
   {
-    id: "narrator-childrens",
+    id: "narrator-luna-warm",
     name: "Sunny",
     description:
-      "Warm and playful, perfect for bedtime stories. Gentle pacing with expressive character voices.",
-    personaFile: "personas/examples/narrator-childrens.json",
-    tags: ["warm", "playful", "bedtime", "ages 3-6"],
+      "Warm and soothing, like a bedtime aunt. Gentle pacing with tender character voices.",
+    personaFile: "projects/luna-the-little-cloud/personas/narrator-luna-warm.json",
+    sampleUrl: "/samples/narrator-luna-warm.mp3",
+    tags: ["warm", "soothing", "bedtime", "ages 3-6"],
   },
   {
-    id: "narrator-literary-female",
+    id: "narrator-luna-energetic",
     name: "Claire",
     description:
-      "Elegant and measured, bringing depth to picture books with emotional range.",
-    personaFile: "personas/examples/narrator-literary-female.json",
-    tags: ["elegant", "expressive", "ages 5-8"],
+      "Bright and dynamic, perfect for daytime reading. Expressive character voices with playful energy.",
+    personaFile: "projects/luna-the-little-cloud/personas/narrator-luna-energetic.json",
+    sampleUrl: "/samples/narrator-luna-energetic.mp3",
+    tags: ["energetic", "expressive", "playful", "ages 3-8"],
   },
   {
     id: "character-child",
@@ -57,6 +62,7 @@ export const narrators: Narrator[] = [
     description:
       "Bright and curious child voice, full of wonder. Great for stories told from a kid's perspective.",
     personaFile: "personas/examples/character-child.json",
+    sampleUrl: "/samples/character-child.mp3",
     tags: ["curious", "energetic", "child-voice", "ages 3-6"],
   },
 ];
@@ -70,7 +76,7 @@ export const storybooks: Storybook[] = [
     author: "Louis Rosche",
     ageRange: "3–6",
     pageCount: 32,
-    wordCount: 580,
+    wordCount: 451,
     description:
       "Luna is a small cloud who doesn't know what kind of cloud she wants to be. Through a journey across the sky, she discovers that the best thing to be is yourself.",
     longDescription: `Luna lives high above the world, surrounded by clouds of every shape and size. The thunderclouds are loud and important. The rain clouds are needed and praised. The wispy cirrus clouds are elegant and admired.

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 533" fill="none">
+  <!-- Background: soft sky gradient -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="60%" stop-color="#bae6fd"/>
+      <stop offset="100%" stop-color="#7dd3fc"/>
+    </linearGradient>
+    <linearGradient id="cloud-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f0f9ff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="533" rx="16" fill="url(#sky)"/>
+
+  <!-- Big background clouds -->
+  <ellipse cx="80" cy="140" rx="60" ry="30" fill="#ffffff" opacity="0.5"/>
+  <ellipse cx="340" cy="100" rx="50" ry="25" fill="#ffffff" opacity="0.4"/>
+  <ellipse cx="300" cy="180" rx="40" ry="20" fill="#ffffff" opacity="0.3"/>
+
+  <!-- Luna - the little cloud (center) -->
+  <g transform="translate(200, 220)">
+    <!-- Cloud body -->
+    <ellipse cx="0" cy="0" rx="55" ry="30" fill="url(#cloud-fill)" stroke="#c7d2fe" stroke-width="1.5"/>
+    <ellipse cx="-25" cy="-15" rx="25" ry="20" fill="url(#cloud-fill)"/>
+    <ellipse cx="15" cy="-20" rx="30" ry="22" fill="url(#cloud-fill)"/>
+    <ellipse cx="-10" cy="-25" rx="20" ry="18" fill="url(#cloud-fill)"/>
+
+    <!-- Eyes -->
+    <circle cx="-12" cy="0" r="4" fill="#334155"/>
+    <circle cx="12" cy="0" r="4" fill="#334155"/>
+    <circle cx="-10" cy="-2" r="1.5" fill="#ffffff"/>
+    <circle cx="14" cy="-2" r="1.5" fill="#ffffff"/>
+
+    <!-- Gentle smile -->
+    <path d="M-6 8 Q0 14 6 8" stroke="#334155" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <!-- Blush -->
+    <ellipse cx="-20" cy="6" rx="6" ry="3" fill="#fda4af" opacity="0.5"/>
+    <ellipse cx="20" cy="6" rx="6" ry="3" fill="#fda4af" opacity="0.5"/>
+
+    <!-- Three tiny raindrops -->
+    <path d="M-10 35 Q-10 40 -8 42 Q-10 44 -12 42 Q-10 40 -10 35Z" fill="#93c5fd" opacity="0.7"/>
+    <path d="M0 38 Q0 43 2 45 Q0 47 -2 45 Q0 43 0 38Z" fill="#93c5fd" opacity="0.7"/>
+    <path d="M10 35 Q10 40 12 42 Q10 44 8 42 Q10 40 10 35Z" fill="#93c5fd" opacity="0.7"/>
+  </g>
+
+  <!-- Title -->
+  <text x="200" y="360" text-anchor="middle" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="#1e293b">
+    Luna
+  </text>
+  <text x="200" y="392" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#475569">
+    the Little Cloud
+  </text>
+
+  <!-- Subtitle -->
+  <text x="200" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-style="italic">
+    A story about finding where you belong
+  </text>
+
+  <!-- Author -->
+  <text x="200" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8">
+    by Louis Rosche
+  </text>
+</svg>

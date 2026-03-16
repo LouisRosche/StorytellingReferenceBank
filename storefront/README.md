@@ -7,22 +7,33 @@ Stripe-powered children's storybook library with narrated audiobooks.
 ```
 storefront/
 ├── src/
-│   ├── app/                  # Next.js App Router pages
-│   │   ├── page.tsx          # Homepage — hero, catalog, narrators
-│   │   ├── books/[slug]/     # Book detail with narrator selection & purchase
-│   │   ├── success/          # Post-purchase confirmation
+│   ├── app/                     # Next.js App Router
+│   │   ├── page.tsx             # Homepage — hero, catalog, narrators
+│   │   ├── books/[slug]/        # Book detail with narrator selection & purchase
+│   │   ├── success/             # Post-purchase confirmation
 │   │   └── api/
-│   │       ├── checkout/     # Stripe Checkout session creation
-│   │       ├── webhooks/stripe/ # Stripe webhook for fulfillment
-│   │       └── download/     # Signed download URL verification
-│   ├── components/           # React components
-│   │   ├── BookCard.tsx      # Catalog card
-│   │   ├── NarratorCard.tsx  # Narrator profile
-│   │   ├── NarratorSelector.tsx # Narrator picker on book page
+│   │       ├── checkout/        # Stripe Checkout session creation
+│   │       ├── webhooks/stripe/ # Webhook: fulfillment, persistence, email
+│   │       └── download/        # Signed download — streams from storage
+│   ├── components/
+│   │   ├── BookCard.tsx         # Catalog card with SVG cover
+│   │   ├── NarratorCard.tsx     # Narrator profile
+│   │   ├── NarratorSelector.tsx # Narrator picker (ARIA radiogroup)
+│   │   ├── AudioPreview.tsx     # Narrator voice sample player
 │   │   └── PurchaseButton.tsx   # Stripe checkout trigger
 │   └── lib/
-│       ├── storybooks.ts     # Book catalog & narrator data
-│       └── stripe.ts         # Stripe client & download token signing
+│       ├── storybooks.ts        # Book catalog & narrator data
+│       ├── stripe.ts            # Stripe client, HMAC token signing (timing-safe)
+│       ├── db.ts                # JSON file purchase database
+│       ├── email.ts             # Fulfillment email (Resend or console)
+│       ├── storage.ts           # Content delivery (local FS or S3/R2)
+│       └── env.ts               # Runtime environment validation
+├── public/
+│   ├── covers/                  # SVG cover art for each book
+│   └── samples/                 # Narrator audio preview samples
+├── content/                     # Local file storage (gitignored)
+│   └── {slug}/                  # ebook.pdf, audiobook.mp3 per book
+└── data/                        # Purchase database (gitignored)
 ```
 
 ## Setup
@@ -37,34 +48,37 @@ npm run dev                   # http://localhost:3000
 ## Stripe Configuration
 
 1. Create a [Stripe account](https://dashboard.stripe.com)
-2. Get your test API keys from the dashboard
-3. Set up a webhook endpoint pointing to `/api/webhooks/stripe`
-4. Listen for `checkout.session.completed` events
-
-For local development, use the Stripe CLI:
-```bash
-stripe listen --forward-to localhost:3000/api/webhooks/stripe
-```
+2. Get API keys from the dashboard
+3. Install the [Stripe CLI](https://stripe.com/docs/stripe-cli)
+4. Forward webhooks locally:
+   ```bash
+   stripe listen --forward-to localhost:3000/api/webhooks/stripe
+   ```
+5. Copy the webhook signing secret to `.env.local`
 
 ## Purchase Flow
 
-1. Customer browses catalog on homepage
-2. Selects a book → sees detail page with narrator options
-3. Clicks purchase → Stripe Checkout session created via API
+1. Customer browses catalog, selects a book
+2. Picks a narrator, previews audio sample
+3. Clicks purchase → Stripe Checkout session created (dynamic pricing)
 4. Completes payment on Stripe's hosted page
-5. Webhook fires → generates signed download tokens (14-day expiry)
-6. Customer redirected to success page with download links
+5. Webhook fires → purchase saved to DB, download tokens generated (HMAC-SHA256, 14-day expiry)
+6. Fulfillment email sent via Resend (or logged to console in dev)
+7. Customer clicks download link → file streamed from storage
 
 ## Content Pipeline
 
-Books are sourced from the parent repo's `projects/` directory. The TTS
-production pipeline (`scripts/batch_produce.py`) generates audiobook files
-that are stored in cloud storage and served via signed download URLs.
+1. Write manuscript in `projects/{name}/drafts/`
+2. Configure personas in `projects/{name}/personas/`
+3. Generate audiobook: `python scripts/batch_produce.py`
+4. Place output in `storefront/content/{slug}/audiobook.mp3`
+5. Create ebook PDF → `storefront/content/{slug}/ebook.pdf`
 
-## Next Steps
+## Security
 
-- [ ] Connect cloud storage (S3/R2) for file hosting
-- [ ] Add email delivery via SendGrid/Resend
-- [ ] Build admin dashboard for order management
-- [ ] Add subscription tier for unlimited library access
-- [ ] Expand catalog with new children's stories
+- HMAC tokens use `crypto.timingSafeEqual()` to prevent timing attacks
+- No fallback secrets — app crashes on missing env vars (fail-fast)
+- Webhook signature verification via Stripe SDK
+- Idempotent webhook processing (duplicate events skipped)
+- Signed download URLs expire after 14 days
+- Purchase database provides audit trail

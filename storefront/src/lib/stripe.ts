@@ -1,63 +1,78 @@
 import Stripe from "stripe";
+import crypto from "crypto";
 
-if (!process.env.STRIPE_SECRET_KEY) {
+// --- Environment validation ---
+
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+if (!STRIPE_SECRET_KEY) {
   throw new Error(
     "STRIPE_SECRET_KEY is not set. Copy .env.example to .env.local and add your Stripe keys."
   );
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+if (!process.env.STRIPE_WEBHOOK_SECRET) {
+  throw new Error(
+    "STRIPE_WEBHOOK_SECRET is not set. Run `stripe listen` and copy the webhook signing secret."
+  );
+}
+export const STRIPE_WEBHOOK_SECRET: string = process.env.STRIPE_WEBHOOK_SECRET;
+
+export const stripe = new Stripe(STRIPE_SECRET_KEY, {
   apiVersion: "2026-02-25.clover",
   typescript: true,
 });
 
-/**
- * Generate a time-limited signed download URL.
- * In production this would use S3 presigned URLs or similar.
- * For now, it generates a HMAC-signed token with expiry.
- */
+// --- Download token signing (HMAC-SHA256, timing-safe) ---
+
 export function generateDownloadToken(
   purchaseId: string,
   slug: string,
   format: "ebook" | "audiobook"
 ): string {
-  const crypto = require("crypto");
   const expiresAt = Date.now() + 14 * 24 * 60 * 60 * 1000; // 14 days
   const payload = `${purchaseId}:${slug}:${format}:${expiresAt}`;
-  const secret = process.env.STRIPE_SECRET_KEY || "fallback-secret";
   const signature = crypto
-    .createHmac("sha256", secret)
+    .createHmac("sha256", STRIPE_SECRET_KEY!)
     .update(payload)
     .digest("hex");
-  return Buffer.from(JSON.stringify({ payload, signature, expiresAt })).toString(
-    "base64url"
-  );
+  return Buffer.from(
+    JSON.stringify({ payload, signature, expiresAt })
+  ).toString("base64url");
 }
 
-/**
- * Verify a download token is valid and not expired.
- */
 export function verifyDownloadToken(
   token: string
 ): { purchaseId: string; slug: string; format: string } | null {
   try {
-    const crypto = require("crypto");
     const decoded = JSON.parse(
       Buffer.from(token, "base64url").toString("utf-8")
     );
     const { payload, signature, expiresAt } = decoded;
 
+    if (typeof payload !== "string" || typeof signature !== "string") {
+      return null;
+    }
+
     if (Date.now() > expiresAt) return null;
 
-    const secret = process.env.STRIPE_SECRET_KEY || "fallback-secret";
     const expected = crypto
-      .createHmac("sha256", secret)
+      .createHmac("sha256", STRIPE_SECRET_KEY!)
       .update(payload)
       .digest("hex");
 
-    if (signature !== expected) return null;
+    // Timing-safe comparison to prevent timing attacks
+    const sigBuffer = Buffer.from(signature, "hex");
+    const expectedBuffer = Buffer.from(expected, "hex");
+    if (
+      sigBuffer.length !== expectedBuffer.length ||
+      !crypto.timingSafeEqual(sigBuffer, expectedBuffer)
+    ) {
+      return null;
+    }
 
-    const [purchaseId, slug, format] = payload.split(":");
+    const parts = payload.split(":");
+    if (parts.length < 3) return null;
+    const [purchaseId, slug, format] = parts;
     return { purchaseId, slug, format };
   } catch {
     return null;
