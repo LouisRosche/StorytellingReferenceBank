@@ -136,22 +136,23 @@ def test_acx_validator_import():
     try:
         import numpy as np
 
-        # Generate test tone at -20 dB
+        # Generate test tone at -20 dB peak amplitude.
+        # Sine RMS = amplitude / sqrt(2), so RMS ≈ -23 dB.
         sample_rate = 44100
         duration = 1.0
         frequency = 440
         t = np.linspace(0, duration, int(sample_rate * duration))
-        amplitude = 10 ** (-20 / 20)  # -20 dB
+        amplitude = 10 ** (-20 / 20)  # -20 dB peak
         samples = amplitude * np.sin(2 * np.pi * frequency * t)
 
         rms_db = calculate_rms_db(samples)
         peak_db = calculate_peak_db(samples)
 
-        print(f"Test tone RMS: {rms_db:.1f} dB (expected ~-20)")
+        print(f"Test tone RMS: {rms_db:.1f} dB (expected ~-23)")
         print(f"Test tone Peak: {peak_db:.1f} dB (expected ~-20)")
 
-        # RMS should be close to -20 for a sine wave
-        assert -22 < rms_db < -18, f"RMS calculation off: {rms_db}"
+        # Sine at -20 dB peak → RMS ≈ -23 dB (amplitude / sqrt(2))
+        assert -25 < rms_db < -21, f"RMS calculation off: {rms_db}"
         print("Level calculations: correct")
 
     except ImportError:

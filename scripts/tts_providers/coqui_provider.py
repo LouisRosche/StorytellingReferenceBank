@@ -28,7 +28,11 @@ class CoquiTTSProvider(TTSProvider):
     """
     Coqui TTS provider for local voice synthesis.
 
-    Supports:
+    STATUS: EXPERIMENTAL — generate(), generate_from_reference(), and
+    list_voices() are not yet implemented and will raise NotImplementedError.
+    Use Qwen or Kokoro providers for production workloads.
+
+    Supports (when implemented):
     - Multiple TTS models (XTTS, VITS, Tacotron2, etc.)
     - Zero-shot voice cloning with XTTS
     - Fine-tuned custom voices

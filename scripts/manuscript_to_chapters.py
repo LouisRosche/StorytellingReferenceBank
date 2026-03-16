@@ -35,6 +35,14 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 from datetime import datetime
 
+# Optional EPUB import
+try:
+    import ebooklib
+    from ebooklib import epub
+    EBOOKLIB_AVAILABLE = True
+except ImportError:
+    EBOOKLIB_AVAILABLE = False
+
 
 # Common chapter patterns
 CHAPTER_PATTERNS = [
@@ -287,6 +295,51 @@ def create_manifest(
     return manifest
 
 
+def extract_text_from_epub(epub_path: str) -> Tuple[str, Optional[str]]:
+    """
+    Extract plain text from an EPUB file using ebooklib.
+
+    Returns:
+        Tuple of (full_text, title)
+    """
+    if not EBOOKLIB_AVAILABLE:
+        raise ImportError("EPUB support requires ebooklib: pip install ebooklib")
+
+    book = epub.read_epub(epub_path, options={'ignore_ncx': True})
+
+    # Get title
+    title = None
+    titles = book.get_metadata('DC', 'title')
+    if titles:
+        title = titles[0][0]
+
+    # Extract text from all document items
+    chapters_text = []
+    for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
+        content = item.get_content().decode('utf-8', errors='replace')
+        # Strip HTML tags to get plain text
+        text = re.sub(r'<style[^>]*>.*?</style>', '', content, flags=re.DOTALL)
+        text = re.sub(r'<script[^>]*>.*?</script>', '', text, flags=re.DOTALL)
+        text = re.sub(r'<br\s*/?>', '\n', text)
+        text = re.sub(r'<p[^>]*>', '\n\n', text)
+        text = re.sub(r'</p>', '', text)
+        text = re.sub(r'<h[1-6][^>]*>', '\n\n## ', text)
+        text = re.sub(r'</h[1-6]>', '\n', text)
+        text = re.sub(r'<[^>]+>', '', text)
+        # Clean up HTML entities
+        text = text.replace('&amp;', '&').replace('&lt;', '<').replace('&gt;', '>')
+        text = text.replace('&quot;', '"').replace('&apos;', "'")
+        text = text.replace('&nbsp;', ' ').replace('&#160;', ' ')
+        # Normalize whitespace
+        text = re.sub(r'\n{3,}', '\n\n', text)
+        text = text.strip()
+        if text and len(text.split()) > 5:
+            chapters_text.append(text)
+
+    full_text = '\n\n'.join(chapters_text)
+    return full_text, title
+
+
 def process_manuscript(
     input_path: str,
     output_dir: str,
@@ -313,9 +366,16 @@ def process_manuscript(
     Returns:
         Manifest object
     """
-    # Read manuscript
-    with open(input_path, 'r', encoding='utf-8') as f:
-        text = f.read()
+    # Read manuscript — support EPUB via ebooklib
+    input_ext = Path(input_path).suffix.lower()
+    if input_ext == '.epub':
+        text, epub_title = extract_text_from_epub(input_path)
+        if title is None:
+            title = epub_title or Path(input_path).stem
+        print(f"Extracted {len(text.split()):,} words from EPUB", file=sys.stderr)
+    else:
+        with open(input_path, 'r', encoding='utf-8') as f:
+            text = f.read()
 
     # Derive title from filename if not provided
     if title is None:

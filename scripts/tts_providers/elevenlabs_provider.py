@@ -22,7 +22,11 @@ class ElevenLabsProvider(TTSProvider):
     """
     ElevenLabs TTS provider for cloud-based voice synthesis.
 
-    Supports:
+    STATUS: EXPERIMENTAL — generate(), generate_from_reference(), and
+    list_voices() are not yet implemented and will raise NotImplementedError.
+    Use Qwen or Kokoro providers for production workloads.
+
+    Supports (when implemented):
     - High-quality neural TTS
     - Instant voice cloning
     - Professional voice cloning (requires subscription)

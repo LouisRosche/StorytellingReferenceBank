@@ -71,7 +71,18 @@ pip install gradio
 # Development/testing
 pip install pytest
 
-# Voice regression testing (MFCC fingerprinting)
+# Quality & analysis stack (recommended)
+pip install pyloudnorm    # ITU-R BS.1770 LUFS loudness (broadcast standard)
+pip install pedalboard    # Spotify C++ audio DSP (~100x faster mastering)
+pip install silero-vad    # Neural voice activity detection
+pip install resemblyzer   # Speaker verification embeddings (256-dim GE2E)
+pip install textstat      # Manuscript readability scoring
+pip install ebooklib      # EPUB import support
+
+# Or install all at once:
+pip install pyloudnorm silero-vad resemblyzer textstat ebooklib pedalboard
+
+# Voice regression testing (MFCC fingerprinting fallback)
 pip install librosa
 ```
 
@@ -124,7 +135,7 @@ templates/worlds/         # World-building framework
 templates/series/         # Series bible template
 style-guides/             # Genre conventions
 references/               # Craft principles
-personas/                 # TTS voice library (15 voices)
+personas/                 # TTS voice library (19 voices)
   examples/               # Persona JSON definitions
   golden/                 # Regression test infrastructure
   schema.json             # Persona file format

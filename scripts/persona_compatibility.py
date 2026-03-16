@@ -16,6 +16,13 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional
 
+# Optional readability analysis for manuscript-based audience inference
+try:
+    import textstat
+    TEXTSTAT_AVAILABLE = True
+except ImportError:
+    TEXTSTAT_AVAILABLE = False
+
 
 # --- Tone-Emotion Mappings ---
 
@@ -223,6 +230,47 @@ def compatibility_score(persona: Persona, story: StoryMeta) -> float:
     return round(min(total, 1.0), 3)
 
 
+def infer_audience_from_manuscript(text: str) -> str:
+    """
+    Infer target audience from manuscript text using readability metrics.
+
+    Uses Flesch Reading Ease score mapped to audience categories:
+      > 80  → children (picture books, early readers)
+      60-80 → ya (young adult, accessible adult)
+      30-60 → adult (standard literary fiction)
+      < 30  → adult (academic, dense literary)
+
+    The Flesch formula: 206.835 - 1.015(total_words/total_sentences)
+                        - 84.6(total_syllables/total_words)
+    """
+    if not TEXTSTAT_AVAILABLE:
+        return "adult"
+
+    fre = textstat.flesch_reading_ease(text)
+    fk_grade = textstat.flesch_kincaid_grade(text)
+
+    if fre > 80 or fk_grade < 4:
+        return "children"
+    elif fre > 60 or fk_grade < 8:
+        return "ya"
+    else:
+        return "adult"
+
+
+def story_meta_from_manuscript(text: str, title: str = "Untitled") -> "StoryMeta":
+    """
+    Auto-generate StoryMeta from raw manuscript text using textstat analysis.
+
+    Infers audience from readability, allowing persona matching without
+    manually writing a story.json.
+    """
+    audience = infer_audience_from_manuscript(text)
+    return StoryMeta(
+        title=title,
+        target_audience=audience,
+    )
+
+
 def load_personas(personas_dir: Path) -> list[Persona]:
     """Load all personas from directory."""
     personas = []
@@ -245,16 +293,27 @@ def rank_personas(story: StoryMeta, personas: list[Persona], top_n: int = 5) -> 
 
 def main():
     parser = argparse.ArgumentParser(description="Match stories to voice personas")
-    parser.add_argument("--story", type=Path, required=True, help="Story metadata JSON")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--story", type=Path, help="Story metadata JSON")
+    group.add_argument("--manuscript", type=Path,
+                       help="Manuscript text file (auto-infers audience via textstat readability)")
     parser.add_argument("--personas", type=Path, default=Path("personas/examples"),
                         help="Personas directory")
     parser.add_argument("--top", type=int, default=5, help="Number of recommendations")
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     args = parser.parse_args()
 
-    # Load story
-    with open(args.story) as f:
-        story = StoryMeta.from_dict(json.load(f))
+    # Load story metadata — from JSON or inferred from manuscript
+    if args.story:
+        with open(args.story) as f:
+            story = StoryMeta.from_dict(json.load(f))
+    else:
+        with open(args.manuscript, 'r', encoding='utf-8') as f:
+            text = f.read()
+        story = story_meta_from_manuscript(text, title=args.manuscript.stem)
+        if not args.json:
+            audience = story.target_audience
+            print(f"Inferred audience from readability: {audience}")
 
     # Load personas
     personas = load_personas(args.personas)

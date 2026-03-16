@@ -22,7 +22,11 @@ class OpenAITTSProvider(TTSProvider):
     """
     OpenAI TTS provider for cloud-based voice synthesis.
 
-    Supports:
+    STATUS: EXPERIMENTAL — generate() is not yet implemented and will raise
+    NotImplementedError. Voice cloning is not supported by OpenAI's API.
+    Use Qwen or Kokoro providers for production workloads.
+
+    Supports (when implemented):
     - Six preset voices with distinct characteristics
     - Two quality levels (tts-1 for speed, tts-1-hd for quality)
     - Speed adjustment (0.25x to 4.0x)
