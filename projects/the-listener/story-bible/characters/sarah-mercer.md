@@ -4,7 +4,7 @@
 
 **Name**: Dr. Sarah Mercer (nee Aldridge)
 **Role**: Protagonist
-**Age**: 44
+**Age**: 42
 **Gender**: Female
 **Occupation**: Licensed Clinical Psychologist, specializing in trauma therapy
 
@@ -124,7 +124,7 @@ Control is an illusion. Vulnerability is not weakness. Forgiving herself is not 
 
 **Persona file**: `@personas/sarah-mercer.json`
 
-**Voice direction summary**: Female, mid-forties, educated American neutral. Measured pace, precise diction. Warm when professional, cooler when personal - subtle irony. Under stress: slower, more careful, controlled fear beneath surface.
+**Voice direction summary**: Female, early forties, educated American neutral. Measured pace, precise diction. Warm when professional, cooler when personal - subtle irony. Under stress: slower, more careful, controlled fear beneath surface.
 
 ---
 

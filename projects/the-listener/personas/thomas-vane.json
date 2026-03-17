@@ -3,7 +3,7 @@
   "name": "Thomas Vane",
   "version": "1.0.0",
   "status": "active",
-  "voice_prompt": "Male, mid-forties, soft baritone. Educated, precise, unsettlingly calm. Speaks quietly, forcing listener to lean in. Long pauses before responses - not hesitation, control. Uses names with uncomfortable intimacy. No emotional volatility; even threats delivered softly. Voice carries weight without volume. Something wrong beneath the polish.",
+  "voice_prompt": "Male, early forties, soft baritone. Educated, precise, unsettlingly calm. Speaks quietly, forcing listener to lean in. Long pauses before responses - not hesitation, control. Uses names with uncomfortable intimacy. No emotional volatility; even threats delivered softly. Voice carries weight without volume. Something wrong beneath the polish.",
   "character_context": "Antagonist. A stalker who believes himself a romantic. Charming surface, void beneath. His composure is predatory; his softness is threat. Never raises voice. The quieter he speaks, the more dangerous.",
   "voice_attributes": {
     "age_range": "middle_aged",

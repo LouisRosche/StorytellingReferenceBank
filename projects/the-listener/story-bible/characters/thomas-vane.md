@@ -4,7 +4,7 @@
 
 **Name**: Thomas Vane
 **Role**: Antagonist
-**Age**: 44
+**Age**: 42
 **Gender**: Male
 **Occupation**: Architect (partner at Whitmore & Associates)
 
@@ -97,7 +97,7 @@ Nothing. His arc is exposure, not growth. The moment Sarah "understands" him is 
 - Age 23: First serious "interest" (a coworker). Ends when she moves cities.
 - Age 30: Meets Maya. Convinces himself this is different.
 - Age 32: Maya dies. Thomas feels loss, not guilt.
-- Age 32-44: Watches Sarah. Waits. Plans.
+- Age 32-42: Watches Sarah. Waits. Plans.
 
 **Family/Origin**: Single mother, working-class, emotionally absent (depressive). No siblings. Father abandoned family, never made contact.
 
@@ -127,7 +127,7 @@ Nothing. His arc is exposure, not growth. The moment Sarah "understands" him is 
 
 **Persona file**: `@personas/thomas-vane.json`
 
-**Voice direction summary**: Male, mid-forties, soft baritone. Educated, precise. Speaks quietly - listener must lean in. Long pauses before responses. No emotional volatility. Unsettling calm. Emphasis on names, intimate details.
+**Voice direction summary**: Male, early forties, soft baritone. Educated, precise. Speaks quietly - listener must lean in. Long pauses before responses. No emotional volatility. Unsettling calm. Emphasis on names, intimate details.
 
 ---
 
@@ -140,6 +140,8 @@ Nothing. His arc is exposure, not growth. The moment Sarah "understands" him is 
 | Never blinks first | Ch 3 | Sarah realizes this consciously |
 | Architect, partner level | Ch 2 | Provides income, access, alibi |
 | Coffee black, no sugar | Ch 1 | Orders same every session |
+| Age "forty-four" on intake | Ch 1, line 44 | **DRAFT CONFLICT**: Intake form says 44, but "ten years" since Maya's death (used in ch-04, ch-05, ch-09, ch-16, ch-23) implies age 42 (was 32 when Maya died). Ch-08 line 84 says "mid-forties." Needs authorial decision: fix intake form to 42, or revise timeline. |
+| Maya died at 27 or 31? | Ch 1/6 vs Ch 25 | Ch-01 and Ch-06 say Maya died at 27. Ch-25 line 4 says "a life that had ended at thirty-one." Needs authorial resolution. |
 
 ## Revision Log
 

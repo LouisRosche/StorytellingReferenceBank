@@ -94,7 +94,7 @@
 
 **Name**: Dr. Ruth Henley
 **Role**: Supporting (mentor figure)
-**Age**: 71
+**Age**: 63
 **Gender**: Female
 **Occupation**: Semi-retired clinical psychologist, supervisor
 
@@ -209,7 +209,7 @@ Emma is not a viewpoint character. She represents what Sarah stands to lose. At 
 
 **Name**: Maya Aldridge
 **Role**: Supporting (via memory/recordings/flashback)
-**Age**: 26 at death (would be 36)
+**Age**: 27 at death (would be 37)
 **Gender**: Female
 **Occupation**: (Was) Graduate student, art history
 

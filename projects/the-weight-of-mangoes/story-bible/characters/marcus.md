@@ -2,7 +2,7 @@
 
 ## Basic Information
 
-**Name**: Marcus Singh
+**Name**: Marcus Persaud-Morrison
 **Role**: Protagonist (ensemble), third generation
 **Age**: 28
 **Gender**: Male

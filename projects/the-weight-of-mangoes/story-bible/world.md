@@ -77,7 +77,7 @@ This story traces a specific, underexplored migration pattern: India to Trinidad
 **The Village** (name fading from memory):
 - Nani's grandmother Ajji came from a village near Patna
 - Ajji's family were landless agricultural workers
-- She was recruited (some say deceived) at age 16
+- She was recruited (some say deceived) at age 16; arrived in Trinidad in 1920 at age 17
 - The village exists only in story now—Nani has never been to India
 
 **Imagined Details** (from Ajji's stories, possibly embellished):
@@ -140,8 +140,8 @@ This story traces a specific, underexplored migration pattern: India to Trinidad
 
 | Year | Event |
 |------|-------|
-| ~1900 | Nani's grandmother (Ajji) born in Bihar, India |
-| 1916 | Ajji arrives in Trinidad on one of last indenture ships (age ~16) |
+| ~1903 | Nani's grandmother (Ajji), given name Savitri, born in Bihar, India |
+| 1920 | Ajji (Savitri) arrives in Trinidad on one of last indenture ships (age 17; recruited at 16) |
 | 1920s | Ajji marries, settles in Debe, works cane fields |
 | 1942 | Nirmala (Nani) born in Debe |
 | 1945 | Ajji dies when Nani is 3; Nani inherits her stories secondhand |
@@ -151,10 +151,9 @@ This story traces a specific, underexplored migration pattern: India to Trinidad
 | 1968 | Sunil born in Chaguanas |
 | 1972 | Family emigrates to Brooklyn; Anita born same year |
 | 1985 | Jairam buys the Crown Heights brownstone |
-| 1996 | Jairam dies of heart attack |
 | 1994 | Marcus born (Kamla's son) |
-| 2002 | Maya born (Kamla's daughter) |
-| 2000 | Jason born (Sunil's son) |
+| 1996 | Jairam dies of heart attack; Jason born (Sunil's son) |
+| 1998 | Maya born (Kamla's daughter) |
 | 2022 | Present day: Nani's 80th birthday |
 
 ---
