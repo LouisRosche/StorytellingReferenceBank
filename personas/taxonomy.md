@@ -42,12 +42,12 @@ Personas with `sim(p1, p2) > 0.70` are redundant. Consolidate or differentiate.
 ```
              | G   | A      | P    | S      | T        | R   | L     |
 -------------|-----|--------|------|--------|----------|-----|-------|
-mentor       | M   | elder  | low  | slow   | gravelly | UK  | en    |
+mentor       | M   | elder  | low  | slow   | gravelly | SCO | en    |
 children     | F   | young  | med  | med    | warm     | NA  | en    |
 literary     | M   | middle | low  | slow   | warm     | NA  | en    |
 literary-f   | F   | middle | med  | med    | warm     | NA  | en    |
 warm-f       | F   | young  | med  | med    | smooth   | NA  | en    |
-thriller     | M   | middle | low  | med    | crisp    | NA  | en    |
+thriller     | M   | young  | low  | med    | crisp    | NA  | en    |
 british      | M   | middle | med  | med    | crisp    | UK  | en    |
 indian       | N   | middle | med  | med    | warm     | IN  | en,hi |
 latinx       | N   | young  | med  | med    | warm     | NA  | en,es |

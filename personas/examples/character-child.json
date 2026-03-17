@@ -1,6 +1,6 @@
 {
   "id": "character-child",
-  "name": "Child Voice",
+  "name": "The Child's Voice",
   "version": "1.0.0",
   "status": "active",
   "voice_prompt": "A bright, curious child under twelve with a very high, clear voice. Gender-neutral, American accent. Fast-paced with natural breathiness and the unguarded emotion that only children have. Sentences tumble out in bursts of excitement, then slow with sudden wide-eyed wonder or fear. No performative cuteness—this is a real child's voice with real reactions: delight that cannot be contained, fear that has no filter, curiosity that barrels forward without caution.",
@@ -22,7 +22,7 @@
     "validation_status": "pending"
   },
   "product": {
-    "display_name": "The Young Voice",
+    "display_name": "The Little Voice",
     "tagline": "Every feeling at full volume",
     "tier": "standard"
   },

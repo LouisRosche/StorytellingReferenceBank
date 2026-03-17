@@ -106,7 +106,11 @@ ffmpeg -i reference.wav -t 30 -c copy reference-trimmed.wav
   "id": "cloned-author-voice",
   "name": "Author Narration (Cloned)",
   "voice_prompt": "Perfect audio quality. Match the reference voice exactly for timbre and tone. Warm, conversational, slightly literary. Natural pacing with thoughtful pauses.",
-  "reference_audio": "voice-clones/author/reference-trimmed.wav",
+  "reference_audio": {
+    "path": "voice-clones/author/reference-trimmed.wav",
+    "transcript": "The opening passage read naturally by the author.",
+    "duration_seconds": 15
+  },
   "voice_attributes": {
     "age_range": "40s",
     "gender": "as reference",
