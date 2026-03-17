@@ -1,9 +1,11 @@
 {
   "id": "narrator-indian-english",
   "name": "Indian English Literary Narrator",
+  "version": "1.0.0",
+  "status": "active",
   "voice_prompt": "Perfect audio quality. Narrator with educated Indian English accent—the refined English of someone raised bilingual, not the exaggerated 'call center' stereotype. Male or female, middle-aged. Musical quality to phrasing, slightly more formal register than American casual. Warm, intelligent, capable of both humor and gravity. Comfortable with Hindi/Sanskrit terms pronounced correctly.",
   "voice_attributes": {
-    "age_range": "40s-50s",
+    "age_range": "middle_aged",
     "gender": "neutral",
     "pitch": "medium",
     "pace": "measured, slightly formal",
@@ -14,5 +16,9 @@
   "emotional_range": ["wise", "warm", "philosophical", "gently ironic", "compassionate", "occasionally sharp"],
   "use_cases": ["Indian literature", "diaspora narratives", "literary fiction", "family sagas", "spiritual/philosophical works"],
   "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-indian-english.wav",
+    "validation_status": "pending"
+  },
   "notes": "Think: the voice of Arundhati Roy or Salman Rushdie reading their own work. Accent should feel natural and educated, not performed. Hindi/Sanskrit terms should be pronounced correctly, not Anglicized."
 }

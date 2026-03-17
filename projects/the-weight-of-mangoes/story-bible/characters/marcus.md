@@ -124,7 +124,7 @@ That belonging isn't about bloodline or knowledge—it's about presence, attenti
 
 | Fact | Established In | Notes |
 |------|----------------|-------|
-| Born 1998 | World doc | Actually 1994 to be 28 in 2022—adjust |
+| Born 1994 | World doc | Consistent with age 28 in 2022 |
 | High school teacher | This doc | Brooklyn public school |
 | Plays basketball | This doc | College-level, still plays pickup |
 | Wears grandfather's chain | This doc | Thin gold, inherited |

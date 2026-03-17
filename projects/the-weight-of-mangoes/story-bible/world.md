@@ -152,7 +152,7 @@ This story traces a specific, underexplored migration pattern: India to Trinidad
 | 1972 | Family emigrates to Brooklyn; Anita born same year |
 | 1985 | Jairam buys the Crown Heights brownstone |
 | 1996 | Jairam dies of heart attack |
-| 1998 | Marcus born (Kamla's son) |
+| 1994 | Marcus born (Kamla's son) |
 | 2002 | Maya born (Kamla's daughter) |
 | 2000 | Jason born (Sunil's son) |
 | 2022 | Present day: Nani's 80th birthday |
