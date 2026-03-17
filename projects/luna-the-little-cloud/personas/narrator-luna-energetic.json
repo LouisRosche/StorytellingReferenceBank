@@ -1,6 +1,8 @@
 {
   "id": "narrator-luna-energetic",
   "name": "Luna Narrator (Daytime/Energetic)",
+  "version": "1.0.0",
+  "status": "active",
   "voice_prompt": "Perfect audio quality. Bright, engaging female voice, early thirties. Animated and expressive, with natural energy that draws children in. Medium pace with dynamic variation—slows for emotional moments, quickens for excitement. Medium-high pitch, clear and vibrant. Smile in the voice throughout. Playful inflections on fun words like 'Plip!' and character dialogue. The voice of a favorite teacher during storytime—warm but lively, never boring.",
   "character_context": "An energetic narrator for daytime reading. This version emphasizes engagement, participation, and emotional expressiveness. The goal is active listening—children should feel invited into the story, anticipating page turns and responding to dramatic moments. Emotional beats are more pronounced—sadness earns a sympathetic 'aww' quality, joy is celebratory.",
   "voice_attributes": {
@@ -15,5 +17,9 @@
   "emotional_range": ["playful", "excited", "sympathetic", "encouraging", "celebratory"],
   "use_cases": ["daytime reading", "storytime", "classroom", "interactive reading"],
   "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "projects/luna-the-little-cloud/golden/narrator-luna-energetic.wav",
+    "validation_status": "pending"
+  },
   "notes": "Standard page-turn pauses (2s). Onomatopoeia should pop—'Plip! Plip! Plip!' with distinct articulation. Dialogue voices more differentiated: Storm clouds get a bigger, rumbly quality. Flower is delicate and sweet. Bee is buzzy and cheerful. Invite participation through pacing—slight pauses before repeated phrases let children chime in."
 }

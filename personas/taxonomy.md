@@ -15,7 +15,7 @@ Mathematical framework for dimensional coverage and optimization.
 | Pitch | P | {vlow, low, med, high, vhigh} | 0.10 |
 | Pace | S | {vslow, slow, med, fast, vfast} | 0.10 |
 | Texture | T | {smooth, warm, breathy, husky, gravelly, crisp} | 0.15 |
-| Accent | R | {NA, UK, AU, AF, IN, CA, EU, AS} | 0.20 |
+| Accent | R | {NA, UK, SCO, AU, AF, IN, CA, EU, AS} | 0.20 |
 | Language | L | {en, es, fr, de, zh, ja, ko, pt, ru, it} | 0.15 |
 
 ### Similarity Function

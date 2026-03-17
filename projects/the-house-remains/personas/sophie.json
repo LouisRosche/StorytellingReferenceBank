@@ -6,7 +6,7 @@
   "voice_prompt": "Perfect audio quality. Young woman, mid-twenties. Clear, measured voice - thinks before speaking. Higher pitch than the older women but not girlish. Contemporary without being trendy. No regional accent - moved too much. When she speaks, it matters; she doesn't fill silence. Asks questions others avoid. Quiet confidence underneath observer's caution. Should sound like someone who has been listening her whole life and is only now learning to speak.",
   "character_context": "Sophie is Helen's daughter, 25, experiencing adult grief for the first time. She's the observer, the helper, the one who gets coffee. But she's also the one who will find the crucial letter. She's watching the adults crumble and realizing they never had the answers she assumed they did.",
   "voice_attributes": {
-    "age_range": "mid-20s",
+    "age_range": "young_adult",
     "gender": "female",
     "pitch": "medium",
     "pace": "measured, selective",
@@ -18,6 +18,7 @@
   "use_cases": ["dialogue", "key questions", "generational contrast"],
   "model_variant": "1.7B-VoiceDesign",
   "quality": {
+    "golden_reference": "projects/the-house-remains/golden/sophie-marchetti-callahan.wav",
     "validation_status": "pending"
   },
   "notes": "Youngest voice in main cast. Should contrast with the older generation without being naive. Her questions cut through family performance. When she trails off, it's because she realizes no one is listening - let that land."
