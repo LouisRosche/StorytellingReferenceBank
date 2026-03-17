@@ -24,6 +24,16 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY, {
 
 // --- Download token signing (HMAC-SHA256, timing-safe) ---
 
+// Use a dedicated signing key, NOT the Stripe secret key.
+// This limits blast radius: a token leak doesn't compromise the Stripe account.
+const DOWNLOAD_TOKEN_SECRET = (() => {
+  if (process.env.DOWNLOAD_TOKEN_SECRET) return process.env.DOWNLOAD_TOKEN_SECRET;
+  if (process.env.NODE_ENV === "production") {
+    console.warn("WARNING: DOWNLOAD_TOKEN_SECRET not set — falling back to STRIPE_SECRET_KEY. Set a dedicated key in production.");
+  }
+  return STRIPE_SECRET_KEY!;
+})();
+
 export function generateDownloadToken(
   purchaseId: string,
   slug: string,
@@ -32,7 +42,7 @@ export function generateDownloadToken(
   const expiresAt = Date.now() + 14 * 24 * 60 * 60 * 1000; // 14 days
   const payload = `${purchaseId}:${slug}:${format}:${expiresAt}`;
   const signature = crypto
-    .createHmac("sha256", STRIPE_SECRET_KEY!)
+    .createHmac("sha256", DOWNLOAD_TOKEN_SECRET)
     .update(payload)
     .digest("hex");
   return Buffer.from(
@@ -56,7 +66,7 @@ export function verifyDownloadToken(
     if (Date.now() > expiresAt) return null;
 
     const expected = crypto
-      .createHmac("sha256", STRIPE_SECRET_KEY!)
+      .createHmac("sha256", DOWNLOAD_TOKEN_SECRET)
       .update(payload)
       .digest("hex");
 

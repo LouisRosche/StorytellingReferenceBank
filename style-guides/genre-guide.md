@@ -451,6 +451,39 @@ Craft and TTS notes by genre.
 
 ---
 
+## Middle Grade (MG)
+
+**Defining characteristic**: The protagonist discovers how the wider world works beyond family. The core question is belonging: where do I fit?
+
+### Craft Priorities
+
+- **Protagonist age**: 10-13. Readers read up, not down — the protagonist should be at the upper end of the target audience age or slightly above.
+- **Voice**: Clear, immediate, and grounded in the character's specific world. Interior life is present but less self-analytical than YA. MG characters experience feelings intensely but don't always have language for them.
+- **Stakes**: The world is expanding. Problems feel enormous because they are being encountered for the first time — first betrayal, first moral complexity, first awareness of injustice. Respect the scale without condescending.
+- **Content boundaries**: No graphic violence, explicit sexuality, or sustained despair without hope. Characters can face darkness, but the narrative provides a path through it. This is not censorship — it's audience-appropriate craft.
+- **Humor**: MG rewards humor more than any other category. Even serious MG benefits from moments of levity. The humor comes from character voice and situation, not from ironic distance.
+- **Adults**: Present but not in control. Adults may be absent, ineffective, or part of the problem — but avoid the trope of universally incompetent adults. One trustworthy adult who nonetheless cannot solve the protagonist's problem is more realistic than a world of oblivious parents.
+
+### Structure Notes
+
+- **Pacing**: Faster than literary fiction, but MG can be more episodic than YA. Chapter length typically 1,500-3,000 words.
+- **Scene-Sequel ratio**: 2:1 (more scene than sequel). MG readers want forward motion; extended reflection works only in measured doses.
+- **Framework**: Three-Act and Save the Cat both work well. Kishotenketsu suits quieter MG (slice-of-life, literary MG).
+
+### TTS Notes
+
+- **Narrator persona**: Warm but not saccharine. Clear articulation. Energy that matches the protagonist's engagement with the world.
+- **Pace**: Slightly faster than adult literary; slightly slower than children's picture book.
+- **Emotional register**: Wide range, but the baseline is engaged curiosity rather than anxiety or gravity.
+
+### Word Count
+
+- Chapter books (ages 7-10): 15,000-25,000
+- Standard MG: 25,000-50,000
+- Upper MG / MG fantasy: 50,000-75,000
+
+---
+
 ## Young Adult (YA)
 
 **Defining characteristic**: Identity formation drives the narrative; protagonist agency and emotional intensity are non-negotiable.

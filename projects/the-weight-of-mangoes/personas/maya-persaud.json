@@ -13,7 +13,7 @@
   },
   "emotional_range": ["passionate", "confrontational", "tender", "impatient", "fierce"],
   "use_cases": ["dialogue", "young adult perspective"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
   "quality_tier": "premium",
   "notes": "The politicized granddaughter. Her Caribbean inflections are conscious performance/reclamation, unlike her grandmother's natural speech. Anger is easier for her than grief."
 }

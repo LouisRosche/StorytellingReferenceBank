@@ -483,7 +483,8 @@ def main():
     provider_group = parser.add_argument_group("provider options")
     provider_group.add_argument("--provider", default="qwen",
                                 help="TTS provider to use (default: qwen)")
-    provider_group.add_argument("--api-key", help="API key for cloud providers")
+    # API keys should be set via environment variables (e.g. ELEVENLABS_API_KEY),
+    # not passed on the command line where they appear in process listings and shell history.
 
     # Output options
     parser.add_argument("--output", "-o", help="Output audio file path")

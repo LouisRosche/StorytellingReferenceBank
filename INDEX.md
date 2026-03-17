@@ -51,6 +51,8 @@ For a 5–12 public charter school in St. Louis, MO. Cross-curricular scientist 
 | Topic | Source |
 |-------|--------|
 | Character development | `templates/characters/character-sheet.md` |
+| Antagonist development | `templates/characters/antagonist-sheet.md` |
+| Subplot tracking | `templates/subplot-tracker.md` |
 | World-building | `templates/worlds/world-building-framework.md` |
 | Series continuity | `templates/series/series-bible.md` |
 
@@ -104,6 +106,46 @@ For a 5–12 public charter school in St. Louis, MO. Cross-curricular scientist 
 | `scripts/persona_compatibility.py` | Story-persona matching |
 | `scripts/persona_regression.py` | Voice consistency testing |
 | `scripts/web_studio.py` | Gradio web interface |
+| `scripts/validate_personas.py` | Persona schema validation |
+| `scripts/manage_student_codes.py` | Student access code admin |
+
+## Storefront
+
+| Topic | Source |
+|-------|--------|
+| Storefront overview | `storefront/README.md` |
+| Stripe checkout API | `storefront/src/app/api/checkout/route.ts` |
+| Download delivery API | `storefront/src/app/api/download/route.ts` |
+| Webhook handler | `storefront/src/app/api/webhooks/stripe/route.ts` |
+
+## Student Portal
+
+| Topic | Source |
+|-------|--------|
+| Portal application | `student-portal/index.html` |
+| Deployment guide | `student-portal/DEPLOY.md` |
+| Content manifest | `student-portal/library.json` |
+| Access code management | `scripts/manage_student_codes.py` |
+
+## Testing
+
+| Topic | Source |
+|-------|--------|
+| Test configuration | `scripts/tests/conftest.py` |
+| Pipeline tests | `scripts/tests/test_pipeline.py` |
+| ACX validator tests | `scripts/tests/test_acx_validator.py` |
+| Audio processing tests | `scripts/tests/test_audio_postprocess.py` |
+| Dialogue parser tests | `scripts/tests/test_dialogue_parser.py` |
+| Speaker map tests | `scripts/tests/test_speaker_map.py` |
+
+## Build & Config
+
+| Topic | Source |
+|-------|--------|
+| Makefile targets | `Makefile` |
+| Python packaging | `pyproject.toml` |
+| CI pipeline | `.github/workflows/ci.yml` |
+| Core dependencies | `requirements.txt` |
 
 ## Contributing
 

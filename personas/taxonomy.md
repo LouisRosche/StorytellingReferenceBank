@@ -15,7 +15,7 @@ Mathematical framework for dimensional coverage and optimization.
 | Pitch | P | {vlow, low, med, high, vhigh} | 0.10 |
 | Pace | S | {vslow, slow, med, fast, vfast} | 0.10 |
 | Texture | T | {smooth, warm, breathy, husky, gravelly, crisp} | 0.15 |
-| Accent | R | {NA, UK, AU, AF, IN, CA, EU, AS} | 0.20 |
+| Accent | R | {NA, UK, SCO, AU, AF, IN, CA, EU, AS} | 0.20 |
 | Language | L | {en, es, fr, de, zh, ja, ko, pt, ru, it} | 0.15 |
 
 ### Similarity Function
@@ -42,12 +42,12 @@ Personas with `sim(p1, p2) > 0.70` are redundant. Consolidate or differentiate.
 ```
              | G   | A      | P    | S      | T        | R   | L     |
 -------------|-----|--------|------|--------|----------|-----|-------|
-mentor       | M   | elder  | low  | slow   | gravelly | UK  | en    |
+mentor       | M   | elder  | low  | slow   | gravelly | SCO | en    |
 children     | F   | young  | med  | med    | warm     | NA  | en    |
 literary     | M   | middle | low  | slow   | warm     | NA  | en    |
 literary-f   | F   | middle | med  | med    | warm     | NA  | en    |
 warm-f       | F   | young  | med  | med    | smooth   | NA  | en    |
-thriller     | M   | middle | low  | med    | crisp    | NA  | en    |
+thriller     | M   | young  | low  | med    | crisp    | NA  | en    |
 british      | M   | middle | med  | med    | crisp    | UK  | en    |
 indian       | N   | middle | med  | med    | warm     | IN  | en,hi |
 latinx       | N   | young  | med  | med    | warm     | NA  | en,es |
@@ -70,7 +70,7 @@ Gender:   M=4 F=3 N=12  → Balanced
 Age:      child=1 teen=1 young=4 middle=8 elder=2 → Full range ✓
 Pitch:    low=4 med=11 high=1 vhigh=1 → Improved
 Texture:  warm=7 crisp=2 clear=3 smooth=3 gravelly=1 husky=1 → Diversified
-Accent:   NA=9 UK=2 AF=1 IN=1 CA=1 EU=1 AU=1 → +Australian ✓
+Accent:   NA=9 UK=1 SCO=1 AF=1 IN=1 CA=1 EU=1 AU=1 → +Australian ✓
 Language: en=19 es=1 hi=1 fr=1 → (de, zh, ja, ko, pt, ru, it missing)
 ```
 

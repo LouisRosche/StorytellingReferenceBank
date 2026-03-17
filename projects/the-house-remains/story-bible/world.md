@@ -1,4 +1,4 @@
-# World: The Weight of Saltwater
+# World: The House Remains
 
 ## Primary Setting: The Callahan House
 
@@ -92,7 +92,7 @@ The timing matters: this is the dying time in Maine. Summer people gone. Most bo
 
 ## Symbolic Elements
 
-**The Ocean**: Always visible, always present. Represents the unknowable, the vast, that which exists beyond our control. The saltwater of the title.
+**The Ocean**: Always visible, always present. Represents the unknowable, the vast, that which exists beyond our control. Its saltwater corrodes and preserves in equal measure.
 
 **The Fog**: Obscures, softens, hides. Mirrors how Ruth lived - everything slightly unclear, boundaries blurred.
 

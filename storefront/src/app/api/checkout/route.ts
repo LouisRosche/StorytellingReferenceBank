@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     if (!VALID_FORMATS.includes(format as Format)) {
       return NextResponse.json(
-        { error: `Invalid format: ${format}. Must be ebook, audiobook, or bundle.` },
+        { error: "Invalid format. Must be ebook, audiobook, or bundle." },
         { status: 400 }
       );
     }
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       const validNarrator = narrators.some((n) => n.id === narratorId);
       if (!validNarrator) {
         return NextResponse.json(
-          { error: `Invalid narrator: ${narratorId}` },
+          { error: "Invalid narrator selection." },
           { status: 400 }
         );
       }

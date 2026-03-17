@@ -6,7 +6,7 @@ Active works at various production stages.
 |---------|-------|----------|----------|--------|
 | `luna-the-little-cloud` | Children's picture book | 5 (narrator, luna, flower, bee, storm_clouds) | Full manuscript | Production-tested |
 | `the-weight-of-mangoes` | Literary fiction (ensemble) | 9 (Indo-Caribbean family saga) | 2 chapters | In development |
-| `the-listener` | Psychological thriller | 9 (therapist, patient, supporting) | 2 chapters | In development |
+| `the-listener` | Psychological thriller | 9 (therapist, patient, supporting) | 34 chapters | Complete draft |
 | `the-house-remains` | Literary drama | 8 (family reunion, multi-generational) | 2 chapters | In development |
 
 ## Structure

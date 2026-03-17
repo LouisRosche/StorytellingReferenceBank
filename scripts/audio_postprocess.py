@@ -232,7 +232,7 @@ def save_audio_mp3(samples: np.ndarray, sample_rate: int, file_path: str, bitrat
     Path(file_path).parent.mkdir(parents=True, exist_ok=True)
 
     # Convert to 16-bit PCM
-    samples_16bit = (samples * 32767).astype(np.int16)
+    samples_16bit = np.clip(samples * 32767, -32768, 32767).astype(np.int16)
 
     # Create AudioSegment
     audio = AudioSegment(
@@ -514,8 +514,8 @@ def generate_room_tone(duration_sec: float, sample_rate: int, level_db: float = 
     num_samples = int(duration_sec * sample_rate)
 
     # Generate white noise
-    np.random.seed(42)  # Deterministic for reproducibility
-    white_noise = np.random.randn(num_samples)
+    rng = np.random.default_rng(42)  # Local RNG — does not affect global state
+    white_noise = rng.standard_normal(num_samples)
 
     # Convert to pink noise (1/f spectrum) using simple filtering
     # This is a simplified approach - applies gentle lowpass

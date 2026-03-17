@@ -2,7 +2,7 @@
 
 ## Basic Information
 
-**Name**: Kamla Singh (nee Doodnath)
+**Name**: Kamla Morrison (nee Persaud)
 **Role**: Protagonist (ensemble)
 **Age**: 58
 **Gender**: Female
@@ -58,7 +58,7 @@ That her mother sees more than she says. That asking for what she needs is not b
 
 **Speech patterns**:
 - Caribbean emerges under pressure: "What stupidness is this?"
-- Uses full names when annoyed: "Sunil Doodnath, I am talking to you"
+- Uses full names when annoyed: "Sunil Persaud, I am talking to you"
 - "Lord have mercy" (from Michael, originally Jamaican)
 - Rhetorical questions when frustrated: "You think I don't have things to do?"
 

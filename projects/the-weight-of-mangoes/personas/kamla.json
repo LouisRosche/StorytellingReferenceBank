@@ -13,7 +13,7 @@
   },
   "emotional_range": ["exhausted", "loving", "frustrated", "competent", "wistful"],
   "use_cases": ["dialogue", "family drama"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
   "quality_tier": "premium",
   "notes": "The translator character. Voice shifts toward more Trinidadian patterns when speaking with mother, more American when speaking with children. Carries decades of resentment beneath her competence."
 }

@@ -1,9 +1,11 @@
 {
   "id": "narrator-nonbinary-contemporary",
   "name": "Contemporary Non-Binary Narrator",
+  "version": "1.0.0",
+  "status": "active",
   "voice_prompt": "Perfect audio quality. Narrator with an androgynous voice—not artificially pitched, just naturally in the middle range where gender isn't obvious. American, urban, millennial/Gen-Z sensibility. Warm and slightly sardonic. Reads with emotional intelligence and dry wit. Pacing varies naturally with content. Comfortable with vulnerability and humor in the same paragraph.",
   "voice_attributes": {
-    "age_range": "late 20s to early 30s",
+    "age_range": "young_adult",
     "gender": "neutral",
     "pitch": "medium (androgynous range)",
     "pace": "natural, varies",
@@ -14,5 +16,9 @@
   "emotional_range": ["sardonic", "vulnerable", "warm", "wry", "earnest", "playful", "melancholic"],
   "use_cases": ["contemporary literary fiction", "queer fiction", "memoir", "YA crossover", "essay collections"],
   "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-nonbinary-contemporary.wav",
+    "validation_status": "pending"
+  },
   "notes": "The voice should feel authentic to contemporary queer/millennial sensibility without being a stereotype. Think: someone you'd meet at a Brooklyn reading, not a character. Emotional range matters more than vocal range."
 }

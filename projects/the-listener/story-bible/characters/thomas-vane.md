@@ -140,6 +140,8 @@ Nothing. His arc is exposure, not growth. The moment Sarah "understands" him is 
 | Never blinks first | Ch 3 | Sarah realizes this consciously |
 | Architect, partner level | Ch 2 | Provides income, access, alibi |
 | Coffee black, no sugar | Ch 1 | Orders same every session |
+| Age "forty-four" on intake | Ch 1, line 44 | **DRAFT CONFLICT**: Intake form says 44, but "ten years" since Maya's death (used in ch-04, ch-05, ch-09, ch-16, ch-23) implies age 42 (was 32 when Maya died). Ch-08 line 84 says "mid-forties." Needs authorial decision: fix intake form to 42, or revise timeline. |
+| Maya died at 27 or 31? | Ch 1/6 vs Ch 25 | Ch-01 and Ch-06 say Maya died at 27. Ch-25 line 4 says "a life that had ended at thirty-one." Needs authorial resolution. |
 
 ## Revision Log
 

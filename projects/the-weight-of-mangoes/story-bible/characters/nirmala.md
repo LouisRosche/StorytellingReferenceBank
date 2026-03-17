@@ -2,7 +2,7 @@
 
 ## Basic Information
 
-**Name**: Nirmala Doodnath (nee Doodnath, married Doodnath—same surname by coincidence, common in Debe)
+**Name**: Nirmala Persaud (nee Doodnath)
 **Role**: Protagonist (ensemble)
 **Age**: 80 (turning 80 at story's start)
 **Gender**: Female
@@ -101,7 +101,7 @@ That her grandchildren are hungry for the stories. That they can carry what she'
 ## Background
 
 **Formative experiences**:
-- Ajji's death (age 3)—no memory, but the absence shaped everything
+- Ajji's death (age 3)—no memory, but the absence shaped everything. Ajji's given name: Savitri (ch-02).
 - Her mother's stories—filled the absence with history
 - Marriage at 20—arranged, then chosen
 - Emigration (age 30)—losing Trinidad to save her children

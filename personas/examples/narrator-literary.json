@@ -1,6 +1,8 @@
 {
   "id": "narrator-literary",
   "name": "Literary Narrator",
+  "version": "1.0.0",
+  "status": "active",
   "voice_prompt": "Perfect audio quality. Male narrator, late forties, American with slight Mid-Atlantic polish. Warm baritone, measured pace. Intelligent and contemplative, with subtle emotional range. The voice of someone who has read thousands of books and understands the weight of words. Never rushed, never performative—intimate, as if reading to one person.",
   "character_context": "A seasoned narrator comfortable with complex literary fiction, capable of handling long sentences, philosophical passages, and emotional subtlety without melodrama.",
   "voice_attributes": {
@@ -14,6 +16,10 @@
   },
   "emotional_range": ["contemplative", "melancholic", "wry", "tender", "grave"],
   "use_cases": ["literary fiction", "memoir", "historical fiction", "philosophical works"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-literary.wav",
+    "validation_status": "pending"
+  },
   "notes": "Best for prose-heavy works. May need pacing adjustments for dialogue-heavy scenes."
 }

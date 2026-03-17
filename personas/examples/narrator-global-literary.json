@@ -1,9 +1,11 @@
 {
   "id": "narrator-global-literary",
   "name": "Global Literary Narrator",
+  "version": "1.0.0",
+  "status": "active",
   "voice_prompt": "Perfect audio quality. Narrator with a warm, cultured voice. Slight Nigerian English accent—educated, precise, with melodic West African cadence. Mid-range pitch, unhurried pace. Reads with the authority of someone who has lived in the story's world. Intelligent without being cold. Finds the music in sentences. Pauses meaningfully.",
   "voice_attributes": {
-    "age_range": "40s",
+    "age_range": "middle_aged",
     "gender": "neutral",
     "pitch": "medium",
     "pace": "measured",
@@ -14,5 +16,9 @@
   "emotional_range": ["reflective", "wise", "gentle", "grave", "wryly amused", "tender"],
   "use_cases": ["literary fiction", "memoir", "African literature", "postcolonial narratives", "multigenerational stories"],
   "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-global-literary.wav",
+    "validation_status": "pending"
+  },
   "notes": "Inspired by audiobook narrators of Achebe, Adichie. The accent should be natural, not performed—this is how educated Nigerians actually speak English. Avoid caricature."
 }

@@ -50,6 +50,8 @@ projects/                # Active works
 references/              # Craft principles, voice vocabulary
 docs/                    # Production guides, commercial checklist, sound design
 docs/archive/            # Historical audits and validation reports
+storefront/              # Next.js audiobook sales storefront (Stripe)
+student-portal/          # Static student library portal (GitHub Pages)
 ```
 
 ## Quick Reference
@@ -86,12 +88,16 @@ Voice cloning: `@docs/voice-cloning-workflow.md`
 
 ## Workflow
 
+Full walkthrough: `@docs/GETTING-STARTED.md`
+
 1. **New project**: `projects/[name]/` with `drafts/`, `story-bible/`, `personas/`
 2. **Structure**: Select framework from `templates/structures/`
-3. **Draft**: Progressive disclosure — load only relevant context
-4. **Revise**: `@templates/revision-workflow.md` (per-scene: `@templates/scene-card.md`)
-5. **Preflight**: `scripts/preflight_check.py`
-6. **Produce**: `scripts/batch_produce.py` or `scripts/web_studio.py`
+3. **Persona selection**: Match voice to story via `scripts/persona_compatibility.py`
+4. **Draft**: Progressive disclosure — load only relevant context
+5. **Revise**: `@templates/revision-workflow.md` (per-scene: `@templates/scene-card.md`)
+6. **Preflight**: `scripts/preflight_check.py`
+7. **Produce**: `scripts/batch_produce.py` or `scripts/web_studio.py`
+8. **Validate**: `scripts/acx_validator.py` (ACX compliance check)
 
 ## Conventions
 

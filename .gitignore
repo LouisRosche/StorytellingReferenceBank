@@ -23,14 +23,24 @@ build/
 .DS_Store
 Thumbs.db
 
-# Audio generation (uncomment if needed)
-# *.wav
-# *.mp3
-# *.m4b
-# output/
+# Audio output
+*.wav
+*.mp3
+*.m4b
+output/
+
+# Model weights and caches
+*.pt
+*.bin
+*.safetensors
+*.onnx
+.cache/
+models/
 
 # Secrets
 .env
+.env.*
+!.env.example
 *.pem
 credentials.json
 student-portal/codes-admin.json

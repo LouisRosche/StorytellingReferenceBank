@@ -4,7 +4,7 @@
 
 **Name**: Dr. Sarah Mercer (nee Aldridge)
 **Role**: Protagonist
-**Age**: 38
+**Age**: 42
 **Gender**: Female
 **Occupation**: Licensed Clinical Psychologist, specializing in trauma therapy
 
@@ -83,7 +83,7 @@ Control is an illusion. Vulnerability is not weakness. Forgiving herself is not 
 | Character | Relationship | Dynamic |
 |-----------|--------------|---------|
 | Owen Mercer | Husband | Loves him but keeps him at arm's length. Fears his judgment more than Thomas's violence. |
-| Emma Mercer | Daughter (9) | Fiercely protective. Overcompensates for her own cold childhood. |
+| Emma Mercer | Daughter (15) | Fiercely protective. Overcompensates for her own cold childhood. |
 | Dr. Ruth Henley | Supervisor/Mentor | Respects deeply. Only person who saw through her after Maya. |
 | Marcus Cole | Uneasy ally | Needs his help but disturbed by his methods. |
 | Thomas Vane | Patient/Antagonist | Professionally: maintains facade. Internally: terror, rage, and something worse - recognition. |
@@ -124,7 +124,7 @@ Control is an illusion. Vulnerability is not weakness. Forgiving herself is not 
 
 **Persona file**: `@personas/sarah-mercer.json`
 
-**Voice direction summary**: Female, late thirties, educated American neutral. Measured pace, precise diction. Warm when professional, cooler when personal - subtle irony. Under stress: slower, more careful, controlled fear beneath surface.
+**Voice direction summary**: Female, early forties, educated American neutral. Measured pace, precise diction. Warm when professional, cooler when personal - subtle irony. Under stress: slower, more careful, controlled fear beneath surface.
 
 ---
 

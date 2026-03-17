@@ -1,6 +1,8 @@
 {
   "id": "character-storm-clouds",
   "name": "Storm Clouds (Character Voice)",
+  "version": "1.0.0",
+  "status": "active",
   "voice_prompt": "Perfect audio quality. Slightly lower, rumbly quality but NOT scary - this is a children's bedtime story. Multiple voices could be implied through slight resonance. Dismissive but not cruel - more like oblivious adults who don't realize they're being unkind. The laughter is casual, not malicious.",
   "character_context": "The big clouds who make impressive storms. They're not villains - they simply don't notice or value small things. Their dismissal of Luna ('Come back when you're bigger') isn't mean-spirited, just thoughtless. They represent the world that overlooks small kindnesses.",
   "voice_attributes": {
@@ -15,5 +17,9 @@
   "emotional_range": ["dismissive", "casual", "oblivious", "slightly amused"],
   "use_cases": ["dialogue", "character voice", "supporting character"],
   "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "projects/luna-the-little-cloud/golden/character-storm-clouds.wav",
+    "validation_status": "pending"
+  },
   "notes": "Keep within soft register for bedtime - rumbly does NOT mean loud or threatening. Think distant thunder, not storm. One brief line only."
 }

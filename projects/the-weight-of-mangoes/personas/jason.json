@@ -13,7 +13,7 @@
   },
   "emotional_range": ["uncertain", "hurt", "hopeful", "defensive", "isolated"],
   "use_cases": ["dialogue", "alienation narrative"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
   "quality_tier": "premium",
   "notes": "The outsider grandson. Looks white, feels excluded from the family's cultural identity. His voice carries the particular wound of being made to feel 'not enough' of something he never chose. Rarely speaks in family gatherings."
 }

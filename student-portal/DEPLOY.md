@@ -48,7 +48,7 @@ Open:
 https://louisrosche.github.io/StorytellingReferenceBank/student-portal/
 ```
 
-Enter one of the starter codes (e.g. `INKWELL-2026`). The library should open.
+Enter one of the starter codes. The library should open. (Run `python scripts/manage_student_codes.py list` to see available codes.)
 
 ---
 
@@ -117,18 +117,13 @@ git add student-portal/codes.json && git commit -m "Add guest code" && git push 
 
 ## Starter Codes (Pre-loaded)
 
-These 8 codes are active from day one:
+8 demo/instructor codes are pre-loaded. To view them, run:
 
-| Code | Use for |
-|------|---------|
-| `INKWELL-2026` | Demo / instructor |
-| `STORYWISE-2026` | Demo / instructor |
-| `CRAFTWORK-2026` | Demo / instructor |
-| `VOICEFOUND-2026` | Demo / instructor |
-| `WRITEDARK-2026` | Demo / instructor |
-| `SPARKPAGE-2026` | Demo / instructor |
-| `ICEBERG-2026` | Demo / instructor |
-| `CATALYST-2026` | Demo / instructor |
+```bash
+python scripts/manage_student_codes.py list
+```
+
+This reads from `codes-admin.json` (local, gitignored). Never commit plaintext codes to the repository.
 
 Revoke any you don't want active. Generate class-specific codes for students.
 
@@ -175,7 +170,7 @@ Delete its entry from `library.json`. The markdown file can stay in the repo.
 
 **If the content must stay private:** Make the repository private (requires GitHub Pro, $4/month) or use a free alternative host with password protection (Netlify Identity, Cloudflare Access). For most classroom use, a public repo is fine.
 
-**The hashes in codes.json are safe to commit.** SHA-256 hashes cannot be reversed to recover the original codes.
+**The hashes in codes.json are safe to commit.** PBKDF2-SHA256 hashes (100K iterations) resist brute-force attacks.
 
 **Do not commit `codes-admin.json`.** It contains plaintext codes and is gitignored by default.
 

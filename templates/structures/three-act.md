@@ -31,7 +31,7 @@ Rising stakes, escalating conflict, character transformation.
 | Midpoint | 50% | False victory OR false defeat; stakes raise |
 | Complications | 50-65% | Antagonist gains ground, allies tested |
 | All Is Lost | ~75% | Lowest point; something "dies" (literal or metaphorical) |
-| Dark Night of Soul | 75% | Protagonist processes loss |
+| Dark Night of Soul | 75-80% | Protagonist processes loss; insight emerges |
 
 **Midpoint Types:**
 - **False Victory**: Protagonist seems to win, but victory reveals deeper problem

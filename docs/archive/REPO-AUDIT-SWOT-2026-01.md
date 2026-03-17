@@ -1,3 +1,5 @@
+> **ARCHIVED**: 2026-01-28. Many findings here have been addressed (CONTRIBUTING.md added, 4 projects now active, 19 personas created, CI pipeline added). See git history for current state.
+
 # Repository Audit & SWOT Analysis
 
 **Date**: 2026-01-28

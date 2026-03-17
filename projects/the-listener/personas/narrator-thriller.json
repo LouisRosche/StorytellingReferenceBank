@@ -3,10 +3,10 @@
   "name": "The Listener Narrator",
   "version": "1.0.0",
   "status": "active",
-  "voice_prompt": "Third-person limited, close to Sarah. Female voice, late thirties, American neutral. Controlled tension throughout - calm surface with unease beneath. Pacing varies: slow for dread, quickens for revelation. Interior monologue delivered with intimacy, not performance. Observational, precise. Never melodramatic; trusts the text. Silences matter.",
+  "voice_prompt": "Third-person limited, close to Sarah. Female voice, early forties, American neutral. Controlled tension throughout - calm surface with unease beneath. Pacing varies: slow for dread, quickens for revelation. Interior monologue delivered with intimacy, not performance. Observational, precise. Never melodramatic; trusts the text. Silences matter.",
   "character_context": "The narrative voice sees through Sarah's eyes but with slight remove - we know what she notices, what she feels, but the narrator doesn't editorialize. Lets discomfort build through selection, not commentary.",
   "voice_attributes": {
-    "age_range": "adult",
+    "age_range": "middle_aged",
     "gender": "female",
     "pitch": "medium",
     "pace": "variable",

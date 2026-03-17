@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const message =
       err instanceof Error ? err.message : "Webhook verification failed";
     console.error("Webhook signature verification failed:", message);
-    return NextResponse.json({ error: message }, { status: 400 });
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
   switch (event.type) {
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       if (!book) {
         console.error("Book not found for slug:", slug);
         return NextResponse.json(
-          { error: `Book not found: ${slug}` },
+          { error: "Book not found." },
           { status: 422 }
         );
       }
@@ -82,9 +82,10 @@ export async function POST(request: NextRequest) {
         url: `${siteUrl}/api/download?token=${token}`,
       }));
 
-      // Persist purchase
+      // Persist purchase (initially unfulfilled until email sends)
+      const purchaseId = crypto.randomUUID();
       savePurchase({
-        id: crypto.randomUUID(),
+        id: purchaseId,
         stripeSessionId: session.id,
         email: customerEmail,
         slug,
@@ -92,12 +93,13 @@ export async function POST(request: NextRequest) {
         narratorId: narratorId || "",
         downloadTokens: tokens,
         createdAt: new Date().toISOString(),
-        fulfilled: true,
+        fulfilled: false,
       });
 
-      // Send fulfillment email
+      // Send fulfillment email — mark fulfilled only on success
+      let emailSent = false;
       if (customerEmail) {
-        await sendFulfillmentEmail({
+        emailSent = await sendFulfillmentEmail({
           to: customerEmail,
           bookTitle: book.title,
           format,
@@ -107,12 +109,28 @@ export async function POST(request: NextRequest) {
         console.warn("No customer email for session:", session.id);
       }
 
-      console.log("Purchase fulfilled:", {
+      if (emailSent || !customerEmail) {
+        savePurchase({
+          id: purchaseId,
+          stripeSessionId: session.id,
+          email: customerEmail,
+          slug,
+          format,
+          narratorId: narratorId || "",
+          downloadTokens: tokens,
+          createdAt: new Date().toISOString(),
+          fulfilled: true,
+        });
+      } else {
+        console.error("Email fulfillment failed for session:", session.id);
+      }
+
+      console.log(emailSent || !customerEmail ? "Purchase fulfilled:" : "Purchase saved (email pending):", {
         session: session.id,
         book: book.title,
         format,
         narrator: narratorId || "default",
-        email: customerEmail,
+        email: customerEmail ? "[redacted]" : "(none)",
       });
 
       break;

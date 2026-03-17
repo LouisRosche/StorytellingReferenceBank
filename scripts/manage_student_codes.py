@@ -17,7 +17,7 @@ Files:
 import argparse
 import hashlib
 import json
-import random
+import secrets
 import sys
 from pathlib import Path
 
@@ -45,14 +45,22 @@ NOUNS = [
 # ─────────────────────────────────────────────
 
 def hash_code(code: str) -> str:
+    """Hash an access code using PBKDF2-SHA256 with a static salt.
+
+    Using PBKDF2 instead of bare SHA-256 adds computational cost (100K iterations)
+    and prevents pre-computed hash attacks. The salt is not secret (client-side
+    validation uses the same value).
+    """
     normalized = code.strip().upper()
-    return hashlib.sha256(normalized.encode()).hexdigest()
+    return hashlib.pbkdf2_hmac(
+        "sha256", normalized.encode(), b"StorytellingReferenceBank-v1", iterations=100_000
+    ).hex()
 
 
 def generate_code(cohort: str, suffix_len: int = 4) -> str:
-    adj  = random.choice(ADJECTIVES)
-    noun = random.choice(NOUNS)
-    digits = str(random.randint(1000, 9999))
+    adj  = secrets.choice(ADJECTIVES)
+    noun = secrets.choice(NOUNS)
+    digits = str(secrets.randbelow(9000) + 1000)
     return f"{adj}-{noun}-{digits}"
 
 

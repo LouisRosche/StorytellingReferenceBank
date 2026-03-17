@@ -1,6 +1,8 @@
 {
   "id": "character-flower",
   "name": "The Flower (Character Voice)",
+  "version": "1.0.0",
+  "status": "active",
   "voice_prompt": "Perfect audio quality. Soft whisper, tired but hopeful. Delicate and fragile-sounding, like something that might blow away. Slow pace, breathy quality. The voice of something small and overlooked, speaking its truth quietly. Gratitude comes through as gentle warmth, not exuberance.",
   "character_context": "A single flower in a dusty garden, parched and wilting. Has been passed over by the big clouds who have 'important rivers to fill.' Speaks with quiet dignity despite exhaustion. When Luna's drops arrive, relief and gratitude are heartfelt but still gentle.",
   "voice_attributes": {
@@ -15,5 +17,9 @@
   "emotional_range": ["tired", "hopeful", "grateful", "gentle", "quietly joyful"],
   "use_cases": ["dialogue", "character voice", "supporting character"],
   "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "projects/luna-the-little-cloud/golden/character-flower.wav",
+    "validation_status": "pending"
+  },
   "notes": "Almost a whisper but must remain audible. Think of leaves rustling. Gratitude is sincere but not loud."
 }

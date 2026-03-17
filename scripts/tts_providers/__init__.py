@@ -45,19 +45,23 @@ from .base import (
     Voice,
 )
 
-# Provider implementations
-from .qwen_provider import QwenTTSProvider
-from .kokoro_provider import KokoroTTSProvider
+# Provider implementations — gracefully handle missing dependencies
+_PROVIDERS: Dict[str, Type[TTSProvider]] = {}
 
+try:
+    from .qwen_provider import QwenTTSProvider
+    _PROVIDERS["qwen"] = QwenTTSProvider
+except ImportError:
+    pass
 
-# Registry of available providers
-_PROVIDERS: Dict[str, Type[TTSProvider]] = {
-    "qwen": QwenTTSProvider,
-    "kokoro": KokoroTTSProvider,
-}
+try:
+    from .kokoro_provider import KokoroTTSProvider
+    _PROVIDERS["kokoro"] = KokoroTTSProvider
+except ImportError:
+    pass
 
-# Default provider
-_DEFAULT_PROVIDER = "qwen"
+# Default provider — prefer qwen, fall back to whatever is available
+_DEFAULT_PROVIDER = "qwen" if "qwen" in _PROVIDERS else next(iter(_PROVIDERS), "qwen")
 
 
 def register_provider(provider_id: str, provider_class: Type[TTSProvider]) -> None:
@@ -205,10 +209,6 @@ __all__ = [
     "TTSResult",
     "ProviderConfig",
     "Voice",
-
-    # Provider implementations
-    "QwenTTSProvider",
-    "KokoroTTSProvider",
 
     # Factory functions
     "get_provider",

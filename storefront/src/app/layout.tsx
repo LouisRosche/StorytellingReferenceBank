@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { validateEnv } from "@/lib/env";
 import "./globals.css";
+
+validateEnv();
 
 export const metadata: Metadata = {
   title: "Storybook Library — Narrated Children's Picture Books",
