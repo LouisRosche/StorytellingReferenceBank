@@ -70,7 +70,7 @@ Gender:   M=4 F=3 N=12  → Balanced
 Age:      child=1 teen=1 young=4 middle=8 elder=2 → Full range ✓
 Pitch:    low=4 med=11 high=1 vhigh=1 → Improved
 Texture:  warm=7 crisp=2 clear=3 smooth=3 gravelly=1 husky=1 → Diversified
-Accent:   NA=9 UK=2 AF=1 IN=1 CA=1 EU=1 AU=1 → +Australian ✓
+Accent:   NA=9 UK=1 SCO=1 AF=1 IN=1 CA=1 EU=1 AU=1 → +Australian ✓
 Language: en=19 es=1 hi=1 fr=1 → (de, zh, ja, ko, pt, ru, it missing)
 ```
 

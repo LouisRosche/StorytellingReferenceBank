@@ -48,7 +48,7 @@ Open:
 https://louisrosche.github.io/StorytellingReferenceBank/student-portal/
 ```
 
-Enter one of the starter codes (e.g. `INKWELL-2026`). The library should open.
+Enter one of the starter codes. The library should open. (Run `python scripts/manage_student_codes.py list` to see available codes.)
 
 ---
 

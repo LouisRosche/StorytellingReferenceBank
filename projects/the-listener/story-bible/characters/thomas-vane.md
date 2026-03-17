@@ -4,7 +4,7 @@
 
 **Name**: Thomas Vane
 **Role**: Antagonist
-**Age**: 42
+**Age**: 44
 **Gender**: Male
 **Occupation**: Architect (partner at Whitmore & Associates)
 
@@ -97,7 +97,7 @@ Nothing. His arc is exposure, not growth. The moment Sarah "understands" him is 
 - Age 23: First serious "interest" (a coworker). Ends when she moves cities.
 - Age 30: Meets Maya. Convinces himself this is different.
 - Age 32: Maya dies. Thomas feels loss, not guilt.
-- Age 32-42: Watches Sarah. Waits. Plans.
+- Age 32-44: Watches Sarah. Waits. Plans.
 
 **Family/Origin**: Single mother, working-class, emotionally absent (depressive). No siblings. Father abandoned family, never made contact.
 
@@ -127,7 +127,7 @@ Nothing. His arc is exposure, not growth. The moment Sarah "understands" him is 
 
 **Persona file**: `@personas/thomas-vane.json`
 
-**Voice direction summary**: Male, early forties, soft baritone. Educated, precise. Speaks quietly - listener must lean in. Long pauses before responses. No emotional volatility. Unsettling calm. Emphasis on names, intimate details.
+**Voice direction summary**: Male, mid-forties, soft baritone. Educated, precise. Speaks quietly - listener must lean in. Long pauses before responses. No emotional volatility. Unsettling calm. Emphasis on names, intimate details.
 
 ---
 
