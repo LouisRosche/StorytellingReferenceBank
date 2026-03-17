@@ -73,6 +73,7 @@ jobs:
         env:
           STRIPE_SECRET_KEY: sk_test_FAKE_CI_PLACEHOLDER_DO_NOT_USE
           STRIPE_WEBHOOK_SECRET: whsec_FAKE_CI_PLACEHOLDER_DO_NOT_USE
+          DOWNLOAD_TOKEN_SECRET: fake_ci_download_token_secret_do_not_use
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_FAKE_CI_PLACEHOLDER
           NEXT_PUBLIC_SITE_URL: http://localhost:3000
         run: npx next build
