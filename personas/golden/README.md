@@ -389,14 +389,18 @@ Check for:
 
 | Persona | Golden Ref | Tier | Last Validated |
 |---------|------------|------|----------------|
+| character-child | pending | - | - |
 | character-gruff-mentor | pending | - | - |
 | character-teen | pending | - | - |
+| narrator-australian | pending | - | - |
 | narrator-british | pending | - | - |
 | narrator-caribbean | pending | - | - |
 | narrator-childrens | pending | - | - |
+| narrator-comedy | pending | - | - |
 | narrator-elder-authority | pending | - | - |
 | narrator-french | pending | - | - |
 | narrator-global-literary | pending | - | - |
+| narrator-horror | pending | - | - |
 | narrator-indian-english | pending | - | - |
 | narrator-latinx-bilingual | pending | - | - |
 | narrator-literary | pending | - | - |

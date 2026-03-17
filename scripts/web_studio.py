@@ -83,9 +83,20 @@ def get_manuscripts(project: str) -> List[str]:
     return [m.name for m in drafts_dir.glob("*.txt")]
 
 
+def _is_safe_path(resolved: Path, allowed_root: Path) -> bool:
+    """Verify a resolved path is within the allowed root directory."""
+    try:
+        resolved.resolve().relative_to(allowed_root.resolve())
+        return True
+    except ValueError:
+        return False
+
+
 def load_manuscript(project: str, manuscript: str) -> str:
     """Load manuscript text."""
     path = PROJECT_ROOT / "projects" / project / "drafts" / manuscript
+    if not _is_safe_path(path, PROJECT_ROOT):
+        return ""
     if path.exists():
         return path.read_text()
     return ""
@@ -102,6 +113,8 @@ def load_persona_details(persona_path: str) -> str:
     else:
         full_path = PROJECT_ROOT / "personas" / f"{persona_path}.json"
 
+    if not _is_safe_path(full_path, PROJECT_ROOT):
+        return "{}"
     if full_path.exists():
         return full_path.read_text()
     return "{}"
@@ -113,9 +126,12 @@ def _resolve_persona_path(persona_ref: str) -> Optional[Path]:
         return None
     parts = persona_ref.split("/")
     if parts[0] == "examples":
-        return PROJECT_ROOT / "personas" / "examples" / f"{parts[1]}.json"
+        resolved = PROJECT_ROOT / "personas" / "examples" / f"{parts[1]}.json"
     else:
-        return PROJECT_ROOT / "projects" / parts[0] / "personas" / f"{parts[1]}.json"
+        resolved = PROJECT_ROOT / "projects" / parts[0] / "personas" / f"{parts[1]}.json"
+    if not _is_safe_path(resolved, PROJECT_ROOT):
+        return None
+    return resolved
 
 
 def _load_voice_prompt(persona_path: Path) -> str:
@@ -653,7 +669,8 @@ def main():
     parser = argparse.ArgumentParser(description="Storytelling TTS Studio")
     parser.add_argument("--port", type=int, default=7860, help="Port to run on")
     parser.add_argument("--share", action="store_true", help="Create public URL")
-    parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
+    parser.add_argument("--host", default="127.0.0.1",
+                        help="Host to bind to (use 0.0.0.0 for network access)")
 
     args = parser.parse_args()
 

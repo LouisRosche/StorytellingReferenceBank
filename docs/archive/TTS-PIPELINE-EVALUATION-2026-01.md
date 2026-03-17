@@ -1,3 +1,5 @@
+> **ARCHIVED**: 2026-01-28. Evaluates 4 providers; Kokoro (5th provider) added after this report. See `scripts/tts_providers/README.md` for current provider status.
+
 # TTS Pipeline Evaluation Report
 
 **Date**: 2026-01-28

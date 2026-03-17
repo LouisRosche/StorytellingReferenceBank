@@ -1,12 +1,10 @@
-# Core dependencies for TTS pipeline
+# Core dependencies (audio processing)
 # Install with: pip install -r requirements.txt
-
-# Qwen3-TTS (requires GPU for generation)
-qwen-tts>=0.1.0
+# For TTS: pip install -e ".[tts]"  or  pip install -e ".[tts-lite]"
 
 # Audio processing
 soundfile>=0.12.0
-numpy>=1.24.0
+numpy>=1.24.0,<2.0
 pydub>=0.25.0
 scipy>=1.10.0  # DSP filters for audio_postprocess.py
 
@@ -14,36 +12,29 @@ scipy>=1.10.0  # DSP filters for audio_postprocess.py
 # Ubuntu/Debian: sudo apt install ffmpeg
 # macOS: brew install ffmpeg
 
-# Optional: Flash attention for faster inference
-# pip install flash-attn --no-build-isolation
-
-# Optional: PyTorch (usually installed with qwen-tts)
-# torch>=2.0.0
+# --- TTS providers (install via extras, not here) ---
+# Full:  pip install -e ".[tts]"    → qwen-tts (GPU, 8-16 GB VRAM)
+# Lite:  pip install -e ".[tts-lite]" → kokoro (CPU/light GPU)
 
 # --- Quality & Analysis (optional but recommended) ---
 # Install all: pip install pyloudnorm silero-vad resemblyzer textstat ebooklib pedalboard
 
 # Broadcast-standard loudness (ITU-R BS.1770 / EBU R128)
-# Replaces naive RMS with perceptually-weighted integrated LUFS
 # pyloudnorm>=0.1.0
 
 # Voice activity detection (neural network, MIT license)
-# Accurate speech/silence boundary detection for room tone analysis
 # silero-vad>=5.1
 
 # Speaker verification embeddings (GE2E loss, 256-dim)
-# Voice consistency checking across chapters — replaces raw MFCC
 # resemblyzer>=0.1.3
 
 # Manuscript readability analysis (Flesch-Kincaid, Gunning Fog, etc.)
-# Feeds persona-story compatibility scoring
 # textstat>=0.7.0
 
 # EPUB import/export for manuscript ingestion
 # ebooklib>=0.18
 
 # Studio-quality audio effects (Spotify, C++ backend)
-# 100x faster than pure-Python DSP for compression, limiting, EQ
 # pedalboard>=0.9.0
 
 # Voice regression testing (MFCC fingerprinting fallback)

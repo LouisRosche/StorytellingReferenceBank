@@ -1,3 +1,5 @@
+> **ARCHIVED**: 2026-03-15. Several items completed since writing: CONTRIBUTING.md exists, Priority 3 personas created (comedy, horror, australian, child), The Listener expanded to 34 chapters, student portal deployed, storefront built.
+
 # Opportunities Analysis — March 2026
 
 **Date**: 2026-03-15

@@ -641,7 +641,7 @@ def stage_cleanup(config: ProductionConfig, report: ProductionReport, verbose: b
             if chapter.final_audio_file and Path(chapter.final_audio_file).exists():
                 audio = AudioSegment.from_file(chapter.final_audio_file)
                 report.total_duration_sec += len(audio) / 1000
-    except:
+    except Exception:
         pass
 
     # Set completion time

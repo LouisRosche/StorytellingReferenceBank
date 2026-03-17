@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-tts install-tts-lite test preflight validate dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint clean help
+.PHONY: install install-dev install-tts install-tts-lite install-all venv test test-quick preflight preflight-deps validate check dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint lint-fix format format-check storefront-dev storefront-build storefront-lint clean help
 
 PYTHON ?= python3
 VENV ?= .venv
@@ -16,11 +16,11 @@ venv: ## Create virtual environment
 	$(PYTHON) -m venv $(VENV)
 	@echo "Activate with: source $(VENV)/bin/activate"
 
-install: ## Install core dependencies
-	pip install -r requirements.txt
+install: venv ## Install core dependencies
+	$(PIP) install -r requirements.txt
 
-install-dev: install ## Install core + dev dependencies
-	pip install pytest ruff
+install-dev: venv ## Install core + dev dependencies
+	$(PIP) install -e ".[dev]"
 
 install-tts-lite: install ## Install core + Kokoro (lightweight, 2-3 GB VRAM)
 	pip install "kokoro>=0.9.4"
@@ -103,6 +103,23 @@ lint: ## Lint Python scripts
 
 lint-fix: ## Lint and auto-fix
 	$(PYTHON) -m ruff check scripts/ --fix
+
+format: ## Format Python scripts
+	$(PYTHON) -m ruff format scripts/
+
+format-check: ## Check formatting without changes
+	$(PYTHON) -m ruff format --check scripts/
+
+# ── Storefront ───────────────────────────────────────────────
+
+storefront-dev: ## Run storefront dev server
+	cd storefront && npm run dev
+
+storefront-build: ## Build storefront for production
+	cd storefront && npm ci && npm run build
+
+storefront-lint: ## Lint storefront TypeScript
+	cd storefront && npx next lint
 
 # ── Cleanup ───────────────────────────────────────────────────
 

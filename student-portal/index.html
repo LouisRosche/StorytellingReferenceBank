@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Storytelling Reference Bank — Student Library</title>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"></script>
   <style>
     /* ─────────────────────────────────────────────
        DESIGN TOKENS
@@ -995,12 +996,19 @@ const DAILY_PROMPTS = [
 /* ════════════════════════════════════════════
    HASH UTILITY (Web Crypto API)
 ═════════════════════════════════════════════ */
-async function sha256(text) {
-  const encoded = new TextEncoder().encode(text.trim().toUpperCase());
-  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+async function hashCode(text) {
+  const normalized = new TextEncoder().encode(text.trim().toUpperCase());
+  const salt = new TextEncoder().encode('StorytellingReferenceBank-v1');
+  const keyMaterial = await crypto.subtle.importKey('raw', normalized, 'PBKDF2', false, ['deriveBits']);
+  const derived = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt: salt, iterations: 100000, hash: 'SHA-256' },
+    keyMaterial, 256
+  );
+  return Array.from(new Uint8Array(derived)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
+
+/** Escape HTML entities to prevent XSS when interpolating data into templates. */
+function esc(s) { const d = document.createElement('div'); d.textContent = String(s ?? ''); return d.innerHTML; }
 
 /* ════════════════════════════════════════════
    STATE
@@ -1057,7 +1065,7 @@ document.getElementById('lock-form').addEventListener('submit', async (e) => {
   btn.disabled = true;
 
   try {
-    const [hash, validHashes] = await Promise.all([sha256(code), loadCodes()]);
+    const [hash, validHashes] = await Promise.all([hashCode(code), loadCodes()]);
 
     if (validHashes.includes(hash)) {
       sessionStorage.setItem(STORAGE_KEY, '1');
@@ -1104,16 +1112,16 @@ function renderSidebar() {
   let html = `
     <div class="daily-practice">
       <div class="daily-practice-label">Today's Practice</div>
-      <div class="daily-practice-text">${prompt}</div>
+      <div class="daily-practice-text">${esc(prompt)}</div>
     </div>
   `;
 
   for (const cat of library.categories) {
     html += `
-      <div class="category-group" data-cat="${cat.id}">
-        <button class="category-header" onclick="toggleCategory('${cat.id}')">
-          <span class="cat-icon">${cat.icon}</span>
-          ${cat.label}
+      <div class="category-group" data-cat="${esc(cat.id)}">
+        <button class="category-header" onclick="toggleCategory('${esc(cat.id)}')">
+          <span class="cat-icon">${esc(cat.icon)}</span>
+          ${esc(cat.label)}
           <span class="cat-chevron">▼</span>
         </button>
         <div class="category-items">
@@ -1123,13 +1131,13 @@ function renderSidebar() {
       html += `
         <button
           class="sidebar-item${isRead ? ' read' : ''}"
-          id="sidebar-${item.id}"
-          onclick="loadItem('${item.id}')"
+          id="sidebar-${esc(item.id)}"
+          onclick="loadItem('${esc(item.id)}')"
         >
-          <div class="item-title">${item.title}</div>
+          <div class="item-title">${esc(item.title)}</div>
           <div class="item-meta">
-            <span class="badge badge-${item.difficulty}">${item.difficulty}</span>
-            <span class="read-time">${item.readingTime} min</span>
+            <span class="badge badge-${esc(item.difficulty)}">${esc(item.difficulty)}</span>
+            <span class="read-time">${esc(item.readingTime)} min</span>
           </div>
         </button>
       `;
@@ -1157,16 +1165,16 @@ function renderWelcome() {
   let cards = '';
   for (const cat of library.categories) {
     const chips = cat.items.map(i =>
-      `<span class="card-item-chip">${i.title}</span>`
+      `<span class="card-item-chip">${esc(i.title)}</span>`
     ).join('');
     cards += `
-      <div class="category-card" onclick="openCategory('${cat.id}')">
+      <div class="category-card" onclick="openCategory('${esc(cat.id)}')">
         <div class="card-header">
-          <span class="card-icon">${cat.icon}</span>
-          <span class="card-title">${cat.label}</span>
+          <span class="card-icon">${esc(cat.icon)}</span>
+          <span class="card-title">${esc(cat.label)}</span>
           <span class="card-count">${cat.items.length}</span>
         </div>
-        <p class="card-desc">${cat.description}</p>
+        <p class="card-desc">${esc(cat.description)}</p>
         <div class="card-items-preview">${chips}</div>
       </div>
     `;
@@ -1212,15 +1220,15 @@ function renderCategoryLanding(catId) {
   for (const item of cat.items) {
     const isRead = readSet.has(item.id);
     itemCards += `
-      <div class="landing-item-card" onclick="loadItem('${item.id}')">
+      <div class="landing-item-card" onclick="loadItem('${esc(item.id)}')">
         <div class="landing-card-top">
-          <div class="landing-item-title">${item.title}${isRead ? ' <span class="landing-read-indicator">✓</span>' : ''}</div>
+          <div class="landing-item-title">${esc(item.title)}${isRead ? ' <span class="landing-read-indicator">✓</span>' : ''}</div>
           <div class="landing-card-meta">
-            <span class="badge badge-${item.difficulty}">${item.difficulty}</span>
-            <span class="read-time">${item.readingTime} min</span>
+            <span class="badge badge-${esc(item.difficulty)}">${esc(item.difficulty)}</span>
+            <span class="read-time">${esc(item.readingTime)} min</span>
           </div>
         </div>
-        <div class="landing-item-hook">${item.hook}</div>
+        <div class="landing-item-hook">${esc(item.hook)}</div>
       </div>
     `;
   }
@@ -1235,8 +1243,8 @@ function renderCategoryLanding(catId) {
       </div>
       <div class="cat-landing">
         <div class="cat-landing-header">
-          <div class="cat-landing-title"><span class="cat-landing-icon">${cat.icon}</span> ${cat.label}</div>
-          <p class="cat-landing-desc">${cat.description}</p>
+          <div class="cat-landing-title"><span class="cat-landing-icon">${esc(cat.icon)}</span> ${esc(cat.label)}</div>
+          <p class="cat-landing-desc">${esc(cat.description)}</p>
         </div>
         ${itemCards}
       </div>
@@ -1273,12 +1281,12 @@ async function loadItem(itemId) {
 
   const toolbar = `
     <div class="content-toolbar">
-      <button class="back-btn" onclick="backToCategory('${cat.id}')">← ${cat.label}</button>
-      <span class="breadcrumb">${cat.label} <span>/</span> ${item.title}</span>
+      <button class="back-btn" onclick="backToCategory('${esc(cat.id)}')">← ${esc(cat.label)}</button>
+      <span class="breadcrumb">${esc(cat.label)} <span>/</span> ${esc(item.title)}</span>
       <div class="toolbar-spacer"></div>
       <div class="content-badges">
-        <span class="badge badge-${item.difficulty}">${item.difficulty}</span>
-        <span class="badge" style="background:var(--bg-alt);color:var(--ink-light);">${item.readingTime} min</span>
+        <span class="badge badge-${esc(item.difficulty)}">${esc(item.difficulty)}</span>
+        <span class="badge" style="background:var(--bg-alt);color:var(--ink-light);">${esc(item.readingTime)} min</span>
       </div>
     </div>
   `;
@@ -1295,13 +1303,13 @@ async function loadItem(itemId) {
     const res = await fetch(item.path);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const md = await res.text();
-    const html = marked.parse(md);
+    const html = DOMPurify.sanitize(marked.parse(md));
 
     document.getElementById('lib-main').innerHTML = `
       <div id="content-view">
         ${toolbar}
         <div class="content-area">
-          <div class="content-hook">${item.hook}</div>
+          <div class="content-hook">${esc(item.hook)}</div>
           <div class="prose">${html}</div>
         </div>
       </div>

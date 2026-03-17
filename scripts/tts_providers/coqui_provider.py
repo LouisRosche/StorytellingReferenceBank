@@ -404,7 +404,7 @@ class CoquiTTSProvider(TTSProvider):
                 import torch
                 if torch.cuda.is_available():
                     torch.cuda.empty_cache()
-            except:
+            except Exception:
                 pass
 
         super().cleanup()
