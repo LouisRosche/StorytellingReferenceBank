@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 533" fill="none">
+  <defs>
+    <linearGradient id="storm-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="40%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+    <linearGradient id="drop-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfdbfe"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="flower-stem" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="533" rx="16" fill="url(#storm-sky)"/>
+
+  <!-- Dark cloud at top -->
+  <g transform="translate(200, 80)">
+    <ellipse cx="0" cy="0" rx="90" ry="40" fill="#64748b"/>
+    <ellipse cx="-40" cy="-20" rx="45" ry="30" fill="#64748b"/>
+    <ellipse cx="30" cy="-25" rx="50" ry="32" fill="#64748b"/>
+    <ellipse cx="-10" cy="-30" rx="35" ry="25" fill="#64748b"/>
+  </g>
+
+  <!-- Remi - the little raindrop (falling) -->
+  <g transform="translate(200, 200)">
+    <path d="M0 -25 Q-18 5 -15 15 Q-15 30 0 30 Q15 30 15 15 Q18 5 0 -25Z" fill="url(#drop-fill)" stroke="#3b82f6" stroke-width="1"/>
+    <!-- Eyes (wide, a bit scared but brave) -->
+    <circle cx="-5" cy="8" r="3" fill="#1e293b"/>
+    <circle cx="5" cy="8" r="3" fill="#1e293b"/>
+    <circle cx="-4" cy="7" r="1" fill="#ffffff"/>
+    <circle cx="6" cy="7" r="1" fill="#ffffff"/>
+    <!-- Determined little mouth -->
+    <path d="M-3 15 Q0 17 3 15" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Sparkle -->
+    <circle cx="8" cy="-5" r="2" fill="#ffffff" opacity="0.8"/>
+  </g>
+
+  <!-- Other raindrops falling -->
+  <path d="M120 140 Q118 145 118 148 Q118 152 120 152 Q122 152 122 148 Q122 145 120 140Z" fill="#93c5fd" opacity="0.4"/>
+  <path d="M280 160 Q278 165 278 168 Q278 172 280 172 Q282 172 282 168 Q282 165 280 160Z" fill="#93c5fd" opacity="0.3"/>
+  <path d="M150 180 Q148 185 148 188 Q148 192 150 192 Q152 192 152 188 Q152 185 150 180Z" fill="#93c5fd" opacity="0.35"/>
+
+  <!-- Wilting flower at bottom -->
+  <g transform="translate(200, 420)">
+    <!-- Stem -->
+    <path d="M0 0 Q-5 -30 0 -50" stroke="url(#flower-stem)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Leaves -->
+    <ellipse cx="-8" cy="-20" rx="8" ry="4" fill="#86efac" transform="rotate(-30 -8 -20)"/>
+    <ellipse cx="6" cy="-30" rx="7" ry="3.5" fill="#86efac" transform="rotate(25 6 -30)"/>
+    <!-- Petals (drooping) -->
+    <ellipse cx="-8" cy="-55" rx="8" ry="5" fill="#fde68a" transform="rotate(30 -8 -55)"/>
+    <ellipse cx="5" cy="-57" rx="8" ry="5" fill="#fde68a" transform="rotate(-20 5 -57)"/>
+    <ellipse cx="-2" cy="-62" rx="7" ry="5" fill="#fde68a" transform="rotate(5 -2 -62)"/>
+    <ellipse cx="-12" cy="-50" rx="7" ry="4" fill="#fcd34d" transform="rotate(45 -12 -50)"/>
+    <ellipse cx="10" cy="-52" rx="7" ry="4" fill="#fcd34d" transform="rotate(-35 10 -52)"/>
+    <!-- Center -->
+    <circle cx="-1" cy="-55" r="5" fill="#f59e0b"/>
+  </g>
+
+  <!-- Meadow ground -->
+  <ellipse cx="200" cy="470" rx="180" ry="20" fill="#bbf7d0" opacity="0.5"/>
+
+  <!-- Title -->
+  <text x="200" y="310" text-anchor="middle" font-family="Georgia, serif" font-size="24" font-weight="bold" fill="#1e293b">
+    The Brave Little
+  </text>
+  <text x="200" y="340" text-anchor="middle" font-family="Georgia, serif" font-size="24" font-weight="bold" fill="#1e293b">
+    Raindrop
+  </text>
+
+  <!-- Subtitle -->
+  <text x="200" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-style="italic">
+    Every drop matters
+  </text>
+
+  <!-- Author -->
+  <text x="200" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8">
+    by Louis Rosche
+  </text>
+</svg>
