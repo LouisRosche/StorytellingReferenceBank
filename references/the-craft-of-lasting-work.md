@@ -40,7 +40,7 @@ Aristotle didn't invent tragedy—he studied why it worked. His insight: **catha
 
 "Life can only be understood backwards; but it must be lived forwards."
 
-Kierkegaard's core insight: existence precedes essence. You cannot think your way to meaning—you must *leap*, then discover what the leap meant.
+Kierkegaard anticipated what Sartre would later formulate as "existence precedes essence." You cannot think your way to meaning—you must take the *leap*, then discover what it meant.
 
 **The principle**: Characters who figure everything out before acting are boring. Characters who act, then understand (or fail to), are human.
 
@@ -94,7 +94,7 @@ Poe understood obsession. His narrators aren't unreliable—they're *too* reliab
 
 ### Kafka (1883-1924)
 
-Gregor Samsa wakes as a beetle. His family is inconvenienced. That's the horror—not the transformation, but the *banality* of response.
+Gregor Samsa wakes as a monstrous vermin (*ungeheures Ungeziefer*—Kafka insisted the creature never be depicted; the indeterminacy is the point). His family is inconvenienced. That's the horror—not the transformation, but the *banality* of response.
 
 **The principle**: The absurd becomes unbearable when treated as normal. Reality is stranger than fantasy; fantasy should illuminate this.
 
@@ -357,9 +357,9 @@ Across millennia, lasting work shares these qualities:
 
 ## XII. The Final Principle
 
-From Plutarch, who wrote parallel lives to illuminate character through comparison:
+From Plutarch, who wrote parallel lives to illuminate character through comparison—and who argued, in *On Listening to Lectures*, that education should kindle rather than merely fill:
 
-> "The mind is not a vessel to be filled, but a fire to be kindled."
+> "The mind is not a vessel to be filled, but a fire to be kindled." (paraphrased; the original passage is more discursive)
 
 Your work doesn't succeed by transferring information. It succeeds by igniting something that continues without you.
 
