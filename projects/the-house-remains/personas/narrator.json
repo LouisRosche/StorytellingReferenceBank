@@ -18,7 +18,7 @@
   "use_cases": ["literary fiction", "family drama", "introspective passages", "extended prose"],
   "model_variant": "1.7B-VoiceDesign",
   "quality": {
-    "golden_reference": "projects/the-weight-of-saltwater/golden/narrator.wav",
+    "golden_reference": "projects/the-house-remains/golden/narrator.wav",
     "validation_status": "pending"
   },
   "notes": "Primary voice for the novel. Must sustain attention through long sequel passages without dialogue. Test for monotony on extended introspection. Emotional shifts should be subtle - this is New England grief, not performed."

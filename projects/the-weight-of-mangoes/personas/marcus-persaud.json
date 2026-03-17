@@ -13,7 +13,7 @@
   },
   "emotional_range": ["earnest", "curious", "gentle", "uncertain", "hopeful"],
   "use_cases": ["dialogue", "young adult perspective"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
   "quality_tier": "premium",
   "notes": "Third-generation voice. The yearning for heritage is audible—he speaks carefully around his grandmother, trying to absorb her rhythms. With his generation, he's more casual, more contemporary."
 }

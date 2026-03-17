@@ -13,7 +13,7 @@
   },
   "emotional_range": ["gentle", "patient", "quietly fierce", "melancholic", "protective"],
   "use_cases": ["dialogue", "family drama"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
   "quality_tier": "premium",
   "notes": "The keeper. Unmarried, childless, devoted to her mother. Her gentleness can be mistaken for weakness but is actually a form of endurance. She asks the questions others refuse to ask."
 }

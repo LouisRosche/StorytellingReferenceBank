@@ -1008,7 +1008,7 @@ async function hashCode(text) {
 }
 
 /** Escape HTML entities to prevent XSS when interpolating data into templates. */
-function esc(s) { const d = document.createElement('div'); d.textContent = String(s ?? ''); return d.innerHTML; }
+function esc(s) { const d = document.createElement('div'); d.textContent = String(s ?? ''); return d.innerHTML.replace(/'/g, '&#39;'); }
 
 /* ════════════════════════════════════════════
    STATE
@@ -1237,7 +1237,7 @@ function renderCategoryLanding(catId) {
     <div id="content-view">
       <div class="content-toolbar">
         <button class="back-btn" onclick="backToWelcome()">← Library</button>
-        <span class="breadcrumb"><span>${cat.label}</span></span>
+        <span class="breadcrumb"><span>${esc(cat.label)}</span></span>
         <div class="toolbar-spacer"></div>
         <span style="font-size:0.78rem;color:var(--ink-light);">${cat.items.length} resources</span>
       </div>

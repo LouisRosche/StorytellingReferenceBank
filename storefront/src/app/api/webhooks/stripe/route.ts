@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       if (!book) {
         console.error("Book not found for slug:", slug);
         return NextResponse.json(
-          { error: `Book not found: ${slug}` },
+          { error: "Book not found." },
           { status: 422 }
         );
       }
@@ -125,12 +125,12 @@ export async function POST(request: NextRequest) {
         console.error("Email fulfillment failed for session:", session.id);
       }
 
-      console.log("Purchase fulfilled:", {
+      console.log(emailSent || !customerEmail ? "Purchase fulfilled:" : "Purchase saved (email pending):", {
         session: session.id,
         book: book.title,
         format,
         narrator: narratorId || "default",
-        email: customerEmail,
+        email: customerEmail ? "[redacted]" : "(none)",
       });
 
       break;

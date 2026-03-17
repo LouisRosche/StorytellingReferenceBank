@@ -26,8 +26,13 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY, {
 
 // Use a dedicated signing key, NOT the Stripe secret key.
 // This limits blast radius: a token leak doesn't compromise the Stripe account.
-const DOWNLOAD_TOKEN_SECRET =
-  process.env.DOWNLOAD_TOKEN_SECRET || STRIPE_SECRET_KEY!;
+const DOWNLOAD_TOKEN_SECRET = (() => {
+  if (process.env.DOWNLOAD_TOKEN_SECRET) return process.env.DOWNLOAD_TOKEN_SECRET;
+  if (process.env.NODE_ENV === "production") {
+    console.warn("WARNING: DOWNLOAD_TOKEN_SECRET not set — falling back to STRIPE_SECRET_KEY. Set a dedicated key in production.");
+  }
+  return STRIPE_SECRET_KEY!;
+})();
 
 export function generateDownloadToken(
   purchaseId: string,

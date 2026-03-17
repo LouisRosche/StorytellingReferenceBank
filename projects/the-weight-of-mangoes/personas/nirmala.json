@@ -3,7 +3,7 @@
   "name": "Nirmala (Nani)",
   "voice_prompt": "Perfect audio quality. Elderly woman, eighty years old, born in Trinidad to Indian immigrant parents. Strong Trinidadian English with Hindi-influenced cadence. Warm, weathered voice with the particular music of the Caribbean—rising intonations, melodic phrasing, the rhythm of creole speech. Pace varies: quick and sharp when teasing, slow and deliberate when remembering. A voice that carries decades of unsaid things. Not frail despite age—there is iron beneath the warmth.",
   "voice_attributes": {
-    "age_range": "elderly",
+    "age_range": "elder",
     "gender": "female",
     "pitch": "medium",
     "pace": "variable",
@@ -13,7 +13,7 @@
   },
   "emotional_range": ["loving", "sharp", "nostalgic", "grieving", "stubborn", "playful"],
   "use_cases": ["dialogue", "family drama", "diaspora narratives"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
   "quality_tier": "premium",
   "notes": "Matriarch voice. The accent must be authentic Indo-Caribbean, not generic 'island' voice. Speech patterns include: 'nah' as tag, 'leh meh' for 'let me', dropped articles, present tense for past events when emotional."
 }

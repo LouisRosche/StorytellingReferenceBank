@@ -45,11 +45,11 @@ NOUNS = [
 # ─────────────────────────────────────────────
 
 def hash_code(code: str) -> str:
-    """Hash an access code using HMAC-SHA256 with a static key.
+    """Hash an access code using PBKDF2-SHA256 with a static salt.
 
-    Using HMAC instead of bare SHA-256 prevents brute-force via rainbow tables.
-    The key is not secret (client-side validation), but adds computational cost
-    and prevents pre-computed hash attacks.
+    Using PBKDF2 instead of bare SHA-256 adds computational cost (100K iterations)
+    and prevents pre-computed hash attacks. The salt is not secret (client-side
+    validation uses the same value).
     """
     normalized = code.strip().upper()
     return hashlib.pbkdf2_hmac(

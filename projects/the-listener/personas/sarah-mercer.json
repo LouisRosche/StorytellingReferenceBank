@@ -3,10 +3,10 @@
   "name": "Dr. Sarah Mercer",
   "version": "1.0.0",
   "status": "active",
-  "voice_prompt": "Female, late thirties, educated American neutral. Alto range with controlled warmth. Measured pace, precise diction. Professional voice paradoxically warmer than personal voice. Under stress: slower, more deliberate, each word careful. Surface composure with hairline fractures of fear beneath. Never shrill. Keeps control until she doesn't.",
+  "voice_prompt": "Female, early forties, educated American neutral. Alto range with controlled warmth. Measured pace, precise diction. Professional voice paradoxically warmer than personal voice. Under stress: slower, more deliberate, each word careful. Surface composure with hairline fractures of fear beneath. Never shrill. Keeps control until she doesn't.",
   "character_context": "Protagonist. Trauma therapist hiding her own unprocessed grief. Trained to listen, struggling to speak. The professional facade is armor; glimpses beneath should feel earned.",
   "voice_attributes": {
-    "age_range": "adult",
+    "age_range": "middle_aged",
     "gender": "female",
     "pitch": "medium-low",
     "pace": "measured",

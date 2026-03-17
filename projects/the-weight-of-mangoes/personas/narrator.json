@@ -13,7 +13,7 @@
   },
   "emotional_range": ["contemplative", "tender", "melancholic", "wry", "reverent"],
   "use_cases": ["literary fiction", "diaspora narratives", "family drama", "cultural memoir"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
   "quality_tier": "premium",
   "notes": "Primary narrator for multi-generational diaspora story. Must handle code-switching between standard American English and Trinidadian English without caricature. The voice is the bridge between generations."
 }

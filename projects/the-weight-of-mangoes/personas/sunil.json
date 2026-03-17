@@ -13,7 +13,7 @@
   },
   "emotional_range": ["guarded", "defensive", "uncomfortable", "distant", "rarely vulnerable"],
   "use_cases": ["dialogue", "family tension"],
-  "model_variant": "1.7B-Base",
+  "model_variant": "1.7B-VoiceDesign",
   "quality_tier": "premium",
   "notes": "The son who left. His lack of accent is the accent—the deliberate removal of origin. Brief, functional sentences. Rarely emotional. When he does crack, it's devastating."
 }
