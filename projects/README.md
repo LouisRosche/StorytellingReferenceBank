@@ -22,10 +22,10 @@ projects/[name]/
 └── speaker-map.json     # Speaker → persona routing
 ```
 
-## Using as Templates
+## Reference Examples
 
-**Multi-speaker children's book**: Start from `luna-the-little-cloud` — complete pipeline example with prose-style dialogue parsing.
+**Multi-speaker children's book**: `luna-the-little-cloud` — production-tested pipeline with prose-style dialogue parsing, 5 personas, speaker map.
 
-**Multi-speaker literary fiction**: Start from `the-weight-of-mangoes` or `the-house-remains` — tagged `[SPEAKER]` format with 7-9 voices.
+**Tagged multi-speaker**: `the-house-remains` and `the-weight-of-mangoes` — `[SPEAKER]` format with 7-9 voices.
 
-**Thriller with dual POV**: Start from `the-listener` — demonstrates psychological tension through voice persona contrast.
+**Full-length thriller**: `the-listener` — 34-chapter complete draft with dual POV and 9 speakers.

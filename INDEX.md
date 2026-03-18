@@ -69,7 +69,7 @@ For a 5–12 public charter school in St. Louis, MO. Cross-curricular scientist 
 | Persona schema | `personas/schema.json` |
 | Persona taxonomy | `personas/taxonomy.md` |
 | Library coverage status | `personas/library-status.md` |
-| Golden references | `personas/golden/` |
+| Golden references | `personas/golden/README.md` |
 
 ## Bespoke Personalities Product
 
@@ -137,6 +137,8 @@ For a 5–12 public charter school in St. Louis, MO. Cross-curricular scientist 
 | Audio processing tests | `scripts/tests/test_audio_postprocess.py` |
 | Dialogue parser tests | `scripts/tests/test_dialogue_parser.py` |
 | Speaker map tests | `scripts/tests/test_speaker_map.py` |
+| Manuscript splitter tests | `scripts/tests/test_manuscript_to_chapters.py` |
+| Batch produce tests | `scripts/tests/test_batch_produce.py` |
 
 ## Build & Config
 
@@ -161,3 +163,4 @@ For a 5–12 public charter school in St. Louis, MO. Cross-curricular scientist 
 | `docs/archive/TTS-PIPELINE-EVALUATION-2026-01.md` | TTS engine comparison |
 | `docs/archive/REPO-AUDIT-SWOT-2026-01.md` | Repository strengths/gaps analysis |
 | `docs/archive/framework-validation-2026-01.md` | Framework coverage validation |
+| `docs/archive/PIPELINE-AUDIT-2026-03.md` | Pipeline, workflow & tooling audit |

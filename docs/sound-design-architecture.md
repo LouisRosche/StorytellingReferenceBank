@@ -1,6 +1,6 @@
-# Sound Design Pipeline Architecture
+# Sound Design Pipeline Architecture (Design Specification)
 
-Technical architecture for integrating AI-powered sound design into the audiobook production pipeline.
+> **Status**: Design specification. Cue extraction and stripping are implemented in `dialogue_parser.py`. Asset resolution, audio generation, and mixing are not yet built. Reference implementations below are design targets, not working code.
 
 **Related**: `audiobook-specs/sound-design-spec.md` (cue format) · `docs/sound-design-research.md` (tool evaluation) · `audiobook-specs/acx-requirements.md` (compliance)
 
@@ -8,7 +8,7 @@ Technical architecture for integrating AI-powered sound design into the audioboo
 
 ## Overview
 
-The sound design system extends the existing `batch_produce.py` pipeline with modular components for:
+The sound design system will extend the existing `batch_produce.py` pipeline with modular components for:
 
 1. **Cue Extraction** - Parse sound cues from manuscripts
 2. **Asset Resolution** - Match cues to existing assets or queue for generation
@@ -1352,65 +1352,16 @@ Only the owl answered.
 [MUSIC: FADE_OUT 3s]
 ```
 
-### Production Command
+### Target Production Command
+
+When implemented, the production command will integrate with `batch_produce.py`:
 
 ```bash
-python batch_produce_with_sound.py manuscript.txt \
+python batch_produce.py manuscript.txt \
     --persona personas/narrator.json \
     --output-dir audiobook/ \
     --sound-config sound_design_config.json \
     --verbose
 ```
 
-### Output
-
-```
-STAGE 1: PREP - Splitting manuscript
-  Split into 12 chapters
-  Total words: 45,230
-
-STAGE 1.5: SOUND DESIGN - Processing cues
-  Processing cues for Chapter 1
-    Found 8 cues
-    Resolved: 3 cached, 4 generated, 1 failed
-  Processing cues for Chapter 2
-    Found 5 cues
-    Resolved: 5 cached, 0 generated, 0 failed
-  ...
-
-STAGE 2: TTS - Generating audio
-  Using persona: Literary Narrator
-  Generating Chapter 1: The Storm
-    → audiobook/raw_audio/Chapter_01.wav
-  ...
-
-STAGE 3.5: MIX - Combining audio layers
-  Mixing Chapter 1
-    Mixed to audiobook/raw_audio/Chapter_01.mixed.wav
-  ...
-
-STAGE 4: MASTER - Post-processing for ACX
-  Processing Chapter 1
-    → audiobook/final/Chapter_01.mp3
-  ...
-
-STAGE 5: VALIDATE - Checking ACX compliance
-  Chapter 1: PASSED
-  ...
-
-PRODUCTION COMPLETE
-  Chapters: 12
-  Total duration: 8.5 hours
-  ACX Validation: 12 passed, 0 failed
-```
-
----
-
-## Future Enhancements
-
-1. **Word-Level Timestamps**: Use TTS word timestamps for precise cue alignment
-2. **Spatial Audio**: Support for binaural/surround mixing
-3. **AI Cue Suggestion**: Automatically suggest sound cues based on manuscript content
-4. **Real-Time Preview**: Web interface for previewing sound design
-5. **Stem Export**: Export separate stems for professional post-production
-6. **Adaptive Music**: Music that responds to narrative pacing
+This will add stages 1.5 (sound design) and 3.5 (mixing) to the existing pipeline.

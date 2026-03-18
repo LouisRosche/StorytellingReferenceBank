@@ -73,7 +73,7 @@ Push manuscript → automatically generates audiobook.
 ```bash
 # On your 5090 machine
 mkdir actions-runner && cd actions-runner
-curl -o actions-runner-linux-x64.tar.gz -L https://github.com/actions/runner/releases/latest/download/actions-runner-linux-x64-2.XXX.X.tar.gz
+curl -o actions-runner-linux-x64.tar.gz -L https://github.com/actions/runner/releases/download/v2.322.0/actions-runner-linux-x64-2.322.0.tar.gz
 tar xzf ./actions-runner-linux-x64.tar.gz
 ./config.sh --url https://github.com/YOUR_USER/StorytellingReferenceBank --token YOUR_TOKEN
 ./run.sh
@@ -132,27 +132,9 @@ Run a simple web interface on your machine, accessible from any device on your n
 **Using Gradio:**
 
 ```python
-# scripts/web_studio.py
-import gradio as gr
-from pathlib import Path
-
-def generate_audiobook(manuscript, model, voice_ref):
-    # Call your TTS pipeline
-    # Return audio file path
-    pass
-
-demo = gr.Interface(
-    fn=generate_audiobook,
-    inputs=[
-        gr.File(label="Manuscript"),
-        gr.Dropdown(["higgs-v2", "vibevoice-7b", "fish-s1"], label="Model"),
-        gr.Audio(label="Voice Reference (optional)", type="filepath"),
-    ],
-    outputs=gr.Audio(label="Generated Audiobook"),
-    title="Storytelling TTS Studio"
-)
-
-demo.launch(server_name="0.0.0.0", server_port=7860)
+# The built-in web studio is already implemented:
+python scripts/web_studio.py
+# Access from any device: http://your-machine-ip:7860
 ```
 
 Access from any device: `http://your-machine-ip:7860`
