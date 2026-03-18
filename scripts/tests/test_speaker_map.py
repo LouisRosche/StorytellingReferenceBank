@@ -8,11 +8,7 @@ Or: python scripts/tests/test_speaker_map.py
 
 import json
 import os
-import sys
 import tempfile
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from multispeaker_tts import SpeakerMap
 
@@ -154,42 +150,3 @@ class TestProductionNotes:
                 os.unlink(f.name)
 
 
-def run_tests():
-    """Run all tests without pytest."""
-    import traceback
-
-    test_classes = [
-        TestSpeakerMapLoading,
-        TestGetPersonaPath,
-        TestProductionNotes,
-    ]
-
-    passed = 0
-    failed = 0
-
-    for cls in test_classes:
-        instance = cls()
-        for name in dir(instance):
-            if name.startswith('test_'):
-                try:
-                    # Call setup if exists
-                    if hasattr(instance, 'setup_method'):
-                        instance.setup_method()
-                    getattr(instance, name)()
-                    print(f"  \033[92m✓\033[0m {cls.__name__}.{name}")
-                    passed += 1
-                except AssertionError as e:
-                    print(f"  \033[91m✗\033[0m {cls.__name__}.{name}: {e}")
-                    failed += 1
-                except Exception as e:
-                    print(f"  \033[91m✗\033[0m {cls.__name__}.{name}: {type(e).__name__}: {e}")
-                    failed += 1
-
-    print(f"\n{passed} passed, {failed} failed")
-    return failed == 0
-
-
-if __name__ == "__main__":
-    print("Running SpeakerMap tests...\n")
-    success = run_tests()
-    sys.exit(0 if success else 1)
