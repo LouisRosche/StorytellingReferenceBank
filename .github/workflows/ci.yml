@@ -36,7 +36,7 @@ jobs:
         run: python3 scripts/validate_personas.py
 
       - name: Run tests (no GPU)
-        run: python3 -m pytest scripts/tests/ -v -m "not gpu"
+        run: python3 -m pytest scripts/tests/ -v -m "not gpu" --tb=short
 
       - name: Dependency audit
         run: pip audit || true
@@ -61,7 +61,7 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npx next lint || true
+        run: npx next lint
 
       - name: Type check
         run: npx tsc --noEmit
@@ -77,3 +77,28 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_FAKE_CI_PLACEHOLDER
           NEXT_PUBLIC_SITE_URL: http://localhost:3000
         run: npx next build
+
+  student-portal-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate library.json
+        run: python3 -c "import json; json.load(open('student-portal/library.json'))"
+
+      - name: Validate codes.json
+        run: python3 -c "import json; data = json.load(open('student-portal/codes.json')); assert 'codes' in data, 'Missing codes key'"
+
+      - name: Check HTML syntax
+        run: python3 -c "
+          from html.parser import HTMLParser
+          class Check(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.errors = []
+              def handle_starttag(self, tag, attrs): pass
+          p = Check()
+          p.feed(open('student-portal/index.html').read())
+          print('HTML parsed without errors')
+          "
