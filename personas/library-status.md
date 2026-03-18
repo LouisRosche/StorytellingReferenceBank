@@ -98,36 +98,9 @@ Golden reference system ready for audio generation:
 
 See `personas/golden/README.md` for complete documentation.
 
-### Persona Status
+### Golden References
 
-| Persona | Golden Ref | Tier | Last Validated |
-|---------|------------|------|----------------|
-| character-gruff-mentor | pending generation | - | - |
-| character-teen | pending generation | - | - |
-| narrator-british | pending generation | - | - |
-| narrator-caribbean | pending generation | - | - |
-| narrator-childrens | pending generation | - | - |
-| narrator-elder-authority | pending generation | - | - |
-| narrator-french | pending generation | - | - |
-| narrator-global-literary | pending generation | - | - |
-| narrator-indian-english | pending generation | - | - |
-| narrator-latinx-bilingual | pending generation | - | - |
-| narrator-literary | pending generation | - | - |
-| narrator-literary-female | pending generation | - | - |
-| narrator-nonbinary-contemporary | pending generation | - | - |
-| narrator-thriller | pending generation | - | - |
-| narrator-warm-female | pending generation | - | - |
-| narrator-comedy | pending generation | - | - |
-| narrator-horror | pending generation | - | - |
-| narrator-australian | pending generation | - | - |
-| character-child | pending generation | - | - |
-
-### Next Steps
-
-1. Generate candidate audio for each persona using `personas/golden/passages/standard-narrative.txt`
-2. Human review each candidate for quality
-3. Normalize and commit approved audio as golden references
-4. Update persona JSON files with `quality.golden_reference` paths
+No golden reference audio has been generated yet — requires a GPU-backed TTS session. See `personas/golden/README.md` for the generation workflow. All 19 persona definitions are complete and validated; audio generation is the remaining step.
 
 ---
 

@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-tts install-tts-lite install-all venv test test-quick preflight preflight-deps validate check dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint lint-fix format format-check storefront-dev storefront-build storefront-lint clean help
+.PHONY: install install-dev install-tts install-tts-lite install-all venv test test-quick test-coverage preflight preflight-deps validate check dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint lint-fix format format-check storefront-dev storefront-build storefront-lint clean help
 
 PYTHON ?= python3
 VENV ?= .venv
@@ -38,6 +38,10 @@ test: ## Run test suite
 
 test-quick: ## Run tests without GPU-dependent tests
 	$(PYTHON) -m pytest scripts/tests/ -v -m "not gpu"
+
+test-coverage: ## Run tests with coverage report
+	$(PYTHON) -m pytest scripts/tests/ -v -m "not gpu" \
+		--cov=scripts --cov-report=term-missing --cov-report=html:htmlcov
 
 preflight: ## Run pre-flight validation (all projects)
 	$(PYTHON) scripts/preflight_check.py
@@ -126,4 +130,4 @@ storefront-lint: ## Lint storefront TypeScript
 clean: ## Remove generated files and caches
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name .pytest_cache -exec rm -rf {} + 2>/dev/null || true
-	rm -rf output/ 2>/dev/null || true
+	rm -rf output/ htmlcov/ .coverage 2>/dev/null || true

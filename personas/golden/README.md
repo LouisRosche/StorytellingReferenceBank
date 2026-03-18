@@ -385,29 +385,9 @@ Check for:
 
 ---
 
-## Persona Status
+## Current State
 
-| Persona | Golden Ref | Tier | Last Validated |
-|---------|------------|------|----------------|
-| character-child | pending | - | - |
-| character-gruff-mentor | pending | - | - |
-| character-teen | pending | - | - |
-| narrator-australian | pending | - | - |
-| narrator-british | pending | - | - |
-| narrator-caribbean | pending | - | - |
-| narrator-childrens | pending | - | - |
-| narrator-comedy | pending | - | - |
-| narrator-elder-authority | pending | - | - |
-| narrator-french | pending | - | - |
-| narrator-global-literary | pending | - | - |
-| narrator-horror | pending | - | - |
-| narrator-indian-english | pending | - | - |
-| narrator-latinx-bilingual | pending | - | - |
-| narrator-literary | pending | - | - |
-| narrator-literary-female | pending | - | - |
-| narrator-nonbinary-contemporary | pending | - | - |
-| narrator-thriller | pending | - | - |
-| narrator-warm-female | pending | - | - |
+Infrastructure is complete (test passages, regression harness, documentation). No golden reference audio files have been generated yet — this requires a working TTS backend with GPU. Once a TTS model is available, generate references following the step-by-step process above.
 
 ---
 
@@ -415,5 +395,6 @@ Check for:
 
 | Date | Change |
 |------|--------|
+| 2026-03-18 | Replaced per-persona pending table with current-state summary |
 | 2026-01-28 | Infrastructure complete: passages, documentation, workflow |
 | 2026-01-27 | Initial README with basic structure |

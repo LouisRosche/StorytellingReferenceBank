@@ -6,11 +6,6 @@ Run with: python -m pytest scripts/tests/test_dialogue_parser.py -v
 Or: python scripts/tests/test_dialogue_parser.py
 """
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from dialogue_parser import (
     Segment,
     detect_manuscript_format,
@@ -481,56 +476,3 @@ class TestSoundCueDataclass:
         assert d['generation_hint'] is None
 
 
-def run_tests():
-    """Run all tests without pytest."""
-    import traceback
-
-    test_classes = [
-        TestFormatDetection,
-        TestTaggedParser,
-        TestProseParser,
-        TestMergeAdjacentSegments,
-        TestNormalizeSpeaker,
-        TestParseManuscript,
-        TestEdgeCases,
-        TestExtractSoundCues,
-        TestStripSoundCues,
-        TestSoundCueDataclass,
-    ]
-
-    passed = 0
-    failed = 0
-    errors = []
-
-    for cls in test_classes:
-        instance = cls()
-        for name in dir(instance):
-            if name.startswith('test_'):
-                try:
-                    getattr(instance, name)()
-                    print(f"  \033[92m✓\033[0m {cls.__name__}.{name}")
-                    passed += 1
-                except AssertionError as e:
-                    print(f"  \033[91m✗\033[0m {cls.__name__}.{name}: {e}")
-                    failed += 1
-                    errors.append((cls.__name__, name, traceback.format_exc()))
-                except Exception as e:
-                    print(f"  \033[91m✗\033[0m {cls.__name__}.{name}: {type(e).__name__}: {e}")
-                    failed += 1
-                    errors.append((cls.__name__, name, traceback.format_exc()))
-
-    print(f"\n{passed} passed, {failed} failed")
-
-    if errors and '-v' in sys.argv:
-        print("\n--- Failures ---")
-        for cls_name, test_name, tb in errors:
-            print(f"\n{cls_name}.{test_name}:")
-            print(tb)
-
-    return failed == 0
-
-
-if __name__ == "__main__":
-    print("Running dialogue_parser tests...\n")
-    success = run_tests()
-    sys.exit(0 if success else 1)
