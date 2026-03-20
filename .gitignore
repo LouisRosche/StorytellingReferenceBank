@@ -47,3 +47,4 @@ models/
 *.pem
 credentials.json
 student-portal/codes-admin.json
+/data/
