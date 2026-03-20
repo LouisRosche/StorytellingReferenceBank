@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-tts install-tts-lite install-all venv test test-quick test-coverage preflight preflight-deps validate check dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint lint-fix format format-check storefront-dev storefront-build storefront-lint clean help
+.PHONY: install install-dev install-tts install-tts-lite install-all venv test test-quick test-coverage preflight preflight-deps validate check ci dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint lint-fix format format-check storefront-dev storefront-build storefront-lint storefront-test storefront-typecheck clean help
 
 PYTHON ?= python3
 VENV ?= .venv
@@ -53,6 +53,8 @@ validate: ## Validate all persona JSON files against schema
 	$(PYTHON) scripts/validate_personas.py
 
 check: test validate preflight-deps ## Run all checks (tests + personas + deps)
+
+ci: lint format-check validate test-coverage storefront-lint storefront-typecheck storefront-test storefront-build ## Full CI matrix (mirrors GitHub Actions)
 
 # ── Production ────────────────────────────────────────────────
 
@@ -124,6 +126,12 @@ storefront-build: ## Build storefront for production
 
 storefront-lint: ## Lint storefront TypeScript
 	cd storefront && npx next lint
+
+storefront-test: ## Run storefront tests
+	cd storefront && npx vitest run
+
+storefront-typecheck: ## Type-check storefront
+	cd storefront && npx tsc --noEmit
 
 # ── Cleanup ───────────────────────────────────────────────────
 
