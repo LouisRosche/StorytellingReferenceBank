@@ -38,8 +38,14 @@ export default function PurchaseButton({
 
       const data = await response.json();
 
-      if (data.url) {
+      if (
+        data.url &&
+        typeof data.url === "string" &&
+        data.url.startsWith("https://checkout.stripe.com/")
+      ) {
         window.location.href = data.url;
+      } else if (data.url) {
+        alert("Unexpected checkout URL. Please try again.");
       } else {
         alert("Something went wrong. Please try again.");
       }

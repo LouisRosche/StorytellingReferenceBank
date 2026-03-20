@@ -39,9 +39,42 @@ function readDb(): Purchase[] {
   return JSON.parse(raw);
 }
 
+const LOCK_PATH = DB_PATH + ".lock";
+
+function acquireLock(maxRetries = 10, retryDelayMs = 50): void {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      fs.writeFileSync(LOCK_PATH, String(process.pid), {
+        flag: "wx",
+      });
+      return;
+    } catch {
+      // Lock file exists — another process is writing
+      const start = Date.now();
+      while (Date.now() - start < retryDelayMs) {
+        // busy-wait
+      }
+    }
+  }
+  throw new Error("Could not acquire database lock");
+}
+
+function releaseLock(): void {
+  try {
+    fs.unlinkSync(LOCK_PATH);
+  } catch {
+    // Lock already released
+  }
+}
+
 function writeDb(purchases: Purchase[]): void {
   ensureDbExists();
-  fs.writeFileSync(DB_PATH, JSON.stringify(purchases, null, 2), "utf-8");
+  acquireLock();
+  try {
+    fs.writeFileSync(DB_PATH, JSON.stringify(purchases, null, 2), "utf-8");
+  } finally {
+    releaseLock();
+  }
 }
 
 export function savePurchase(purchase: Purchase): void {
