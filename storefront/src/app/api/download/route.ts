@@ -26,6 +26,14 @@ export async function GET(request: NextRequest) {
 
   const { slug, format } = verified;
 
+  const validFormats = ["ebook", "audiobook"];
+  if (!validFormats.includes(format)) {
+    return NextResponse.json(
+      { error: "Invalid format in download token" },
+      { status: 400 }
+    );
+  }
+
   const book = getStorybook(slug);
   if (!book) {
     return NextResponse.json({ error: "Book not found" }, { status: 404 });

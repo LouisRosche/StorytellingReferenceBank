@@ -55,6 +55,8 @@ export default function PurchaseButton({
       onClick={handlePurchase}
       disabled={loading}
       aria-label={`Purchase ${label} for $${(priceInCents / 100).toFixed(2)}`}
+      aria-busy={loading}
+      aria-disabled={loading}
       className={className}
     >
       {loading ? (

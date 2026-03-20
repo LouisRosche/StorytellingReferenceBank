@@ -24,6 +24,7 @@ export default function Nav() {
         className="md:hidden p-2 text-gray-600 hover:text-gray-900"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
+        aria-controls="mobile-nav-menu"
         aria-label="Toggle navigation menu"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -35,15 +36,18 @@ export default function Nav() {
         </svg>
       </button>
       {/* Mobile menu */}
-      {open && (
-        <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-lg md:hidden z-50">
-          <div className="flex flex-col p-4 gap-3">
-            <a href="/#catalog" className="text-sm text-gray-600 hover:text-primary-700 py-2" onClick={() => setOpen(false)}>Browse</a>
-            <a href="/#narrators" className="text-sm text-gray-600 hover:text-primary-700 py-2" onClick={() => setOpen(false)}>Narrators</a>
-            <a href="/#about" className="text-sm text-gray-600 hover:text-primary-700 py-2" onClick={() => setOpen(false)}>About</a>
-          </div>
+      <div
+        id="mobile-nav-menu"
+        role="menu"
+        aria-hidden={!open}
+        className={`absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-lg md:hidden z-50 ${open ? "" : "hidden"}`}
+      >
+        <div className="flex flex-col p-4 gap-3">
+          <a href="/#catalog" role="menuitem" className="text-sm text-gray-600 hover:text-primary-700 py-2" onClick={() => setOpen(false)}>Browse</a>
+          <a href="/#narrators" role="menuitem" className="text-sm text-gray-600 hover:text-primary-700 py-2" onClick={() => setOpen(false)}>Narrators</a>
+          <a href="/#about" role="menuitem" className="text-sm text-gray-600 hover:text-primary-700 py-2" onClick={() => setOpen(false)}>About</a>
         </div>
-      )}
+      </div>
     </nav>
   );
 }

@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Storytelling Reference Bank — Student Library</title>
-  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js" integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js" integrity="sha384-eEu5CTj3qGvu9PdJuS+YlkNi7d2XxQROAFYOr59zgObtlcux1ae1Il3u7jvdCSWu" crossorigin="anonymous"></script>
   <style>
     /* ─────────────────────────────────────────────
        DESIGN TOKENS
@@ -962,7 +962,7 @@
 <!-- ════════════════════════════════════════════
      LIBRARY
 ═════════════════════════════════════════════ -->
-<div id="library" class="hidden">
+<div id="library" class="hidden" aria-hidden="true">
 
   <!-- Header -->
   <header class="lib-header">
@@ -974,7 +974,7 @@
     <div class="progress-pill" id="progress-pill">
       <b id="progress-count">0</b> of <span id="progress-total">0</span> read
     </div>
-    <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode" aria-pressed="false">◑</button>
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Toggle dark mode" aria-pressed="false">◑</button>
   </header>
 
   <!-- Sidebar -->
@@ -1095,8 +1095,7 @@ document.getElementById('lock-form').addEventListener('submit', async (e) => {
 
     if (validHashes.includes(hash)) {
       sessionStorage.setItem(STORAGE_KEY, '1');
-      document.getElementById('lock-screen').classList.add('hidden');
-      document.getElementById('library').classList.remove('hidden');
+      showScreen('library');
       initLibrary();
     } else {
       input.classList.add('error');
@@ -1145,7 +1144,7 @@ function renderSidebar() {
   for (const cat of library.categories) {
     html += `
       <div class="category-group" data-cat="${esc(cat.id)}">
-        <button class="category-header" onclick="toggleCategory('${esc(cat.id)}')">
+        <button class="category-header" data-action="toggle-category" data-cat-id="${esc(cat.id)}">
           <span class="cat-icon">${esc(cat.icon)}</span>
           ${esc(cat.label)}
           <span class="cat-chevron">▼</span>
@@ -1158,7 +1157,7 @@ function renderSidebar() {
         <button
           class="sidebar-item${isRead ? ' read' : ''}"
           id="sidebar-${esc(item.id)}"
-          onclick="loadItem('${esc(item.id)}')"
+          data-action="load-item" data-item-id="${esc(item.id)}"
         >
           <div class="item-title">${esc(item.title)}</div>
           <div class="item-meta">
@@ -1194,7 +1193,7 @@ function renderWelcome() {
       `<span class="card-item-chip">${esc(i.title)}</span>`
     ).join('');
     cards += `
-      <div class="category-card" onclick="openCategory('${esc(cat.id)}')">
+      <div class="category-card" data-action="open-category" data-cat-id="${esc(cat.id)}" role="button" tabindex="0">
         <div class="card-header">
           <span class="card-icon">${esc(cat.icon)}</span>
           <span class="card-title">${esc(cat.label)}</span>
@@ -1246,7 +1245,7 @@ function renderCategoryLanding(catId) {
   for (const item of cat.items) {
     const isRead = readSet.has(item.id);
     itemCards += `
-      <div class="landing-item-card" onclick="loadItem('${esc(item.id)}')">
+      <div class="landing-item-card" data-action="load-item" data-item-id="${esc(item.id)}" role="button" tabindex="0">
         <div class="landing-card-top">
           <div class="landing-item-title">${esc(item.title)}${isRead ? ' <span class="landing-read-indicator">✓</span>' : ''}</div>
           <div class="landing-card-meta">
@@ -1262,7 +1261,7 @@ function renderCategoryLanding(catId) {
   document.getElementById('lib-main').innerHTML = `
     <div id="content-view">
       <div class="content-toolbar">
-        <button class="back-btn" onclick="backToWelcome()">← Library</button>
+        <button class="back-btn" data-action="back-to-welcome">← Library</button>
         <span class="breadcrumb"><span>${esc(cat.label)}</span></span>
         <div class="toolbar-spacer"></div>
         <span style="font-size:0.78rem;color:var(--ink-light);">${cat.items.length} resources</span>
@@ -1307,7 +1306,7 @@ async function loadItem(itemId) {
 
   const toolbar = `
     <div class="content-toolbar">
-      <button class="back-btn" onclick="backToCategory('${esc(cat.id)}')">← ${esc(cat.label)}</button>
+      <button class="back-btn" data-action="back-to-category" data-cat-id="${esc(cat.id)}">← ${esc(cat.label)}</button>
       <span class="breadcrumb">${esc(cat.label)} <span>/</span> ${esc(item.title)}</span>
       <div class="toolbar-spacer"></div>
       <div class="content-badges">
@@ -1350,11 +1349,17 @@ async function loadItem(itemId) {
     // Scroll to top of content
     document.getElementById('lib-main').scrollTop = 0;
 
-    // Focus content for screen readers
-    const contentArea = document.querySelector('.content-area');
-    if (contentArea) {
-      contentArea.setAttribute('tabindex', '-1');
-      contentArea.focus({ preventScroll: true });
+    // Focus first heading for screen readers (better than container focus)
+    const heading = document.querySelector('.content-area .prose h1, .content-area .prose h2');
+    if (heading) {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    } else {
+      const contentArea = document.querySelector('.content-area');
+      if (contentArea) {
+        contentArea.setAttribute('tabindex', '-1');
+        contentArea.focus({ preventScroll: true });
+      }
     }
 
     // Mark as read
@@ -1407,9 +1412,65 @@ function updateProgress() {
    SESSION PERSISTENCE
 ═════════════════════════════════════════════ */
 if (sessionStorage.getItem(STORAGE_KEY)) {
-  document.getElementById('lock-screen').classList.add('hidden');
-  document.getElementById('library').classList.remove('hidden');
+  showScreen('library');
   initLibrary();
+}
+
+/* ════════════════════════════════════════════
+   EVENT DELEGATION (replaces inline onclick)
+═════════════════════════════════════════════ */
+document.addEventListener('click', (e) => {
+  const target = e.target.closest('[data-action]');
+  if (!target) return;
+  const action = target.dataset.action;
+
+  switch (action) {
+    case 'toggle-category':
+      toggleCategory(target.dataset.catId);
+      break;
+    case 'load-item':
+      loadItem(target.dataset.itemId);
+      break;
+    case 'open-category':
+      openCategory(target.dataset.catId);
+      break;
+    case 'back-to-welcome':
+      backToWelcome();
+      break;
+    case 'back-to-category':
+      backToCategory(target.dataset.catId);
+      break;
+  }
+});
+
+// Allow keyboard activation of card-like elements with role="button"
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const target = e.target.closest('[data-action][role="button"]');
+    if (target) {
+      e.preventDefault();
+      target.click();
+    }
+  }
+});
+
+/* ════════════════════════════════════════════
+   SCREEN TRANSITIONS (aria-hidden management)
+═════════════════════════════════════════════ */
+function showScreen(screenId) {
+  const lockScreen = document.getElementById('lock-screen');
+  const libraryScreen = document.getElementById('library');
+  if (screenId === 'library') {
+    lockScreen.classList.add('hidden');
+    lockScreen.setAttribute('aria-hidden', 'true');
+    libraryScreen.classList.remove('hidden');
+    libraryScreen.removeAttribute('aria-hidden');
+  } else {
+    libraryScreen.classList.add('hidden');
+    libraryScreen.setAttribute('aria-hidden', 'true');
+    lockScreen.classList.remove('hidden');
+    lockScreen.removeAttribute('aria-hidden');
+  }
 }
 
 /* ════════════════════════════════════════════

@@ -29,7 +29,9 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY, {
 const DOWNLOAD_TOKEN_SECRET = (() => {
   if (process.env.DOWNLOAD_TOKEN_SECRET) return process.env.DOWNLOAD_TOKEN_SECRET;
   if (process.env.NODE_ENV === "production") {
-    console.warn("WARNING: DOWNLOAD_TOKEN_SECRET not set — falling back to STRIPE_SECRET_KEY. Set a dedicated key in production.");
+    throw new Error(
+      "DOWNLOAD_TOKEN_SECRET is not set. A dedicated signing key is required in production to limit blast radius of token leaks."
+    );
   }
   return STRIPE_SECRET_KEY!;
 })();
@@ -52,7 +54,7 @@ export function generateDownloadToken(
 
 export function verifyDownloadToken(
   token: string
-): { purchaseId: string; slug: string; format: string } | null {
+): { purchaseId: string; slug: string; format: "ebook" | "audiobook" } | null {
   try {
     const decoded = JSON.parse(
       Buffer.from(token, "base64url").toString("utf-8")
@@ -83,6 +85,7 @@ export function verifyDownloadToken(
     const parts = payload.split(":");
     if (parts.length < 3) return null;
     const [purchaseId, slug, format] = parts;
+    if (format !== "ebook" && format !== "audiobook") return null;
     return { purchaseId, slug, format };
   } catch {
     return null;
