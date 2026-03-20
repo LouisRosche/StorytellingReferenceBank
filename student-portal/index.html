@@ -882,6 +882,25 @@
       font-style: italic;
     }
 
+    /* SKIP LINK */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      z-index: 999;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: top var(--transition);
+    }
+    .skip-link:focus {
+      top: 0.5rem;
+    }
+
     /* RESPONSIVE */
     @media (max-width: 680px) {
       :root { --sidebar-w: 100vw; }
@@ -904,6 +923,7 @@
   </style>
 </head>
 <body>
+<a href="#lib-main" class="skip-link">Skip to content</a>
 
 <!-- ════════════════════════════════════════════
      LOCK SCREEN
@@ -928,9 +948,11 @@
           autocomplete="off"
           spellcheck="false"
           maxlength="32"
+          aria-label="Access code"
+          aria-describedby="error-msg"
         >
       </div>
-      <p id="error-msg"></p>
+      <p id="error-msg" role="alert" aria-live="polite"></p>
       <button type="submit" id="unlock-btn">Open the Library</button>
     </form>
     <p class="lock-hint">Your instructor will provide your access code.</p>
@@ -952,11 +974,11 @@
     <div class="progress-pill" id="progress-pill">
       <b id="progress-count">0</b> of <span id="progress-total">0</span> read
     </div>
-    <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">◑</button>
+    <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode" aria-pressed="false">◑</button>
   </header>
 
   <!-- Sidebar -->
-  <aside class="lib-sidebar" id="lib-sidebar">
+  <aside class="lib-sidebar" id="lib-sidebar" role="navigation" aria-label="Library contents">
     <!-- Injected by JS -->
   </aside>
 
@@ -1029,6 +1051,7 @@ function saveRead() {
   const saved = localStorage.getItem(THEME_KEY);
   if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('theme-toggle').setAttribute('aria-pressed', 'true');
   }
 })();
 
@@ -1036,6 +1059,8 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
   localStorage.setItem(THEME_KEY, isDark ? 'light' : 'dark');
+  const btn = document.getElementById('theme-toggle');
+  btn.setAttribute('aria-pressed', isDark ? 'false' : 'true');
 });
 
 /* ════════════════════════════════════════════
@@ -1318,6 +1343,13 @@ async function loadItem(itemId) {
     // Scroll to top of content
     document.getElementById('lib-main').scrollTop = 0;
 
+    // Focus content for screen readers
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) {
+      contentArea.setAttribute('tabindex', '-1');
+      contentArea.focus({ preventScroll: true });
+    }
+
     // Mark as read
     readSet.add(itemId);
     saveRead();
@@ -1378,7 +1410,24 @@ if (sessionStorage.getItem(STORAGE_KEY)) {
 ═════════════════════════════════════════════ */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && currentItemId) {
-    backToWelcome();
+    if (currentCatId) {
+      backToCategory(currentCatId);
+    } else {
+      backToWelcome();
+    }
+  }
+
+  // Arrow key navigation within sidebar
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    const items = [...document.querySelectorAll('.sidebar-item:not(.hidden)')];
+    const focused = document.activeElement;
+    const idx = items.indexOf(focused);
+    if (idx === -1) return;
+    e.preventDefault();
+    const next = e.key === 'ArrowDown' ? idx + 1 : idx - 1;
+    if (next >= 0 && next < items.length) {
+      items[next].focus();
+    }
   }
 });
 </script>

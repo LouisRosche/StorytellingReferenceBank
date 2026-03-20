@@ -46,7 +46,12 @@ function writeDb(purchases: Purchase[]): void {
 
 export function savePurchase(purchase: Purchase): void {
   const purchases = readDb();
-  purchases.push(purchase);
+  const existingIndex = purchases.findIndex((p) => p.id === purchase.id);
+  if (existingIndex >= 0) {
+    purchases[existingIndex] = purchase;
+  } else {
+    purchases.push(purchase);
+  }
   writeDb(purchases);
 }
 

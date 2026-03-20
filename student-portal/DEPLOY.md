@@ -17,17 +17,7 @@ Everything runs client-side. GitHub Pages serves the static files. No backend re
 
 ## One-Time Setup (5 minutes)
 
-### 1. Push the branch to main
-
-Merge the `claude/student-access-library-8UMci` branch via pull request, or merge locally:
-
-```bash
-git checkout main
-git merge claude/student-access-library-8UMci
-git push origin main
-```
-
-### 2. Enable GitHub Pages
+### 1. Enable GitHub Pages
 
 1. Go to the repo on GitHub: `github.com/LouisRosche/StorytellingReferenceBank`
 2. **Settings → Pages** (left sidebar)

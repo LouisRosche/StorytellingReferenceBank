@@ -1,6 +1,6 @@
 # Persona Library Status
 
-Coverage tracking and expansion roadmap.
+Coverage tracking for the persona library.
 
 ---
 

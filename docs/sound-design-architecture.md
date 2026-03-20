@@ -1,6 +1,6 @@
 # Sound Design Pipeline Architecture (Design Specification)
 
-> **Status**: Design specification. Cue extraction and stripping are implemented in `dialogue_parser.py`. Asset resolution, audio generation, and mixing are not yet built. Reference implementations below are design targets, not working code.
+> **Status**: Design specification — not implemented. Cue extraction and stripping are implemented in `dialogue_parser.py`. Everything else below (asset resolution, audio generation, mixing) is a design target. For the actual cue format spec, see `audiobook-specs/sound-design-spec.md`. For tool evaluation, see `docs/sound-design-research.md`. Do not treat code examples below as working code or existing files.
 
 **Related**: `audiobook-specs/sound-design-spec.md` (cue format) · `docs/sound-design-research.md` (tool evaluation) · `audiobook-specs/acx-requirements.md` (compliance)
 

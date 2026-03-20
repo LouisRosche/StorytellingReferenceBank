@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { validateEnv } from "@/lib/env";
+import Nav from "@/components/Nav";
 import "./globals.css";
 
 validateEnv();
@@ -23,37 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
+          Skip to content
+        </a>
         <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-          <nav className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2">
-              <span className="text-2xl">📚</span>
-              <span className="font-display text-xl font-bold text-primary-800">
-                Storybook Library
-              </span>
-            </a>
-            <div className="flex items-center gap-6">
-              <a
-                href="/#catalog"
-                className="text-sm text-gray-600 hover:text-primary-700 transition-colors"
-              >
-                Browse
-              </a>
-              <a
-                href="/#narrators"
-                className="text-sm text-gray-600 hover:text-primary-700 transition-colors"
-              >
-                Narrators
-              </a>
-              <a
-                href="/#about"
-                className="text-sm text-gray-600 hover:text-primary-700 transition-colors"
-              >
-                About
-              </a>
-            </div>
-          </nav>
+          <Nav />
         </header>
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <footer className="bg-gray-900 text-gray-400 mt-24">
           <div className="max-w-6xl mx-auto px-4 py-12">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
