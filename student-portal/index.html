@@ -1039,6 +1039,7 @@ let library = null;
 let readSet = new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]'));
 let currentItemId = null;
 let currentCatId  = null;
+const contentCache = {};
 
 function saveRead() {
   localStorage.setItem(READ_KEY, JSON.stringify([...readSet]));
@@ -1325,9 +1326,15 @@ async function loadItem(itemId) {
   `;
 
   try {
-    const res = await fetch(item.path);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const md = await res.text();
+    let md;
+    if (contentCache[item.path]) {
+      md = contentCache[item.path];
+    } else {
+      const res = await fetch(item.path);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      md = await res.text();
+      contentCache[item.path] = md;
+    }
     const html = DOMPurify.sanitize(marked.parse(md));
 
     document.getElementById('lib-main').innerHTML = `
