@@ -126,20 +126,59 @@ export async function getSampleFile(
   const safeNarrator = sanitizeSlug(narratorId);
   if (!safeSlug || !safeNarrator) return null;
 
+  const key = `sample-${safeNarrator}.mp3`;
+
   if (process.env.STORAGE_BUCKET) {
-    return getFromCloudStorage(safeSlug, `sample-${safeNarrator}`);
+    // Cloud path: fetch directly instead of going through getFromCloudStorage,
+    // which only knows about ebook/audiobook formats via the EXTENSIONS map.
+    return getCloudSample(safeSlug, key);
   }
 
-  const filePath = path.join(
-    CONTENT_DIR,
-    safeSlug,
-    `sample-${safeNarrator}.mp3`
-  );
+  const filePath = path.join(CONTENT_DIR, safeSlug, key);
   if (!fs.existsSync(filePath)) return null;
 
   return {
     buffer: fs.readFileSync(filePath),
     contentType: "audio/mpeg",
-    filename: `${slug}-sample.mp3`,
+    filename: `${safeSlug}-sample.mp3`,
   };
+}
+
+async function getCloudSample(
+  slug: string,
+  filename: string
+): Promise<StorageFile | null> {
+  const bucket = process.env.STORAGE_BUCKET!;
+  const region = process.env.STORAGE_REGION || "auto";
+  const endpoint = process.env.STORAGE_ENDPOINT;
+
+  const objectKey = `${slug}/${filename}`;
+  const url = endpoint
+    ? `${endpoint}/${bucket}/${objectKey}`
+    : `https://${bucket}.s3.${region}.amazonaws.com/${objectKey}`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        ...(process.env.STORAGE_AUTH_TOKEN
+          ? { Authorization: `Bearer ${process.env.STORAGE_AUTH_TOKEN}` }
+          : {}),
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`Storage fetch failed for ${objectKey}: ${response.status}`);
+      return null;
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    return {
+      buffer: Buffer.from(arrayBuffer),
+      contentType: "audio/mpeg",
+      filename: `${slug}-sample.mp3`,
+    };
+  } catch (err) {
+    console.error(`Storage error for ${objectKey}:`, err);
+    return null;
+  }
 }

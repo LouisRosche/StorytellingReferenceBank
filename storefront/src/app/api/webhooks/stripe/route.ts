@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe, STRIPE_WEBHOOK_SECRET, generateDownloadToken } from "@/lib/stripe";
 import { getSiteUrl } from "@/lib/env";
 import { getStorybook } from "@/lib/storybooks";
-import { savePurchase, hasProcessedEvent } from "@/lib/db";
+import { savePurchase, savePurchaseIfNew } from "@/lib/db";
 import { sendFulfillmentEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
@@ -33,12 +33,6 @@ export async function POST(request: NextRequest) {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
-
-      // Idempotency: skip if we've already processed this session
-      if (hasProcessedEvent(session.id)) {
-        console.log("Skipping duplicate event for session:", session.id);
-        return NextResponse.json({ received: true, duplicate: true });
-      }
 
       const metadata = session.metadata || {};
       const { slug, format, narratorId } = metadata;
@@ -82,9 +76,10 @@ export async function POST(request: NextRequest) {
         url: `${siteUrl}/api/download?token=${token}`,
       }));
 
-      // Persist purchase (initially unfulfilled until email sends)
+      // Atomic check-and-insert: prevents duplicate fulfillment from
+      // concurrent Stripe webhook retries (TOCTOU race).
       const purchaseId = crypto.randomUUID();
-      savePurchase({
+      const isNew = savePurchaseIfNew({
         id: purchaseId,
         stripeSessionId: session.id,
         email: customerEmail,
@@ -95,6 +90,11 @@ export async function POST(request: NextRequest) {
         createdAt: new Date().toISOString(),
         fulfilled: false,
       });
+
+      if (!isNew) {
+        console.log("Skipping duplicate event for session:", session.id);
+        return NextResponse.json({ received: true, duplicate: true });
+      }
 
       // Send fulfillment email — mark fulfilled only on success
       let emailSent = false;

@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
     status: 200,
     headers: {
       "Content-Type": file.contentType,
-      "Content-Disposition": `attachment; filename="${file.filename}"`,
+      "Content-Disposition": `attachment; filename="${file.filename}"; filename*=UTF-8''${encodeURIComponent(file.filename)}`,
       "Content-Length": file.buffer.length.toString(),
       "Cache-Control": "private, no-cache",
     },

@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 const mockConstructEvent = vi.fn();
 const mockGenerateDownloadToken = vi.fn().mockReturnValue("tok_test123");
 const mockSavePurchase = vi.fn();
-const mockHasProcessedEvent = vi.fn().mockReturnValue(false);
+const mockSavePurchaseIfNew = vi.fn().mockReturnValue(true);
 const mockSendFulfillmentEmail = vi.fn().mockResolvedValue(true);
 
 vi.mock("@/lib/stripe", () => ({
@@ -32,7 +32,7 @@ vi.mock("@/lib/storybooks", () => ({
 
 vi.mock("@/lib/db", () => ({
   savePurchase: (...args: unknown[]) => mockSavePurchase(...args),
-  hasProcessedEvent: (...args: unknown[]) => mockHasProcessedEvent(...args),
+  savePurchaseIfNew: (...args: unknown[]) => mockSavePurchaseIfNew(...args),
 }));
 
 vi.mock("@/lib/email", () => ({
@@ -77,7 +77,7 @@ function makeCheckoutEvent(overrides: Record<string, unknown> = {}) {
 describe("POST /api/webhooks/stripe", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockHasProcessedEvent.mockReturnValue(false);
+    mockSavePurchaseIfNew.mockReturnValue(true);
     mockSendFulfillmentEmail.mockResolvedValue(true);
     mockConstructEvent.mockReturnValue(makeCheckoutEvent());
   });
@@ -104,12 +104,12 @@ describe("POST /api/webhooks/stripe", () => {
   });
 
   it("returns 200 for duplicate event (idempotency)", async () => {
-    mockHasProcessedEvent.mockReturnValue(true);
+    mockSavePurchaseIfNew.mockReturnValue(false);
     const res = await POST(makeWebhookRequest("{}"));
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.duplicate).toBe(true);
-    expect(mockSavePurchase).not.toHaveBeenCalled();
+    expect(mockSendFulfillmentEmail).not.toHaveBeenCalled();
   });
 
   it("returns 422 when metadata is missing slug", async () => {
@@ -173,9 +173,10 @@ describe("POST /api/webhooks/stripe", () => {
         format: "ebook",
       })
     );
-    // Should save purchase twice — once unfulfilled, once fulfilled
-    expect(mockSavePurchase).toHaveBeenCalledTimes(2);
-    expect(mockSavePurchase).toHaveBeenLastCalledWith(
+    // savePurchaseIfNew inserts initially (unfulfilled), then savePurchase updates to fulfilled
+    expect(mockSavePurchaseIfNew).toHaveBeenCalledTimes(1);
+    expect(mockSavePurchase).toHaveBeenCalledTimes(1);
+    expect(mockSavePurchase).toHaveBeenCalledWith(
       expect.objectContaining({ fulfilled: true })
     );
   });
@@ -209,11 +210,9 @@ describe("POST /api/webhooks/stripe", () => {
     mockSendFulfillmentEmail.mockResolvedValue(false);
     const res = await POST(makeWebhookRequest("{}"));
     expect(res.status).toBe(200);
-    // Should only save once (unfulfilled), not update to fulfilled
-    expect(mockSavePurchase).toHaveBeenCalledTimes(1);
-    expect(mockSavePurchase).toHaveBeenCalledWith(
-      expect.objectContaining({ fulfilled: false })
-    );
+    // savePurchaseIfNew inserts as unfulfilled; savePurchase NOT called since email failed
+    expect(mockSavePurchaseIfNew).toHaveBeenCalledTimes(1);
+    expect(mockSavePurchase).not.toHaveBeenCalled();
   });
 
   it("marks purchase fulfilled when no customer email", async () => {
@@ -223,9 +222,10 @@ describe("POST /api/webhooks/stripe", () => {
     const res = await POST(makeWebhookRequest("{}"));
     expect(res.status).toBe(200);
     expect(mockSendFulfillmentEmail).not.toHaveBeenCalled();
-    // Should save fulfilled even without email
-    expect(mockSavePurchase).toHaveBeenCalledTimes(2);
-    expect(mockSavePurchase).toHaveBeenLastCalledWith(
+    // savePurchaseIfNew inserts, then savePurchase updates to fulfilled (no email needed)
+    expect(mockSavePurchaseIfNew).toHaveBeenCalledTimes(1);
+    expect(mockSavePurchase).toHaveBeenCalledTimes(1);
+    expect(mockSavePurchase).toHaveBeenCalledWith(
       expect.objectContaining({ fulfilled: true })
     );
   });
@@ -239,6 +239,7 @@ describe("POST /api/webhooks/stripe", () => {
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.received).toBe(true);
+    expect(mockSavePurchaseIfNew).not.toHaveBeenCalled();
     expect(mockSavePurchase).not.toHaveBeenCalled();
   });
 

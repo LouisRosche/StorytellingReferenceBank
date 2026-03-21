@@ -102,3 +102,24 @@ export function findPurchasesByEmail(email: string): Purchase[] {
 export function hasProcessedEvent(stripeSessionId: string): boolean {
   return readDb().some((p) => p.stripeSessionId === stripeSessionId);
 }
+
+/**
+ * Atomically check-and-insert: returns true if the purchase was saved,
+ * false if a record with the same stripeSessionId already exists.
+ * Holds the lock across both the read and the write to prevent TOCTOU races
+ * (e.g. concurrent Stripe webhook retries).
+ */
+export function savePurchaseIfNew(purchase: Purchase): boolean {
+  acquireLock();
+  try {
+    const purchases = readDb();
+    if (purchases.some((p) => p.stripeSessionId === purchase.stripeSessionId)) {
+      return false; // duplicate
+    }
+    purchases.push(purchase);
+    writeDb(purchases);
+    return true;
+  } finally {
+    releaseLock();
+  }
+}
