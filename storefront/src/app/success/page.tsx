@@ -14,7 +14,7 @@ function SuccessContent() {
         Thank you for your purchase!
       </h1>
       <p className="text-gray-600 mt-4 leading-relaxed">
-        Your storybook is ready. Check your email for download links — they're
+        Your storybook is ready. Check your email for download links — they&apos;re
         valid for 14 days. You can re-download anytime by contacting support
         with your order ID.
       </p>

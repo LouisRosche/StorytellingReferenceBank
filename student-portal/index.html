@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Storytelling Reference Bank — Student Library</title>
-  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js" integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js" integrity="sha384-eEu5CTj3qGvu9PdJuS+YlkNi7d2XxQROAFYOr59zgObtlcux1ae1Il3u7jvdCSWu" crossorigin="anonymous"></script>
   <style>
     /* ─────────────────────────────────────────────
        DESIGN TOKENS
@@ -17,7 +17,7 @@
       --border:      #DDD0B3;
       --ink:         #2C1810;
       --ink-mid:     #5C4033;
-      --ink-light:   #8B7355;
+      --ink-light:   #6B5740;
       --accent:      #C2410C;
       --accent-hover:#9A3412;
       --gold:        #D97706;
@@ -38,7 +38,7 @@
       --border:      #3D2E1A;
       --ink:         #F0E6D3;
       --ink-mid:     #C8B49A;
-      --ink-light:   #8B7A65;
+      --ink-light:   #A89880;
       --accent:      #F97316;
       --accent-hover:#EA580C;
       --gold:        #F59E0B;
@@ -213,6 +213,7 @@
 
     #unlock-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
     #unlock-btn:active { transform: translateY(0); }
+    #unlock-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     .lock-hint {
       margin-top: 0.75rem;
@@ -287,6 +288,10 @@
       background: var(--bg-alt);
       color: var(--ink);
     }
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
 
     /* SIDEBAR */
     .lib-sidebar {
@@ -322,6 +327,11 @@
     }
 
     .category-header:hover { background: var(--bg-alt); }
+    .category-header:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+      background: var(--bg-alt);
+    }
 
     .cat-icon {
       font-size: 0.9rem;
@@ -373,6 +383,11 @@
     }
 
     .sidebar-item:hover { background: var(--bg-alt); }
+    .sidebar-item:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+      background: var(--bg-alt);
+    }
 
     .sidebar-item.active {
       background: var(--bg-alt);
@@ -486,6 +501,11 @@
       box-shadow: var(--shadow-md);
       transform: translateY(-2px);
     }
+    .category-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      box-shadow: var(--shadow-md);
+    }
 
     .card-header {
       display: flex;
@@ -586,6 +606,11 @@
       box-shadow: var(--shadow);
       transform: translateY(-1px);
     }
+    .landing-item-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      box-shadow: var(--shadow);
+    }
 
     .landing-card-top {
       display: flex;
@@ -663,6 +688,10 @@
     }
 
     .back-btn:hover { background: var(--bg-alt); color: var(--ink); }
+    .back-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
 
     .breadcrumb {
       font-size: 0.8rem;
@@ -882,6 +911,25 @@
       font-style: italic;
     }
 
+    /* SKIP LINK */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      z-index: 999;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: top var(--transition);
+    }
+    .skip-link:focus {
+      top: 0.5rem;
+    }
+
     /* RESPONSIVE */
     @media (max-width: 680px) {
       :root { --sidebar-w: 100vw; }
@@ -904,6 +952,7 @@
   </style>
 </head>
 <body>
+<a href="#lib-main" class="skip-link">Skip to content</a>
 
 <!-- ════════════════════════════════════════════
      LOCK SCREEN
@@ -928,9 +977,11 @@
           autocomplete="off"
           spellcheck="false"
           maxlength="32"
+          aria-label="Access code"
+          aria-describedby="error-msg"
         >
       </div>
-      <p id="error-msg"></p>
+      <p id="error-msg" role="alert" aria-live="polite"></p>
       <button type="submit" id="unlock-btn">Open the Library</button>
     </form>
     <p class="lock-hint">Your instructor will provide your access code.</p>
@@ -940,7 +991,7 @@
 <!-- ════════════════════════════════════════════
      LIBRARY
 ═════════════════════════════════════════════ -->
-<div id="library" class="hidden">
+<div id="library" class="hidden" aria-hidden="true">
 
   <!-- Header -->
   <header class="lib-header">
@@ -952,11 +1003,11 @@
     <div class="progress-pill" id="progress-pill">
       <b id="progress-count">0</b> of <span id="progress-total">0</span> read
     </div>
-    <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">◑</button>
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" aria-pressed="false">◑</button>
   </header>
 
   <!-- Sidebar -->
-  <aside class="lib-sidebar" id="lib-sidebar">
+  <aside class="lib-sidebar" id="lib-sidebar" role="navigation" aria-label="Library contents">
     <!-- Injected by JS -->
   </aside>
 
@@ -1017,6 +1068,7 @@ let library = null;
 let readSet = new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]'));
 let currentItemId = null;
 let currentCatId  = null;
+const contentCache = {};
 
 function saveRead() {
   localStorage.setItem(READ_KEY, JSON.stringify([...readSet]));
@@ -1029,6 +1081,7 @@ function saveRead() {
   const saved = localStorage.getItem(THEME_KEY);
   if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('theme-toggle').setAttribute('aria-pressed', 'true');
   }
 })();
 
@@ -1036,6 +1089,8 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
   localStorage.setItem(THEME_KEY, isDark ? 'light' : 'dark');
+  const btn = document.getElementById('theme-toggle');
+  btn.setAttribute('aria-pressed', isDark ? 'false' : 'true');
 });
 
 /* ════════════════════════════════════════════
@@ -1069,8 +1124,7 @@ document.getElementById('lock-form').addEventListener('submit', async (e) => {
 
     if (validHashes.includes(hash)) {
       sessionStorage.setItem(STORAGE_KEY, '1');
-      document.getElementById('lock-screen').classList.add('hidden');
-      document.getElementById('library').classList.remove('hidden');
+      showScreen('library');
       initLibrary();
     } else {
       input.classList.add('error');
@@ -1119,12 +1173,12 @@ function renderSidebar() {
   for (const cat of library.categories) {
     html += `
       <div class="category-group" data-cat="${esc(cat.id)}">
-        <button class="category-header" onclick="toggleCategory('${esc(cat.id)}')">
-          <span class="cat-icon">${esc(cat.icon)}</span>
+        <button class="category-header" data-action="toggle-category" data-cat-id="${esc(cat.id)}" aria-expanded="true" aria-controls="cat-items-${esc(cat.id)}">
+          <span class="cat-icon" aria-hidden="true">${esc(cat.icon)}</span>
           ${esc(cat.label)}
-          <span class="cat-chevron">▼</span>
+          <span class="cat-chevron" aria-hidden="true">▼</span>
         </button>
-        <div class="category-items">
+        <div class="category-items" id="cat-items-${esc(cat.id)}" role="group">
     `;
     for (const item of cat.items) {
       const isRead = readSet.has(item.id);
@@ -1132,7 +1186,7 @@ function renderSidebar() {
         <button
           class="sidebar-item${isRead ? ' read' : ''}"
           id="sidebar-${esc(item.id)}"
-          onclick="loadItem('${esc(item.id)}')"
+          data-action="load-item" data-item-id="${esc(item.id)}"
         >
           <div class="item-title">${esc(item.title)}</div>
           <div class="item-meta">
@@ -1151,6 +1205,9 @@ function renderSidebar() {
 function toggleCategory(catId) {
   const group = document.querySelector(`.category-group[data-cat="${catId}"]`);
   group.classList.toggle('collapsed');
+  const btn = group.querySelector('.category-header');
+  const isCollapsed = group.classList.contains('collapsed');
+  btn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
 }
 
 /* ════════════════════════════════════════════
@@ -1168,7 +1225,7 @@ function renderWelcome() {
       `<span class="card-item-chip">${esc(i.title)}</span>`
     ).join('');
     cards += `
-      <div class="category-card" onclick="openCategory('${esc(cat.id)}')">
+      <div class="category-card" data-action="open-category" data-cat-id="${esc(cat.id)}" role="button" tabindex="0">
         <div class="card-header">
           <span class="card-icon">${esc(cat.icon)}</span>
           <span class="card-title">${esc(cat.label)}</span>
@@ -1220,7 +1277,7 @@ function renderCategoryLanding(catId) {
   for (const item of cat.items) {
     const isRead = readSet.has(item.id);
     itemCards += `
-      <div class="landing-item-card" onclick="loadItem('${esc(item.id)}')">
+      <div class="landing-item-card" data-action="load-item" data-item-id="${esc(item.id)}" role="button" tabindex="0">
         <div class="landing-card-top">
           <div class="landing-item-title">${esc(item.title)}${isRead ? ' <span class="landing-read-indicator">✓</span>' : ''}</div>
           <div class="landing-card-meta">
@@ -1236,7 +1293,7 @@ function renderCategoryLanding(catId) {
   document.getElementById('lib-main').innerHTML = `
     <div id="content-view">
       <div class="content-toolbar">
-        <button class="back-btn" onclick="backToWelcome()">← Library</button>
+        <button class="back-btn" data-action="back-to-welcome">← Library</button>
         <span class="breadcrumb"><span>${esc(cat.label)}</span></span>
         <div class="toolbar-spacer"></div>
         <span style="font-size:0.78rem;color:var(--ink-light);">${cat.items.length} resources</span>
@@ -1281,7 +1338,7 @@ async function loadItem(itemId) {
 
   const toolbar = `
     <div class="content-toolbar">
-      <button class="back-btn" onclick="backToCategory('${esc(cat.id)}')">← ${esc(cat.label)}</button>
+      <button class="back-btn" data-action="back-to-category" data-cat-id="${esc(cat.id)}">← ${esc(cat.label)}</button>
       <span class="breadcrumb">${esc(cat.label)} <span>/</span> ${esc(item.title)}</span>
       <div class="toolbar-spacer"></div>
       <div class="content-badges">
@@ -1300,9 +1357,15 @@ async function loadItem(itemId) {
   `;
 
   try {
-    const res = await fetch(item.path);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const md = await res.text();
+    let md;
+    if (contentCache[item.path]) {
+      md = contentCache[item.path];
+    } else {
+      const res = await fetch(item.path);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      md = await res.text();
+      contentCache[item.path] = md;
+    }
     const html = DOMPurify.sanitize(marked.parse(md));
 
     document.getElementById('lib-main').innerHTML = `
@@ -1317,6 +1380,19 @@ async function loadItem(itemId) {
 
     // Scroll to top of content
     document.getElementById('lib-main').scrollTop = 0;
+
+    // Focus first heading for screen readers (better than container focus)
+    const heading = document.querySelector('.content-area .prose h1, .content-area .prose h2');
+    if (heading) {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    } else {
+      const contentArea = document.querySelector('.content-area');
+      if (contentArea) {
+        contentArea.setAttribute('tabindex', '-1');
+        contentArea.focus({ preventScroll: true });
+      }
+    }
 
     // Mark as read
     readSet.add(itemId);
@@ -1368,9 +1444,65 @@ function updateProgress() {
    SESSION PERSISTENCE
 ═════════════════════════════════════════════ */
 if (sessionStorage.getItem(STORAGE_KEY)) {
-  document.getElementById('lock-screen').classList.add('hidden');
-  document.getElementById('library').classList.remove('hidden');
+  showScreen('library');
   initLibrary();
+}
+
+/* ════════════════════════════════════════════
+   EVENT DELEGATION (replaces inline onclick)
+═════════════════════════════════════════════ */
+document.addEventListener('click', (e) => {
+  const target = e.target.closest('[data-action]');
+  if (!target) return;
+  const action = target.dataset.action;
+
+  switch (action) {
+    case 'toggle-category':
+      toggleCategory(target.dataset.catId);
+      break;
+    case 'load-item':
+      loadItem(target.dataset.itemId);
+      break;
+    case 'open-category':
+      openCategory(target.dataset.catId);
+      break;
+    case 'back-to-welcome':
+      backToWelcome();
+      break;
+    case 'back-to-category':
+      backToCategory(target.dataset.catId);
+      break;
+  }
+});
+
+// Allow keyboard activation of card-like elements with role="button"
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const target = e.target.closest('[data-action][role="button"]');
+    if (target) {
+      e.preventDefault();
+      target.click();
+    }
+  }
+});
+
+/* ════════════════════════════════════════════
+   SCREEN TRANSITIONS (aria-hidden management)
+═════════════════════════════════════════════ */
+function showScreen(screenId) {
+  const lockScreen = document.getElementById('lock-screen');
+  const libraryScreen = document.getElementById('library');
+  if (screenId === 'library') {
+    lockScreen.classList.add('hidden');
+    lockScreen.setAttribute('aria-hidden', 'true');
+    libraryScreen.classList.remove('hidden');
+    libraryScreen.removeAttribute('aria-hidden');
+  } else {
+    libraryScreen.classList.add('hidden');
+    libraryScreen.setAttribute('aria-hidden', 'true');
+    lockScreen.classList.remove('hidden');
+    lockScreen.removeAttribute('aria-hidden');
+  }
 }
 
 /* ════════════════════════════════════════════
@@ -1378,7 +1510,24 @@ if (sessionStorage.getItem(STORAGE_KEY)) {
 ═════════════════════════════════════════════ */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && currentItemId) {
-    backToWelcome();
+    if (currentCatId) {
+      backToCategory(currentCatId);
+    } else {
+      backToWelcome();
+    }
+  }
+
+  // Arrow key navigation within sidebar
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    const items = [...document.querySelectorAll('.sidebar-item:not(.hidden)')];
+    const focused = document.activeElement;
+    const idx = items.indexOf(focused);
+    if (idx === -1) return;
+    e.preventDefault();
+    let next = e.key === 'ArrowDown' ? idx + 1 : idx - 1;
+    if (next >= items.length) next = 0;
+    if (next < 0) next = items.length - 1;
+    items[next].focus();
   }
 });
 </script>

@@ -533,8 +533,6 @@ def main():
 
     # Build provider config
     provider_config = {}
-    if args.api_key:
-        provider_config["api_key"] = args.api_key
     if args.model and args.provider == "qwen":
         provider_config["model_variant"] = args.model
 

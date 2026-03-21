@@ -52,6 +52,23 @@ markers = [
     "slow: marks tests that take more than 30 seconds",
 ]
 
+[tool.coverage.run]
+source = ["scripts"]
+omit = [
+    # TTS providers require GPU/API keys — not testable in CI
+    "scripts/tts_providers/*",
+    # Web studio requires gradio — integration-only
+    "scripts/web_studio.py",
+    # check_contrast is tested via test_contrast_validation but runs as CLI
+    "scripts/check_contrast.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__",
+    "pragma: no cover",
+]
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"

@@ -1,0 +1,52 @@
+# Pre-commit hooks for StorytellingReferenceBank
+# Install: pip install pre-commit && pre-commit install
+# Manual run: pre-commit run --all-files
+
+repos:
+  # Python linting and formatting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.3
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^scripts/
+      - id: ruff-format
+        files: ^scripts/
+
+  # Persona schema validation
+  - repo: local
+    hooks:
+      - id: validate-personas
+        name: Validate persona JSON schemas
+        entry: python3 scripts/validate_personas.py
+        language: system
+        pass_filenames: false
+        files: ^personas/.*\.json$
+
+      - id: pytest-quick
+        name: Run Python tests (no GPU)
+        entry: python3 -m pytest scripts/tests/ -x -q -m "not gpu" --tb=line
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: contrast-check
+        name: WCAG contrast validation
+        entry: python3 scripts/check_contrast.py student-portal/index.html
+        language: system
+        pass_filenames: false
+        files: ^student-portal/.*\.(html|css)$
+
+  # General file hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(projects/|storefront/public/)
+      - id: end-of-file-fixer
+        exclude: ^(projects/|storefront/public/)
+      - id: check-json
+        files: \.(json)$
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: detect-private-key

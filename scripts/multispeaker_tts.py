@@ -201,14 +201,14 @@ def generate_multispeaker_audio(
         if i > 0 and seg['speaker'] != audio_segments[i-1]['speaker']:
             if len(combined) > 0 and crossfade_samples > 0:
                 # Simple crossfade: fade out previous, fade in current
-                overlap = min(crossfade_samples, len(audio), len(combined[-1]) if combined else 0)
-                if overlap > 0:
+                prev_len = len(combined[-1]) if combined else 0
+                overlap = min(crossfade_samples, len(audio), prev_len)
+                if overlap > 0 and combined:
                     fade_out = np.linspace(1, 0, overlap)
                     fade_in = np.linspace(0, 1, overlap)
 
                     # Apply to end of previous
-                    if combined:
-                        combined[-1][-overlap:] *= fade_out
+                    combined[-1][-overlap:] *= fade_out
 
                     # Apply to start of current
                     audio = audio.copy()

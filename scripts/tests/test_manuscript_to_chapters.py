@@ -12,21 +12,20 @@ from pathlib import Path
 
 from manuscript_to_chapters import (
     Chapter,
-    Manifest,
-    detect_chapter_pattern,
-    split_manuscript,
-    split_by_pattern,
-    insert_page_turn_pauses,
-    generate_acx_filename,
+    create_closing_credits,
     create_manifest,
     create_opening_credits,
-    create_closing_credits,
+    detect_chapter_pattern,
+    generate_acx_filename,
+    insert_page_turn_pauses,
+    split_by_pattern,
+    split_manuscript,
 )
-
 
 # ---------------------------------------------------------------------------
 # Chapter pattern detection
 # ---------------------------------------------------------------------------
+
 
 class TestDetectChapterPattern:
     def test_detects_chapter_numbering(self):
@@ -90,6 +89,7 @@ Third section here."""
 # ---------------------------------------------------------------------------
 # Manuscript splitting
 # ---------------------------------------------------------------------------
+
 
 class TestSplitManuscript:
     def test_single_chapter_no_markers(self):
@@ -157,7 +157,7 @@ First scene content with enough words to pass the filter.
 SCENE 2
 
 Second scene content with enough words to pass the filter."""
-        chapters = split_manuscript(text, pattern=r'^SCENE \d+$', min_words=5)
+        chapters = split_manuscript(text, pattern=r"^SCENE \d+$", min_words=5)
         assert len(chapters) == 2
 
     def test_with_sample_story(self):
@@ -174,6 +174,7 @@ Second scene content with enough words to pass the filter."""
 # Split by pattern
 # ---------------------------------------------------------------------------
 
+
 class TestSplitByPattern:
     def test_returns_tuples(self):
         text = """# First
@@ -183,17 +184,17 @@ Content one.
 # Second
 
 Content two."""
-        sections = split_by_pattern(text, r'^#\s+.+$')
+        sections = split_by_pattern(text, r"^#\s+.+$")
         assert len(sections) == 2
         assert sections[0][0] == "# First"  # title
         assert "Content one" in sections[0][1]  # content
 
     def test_empty_text(self):
-        sections = split_by_pattern("", r'^#\s+.+$')
+        sections = split_by_pattern("", r"^#\s+.+$")
         assert len(sections) == 0
 
     def test_no_matches(self):
-        sections = split_by_pattern("Just text.", r'^CHAPTER \d+$')
+        sections = split_by_pattern("Just text.", r"^CHAPTER \d+$")
         # Should still return the opening section
         assert len(sections) == 0 or sections[0][0] == "Opening"
 
@@ -201,6 +202,7 @@ Content two."""
 # ---------------------------------------------------------------------------
 # Page turn pauses
 # ---------------------------------------------------------------------------
+
 
 class TestInsertPageTurnPauses:
     def test_replaces_page_turn_marker(self):
@@ -234,6 +236,7 @@ class TestInsertPageTurnPauses:
 # ACX filename generation
 # ---------------------------------------------------------------------------
 
+
 class TestGenerateAcxFilename:
     def test_basic_filename(self):
         name = generate_acx_filename("My Book", 1)
@@ -259,13 +262,12 @@ class TestGenerateAcxFilename:
 # Manifest creation
 # ---------------------------------------------------------------------------
 
+
 class TestCreateManifest:
     def test_manifest_structure(self):
         chapters = [
-            Chapter(number=1, title="Ch1", content="Word " * 100,
-                    start_line=0, end_line=10),
-            Chapter(number=2, title="Ch2", content="Word " * 200,
-                    start_line=11, end_line=20),
+            Chapter(number=1, title="Ch1", content="Word " * 100, start_line=0, end_line=10),
+            Chapter(number=2, title="Ch2", content="Word " * 200, start_line=11, end_line=20),
         ]
         manifest = create_manifest("Test Book", "test.txt", chapters, "output/", {})
         assert manifest.title == "Test Book"
@@ -273,8 +275,7 @@ class TestCreateManifest:
         assert manifest.total_word_count == 300
 
     def test_manifest_to_dict(self):
-        chapters = [Chapter(number=1, title="Ch1", content="Hello world",
-                            start_line=0, end_line=1)]
+        chapters = [Chapter(number=1, title="Ch1", content="Hello world", start_line=0, end_line=1)]
         manifest = create_manifest("T", "f.txt", chapters, "out/", {"page_turns": False})
         d = manifest.to_dict()
         assert isinstance(d, dict)
@@ -285,6 +286,7 @@ class TestCreateManifest:
 # ---------------------------------------------------------------------------
 # Credits generation
 # ---------------------------------------------------------------------------
+
 
 class TestCreditsGeneration:
     def test_opening_credits(self):

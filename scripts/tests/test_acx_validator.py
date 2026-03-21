@@ -11,23 +11,22 @@ import os
 import tempfile
 
 import numpy as np
-
 from acx_validator import (
     ACX_SPECS,
-    Severity,
     CheckResult,
+    Severity,
     ValidationReport,
-    calculate_rms_db,
-    calculate_peak_db,
     calculate_noise_floor_db,
+    calculate_peak_db,
+    calculate_rms_db,
     validate_audio,
 )
 from conftest import SAMPLE_RATE, make_sine, write_wav
 
-
 # ---------------------------------------------------------------------------
 # Level calculations
 # ---------------------------------------------------------------------------
+
 
 class TestCalculateRmsDb:
     def test_silence(self):
@@ -79,6 +78,7 @@ class TestNoiseFloor:
 # ACX spec constants
 # ---------------------------------------------------------------------------
 
+
 class TestACXSpecs:
     def test_rms_range(self):
         assert ACX_SPECS["rms_min_db"] == -23.0
@@ -99,6 +99,7 @@ class TestACXSpecs:
 # ---------------------------------------------------------------------------
 # CheckResult and ValidationReport
 # ---------------------------------------------------------------------------
+
 
 class TestCheckResult:
     def test_to_dict(self):
@@ -153,6 +154,7 @@ class TestValidationReport:
 # ---------------------------------------------------------------------------
 # Full file validation
 # ---------------------------------------------------------------------------
+
 
 class TestValidateAudio:
     def test_file_not_found(self):

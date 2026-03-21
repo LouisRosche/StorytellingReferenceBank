@@ -2,9 +2,9 @@ import type { Narrator } from "@/lib/storybooks";
 
 export default function NarratorCard({ narrator }: { narrator: Narrator }) {
   return (
-    <div className="card p-6">
+    <article className="card p-6" aria-label={`Narrator: ${narrator.name}`}>
       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-200 to-primary-400 flex items-center justify-center text-2xl mb-4">
-        {narrator.id.includes("child") ? "🧒" : "🎙️"}
+        <span aria-hidden="true">{narrator.id.includes("child") ? "🧒" : "🎙️"}</span>
       </div>
       <h3 className="font-display text-lg font-bold text-gray-900">
         {narrator.name}
@@ -20,6 +20,6 @@ export default function NarratorCard({ narrator }: { narrator: Narrator }) {
           </span>
         ))}
       </div>
-    </div>
+    </article>
   );
 }

@@ -17,15 +17,16 @@ class TestSpeakerMapLoading:
     """Test speaker map JSON loading."""
 
     def test_loads_valid_json(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump({
-                "title": "Test",
-                "default_persona": "personas/narrator.json",
-                "speakers": {
-                    "NARRATOR": {"persona_path": "personas/narrator.json"}
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            json.dump(
+                {
+                    "title": "Test",
+                    "default_persona": "personas/narrator.json",
+                    "speakers": {"NARRATOR": {"persona_path": "personas/narrator.json"}},
+                    "aliases": {},
                 },
-                "aliases": {}
-            }, f)
+                f,
+            )
             f.flush()
 
             try:
@@ -39,15 +40,16 @@ class TestSpeakerMapLoading:
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create speaker map
             map_path = os.path.join(tmpdir, "speaker-map.json")
-            with open(map_path, 'w') as f:
-                json.dump({
-                    "title": "Test",
-                    "default_persona": "personas/narrator.json",
-                    "speakers": {
-                        "NARRATOR": {"persona_path": "personas/narrator.json"}
+            with open(map_path, "w") as f:
+                json.dump(
+                    {
+                        "title": "Test",
+                        "default_persona": "personas/narrator.json",
+                        "speakers": {"NARRATOR": {"persona_path": "personas/narrator.json"}},
+                        "aliases": {},
                     },
-                    "aliases": {}
-                }, f)
+                    f,
+                )
 
             sm = SpeakerMap.from_json(map_path)
 
@@ -72,7 +74,7 @@ class TestGetPersonaPath:
             aliases={
                 "dr. mercer": "SARAH",
                 "pastor": "PASTOR OAKES",
-            }
+            },
         )
 
     def test_direct_lookup_uppercase(self):
@@ -108,18 +110,21 @@ class TestProductionNotes:
     """Test production notes parsing."""
 
     def test_extracts_timing_settings(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump({
-                "title": "Test",
-                "default_persona": "personas/narrator.json",
-                "speakers": {},
-                "aliases": {},
-                "production_notes": {
-                    "crossfade_ms": 150,
-                    "dialogue_pause_ms": 300,
-                    "page_turn_pause_ms": 2000
-                }
-            }, f)
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            json.dump(
+                {
+                    "title": "Test",
+                    "default_persona": "personas/narrator.json",
+                    "speakers": {},
+                    "aliases": {},
+                    "production_notes": {
+                        "crossfade_ms": 150,
+                        "dialogue_pause_ms": 300,
+                        "page_turn_pause_ms": 2000,
+                    },
+                },
+                f,
+            )
             f.flush()
 
             try:
@@ -131,13 +136,16 @@ class TestProductionNotes:
                 os.unlink(f.name)
 
     def test_uses_defaults_when_missing(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump({
-                "title": "Test",
-                "default_persona": "personas/narrator.json",
-                "speakers": {},
-                "aliases": {}
-            }, f)
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            json.dump(
+                {
+                    "title": "Test",
+                    "default_persona": "personas/narrator.json",
+                    "speakers": {},
+                    "aliases": {},
+                },
+                f,
+            )
             f.flush()
 
             try:
@@ -148,5 +156,3 @@ class TestProductionNotes:
                 assert sm.page_turn_pause_ms == 2500
             finally:
                 os.unlink(f.name)
-
-

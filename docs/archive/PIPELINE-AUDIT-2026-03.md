@@ -1,3 +1,5 @@
+> **ARCHIVED**: 2026-03. Snapshot of pipeline state at time of audit. CI, coverage, and storefront testing have been strengthened since.
+
 # Pipeline, Workflow & Tooling Audit — March 2026
 
 ## Scope

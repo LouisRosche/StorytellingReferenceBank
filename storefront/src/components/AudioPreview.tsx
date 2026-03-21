@@ -62,6 +62,7 @@ export default function AudioPreview({ narrator }: AudioPreviewProps) {
         preload="none"
         onEnded={handleEnded}
         onError={handleError}
+        aria-label={`Audio sample from ${narrator.name}`}
       />
     </div>
   );

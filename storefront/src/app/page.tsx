@@ -18,7 +18,7 @@ export default function HomePage() {
               <span className="text-primary-600"> themselves</span>
             </h1>
             <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-              Beautiful children's picture books with professional narration.
+              Beautiful children&apos;s picture books with professional narration.
               Choose a narrator your child loves, preview the audio, and get
               instant digital delivery.
             </p>
@@ -31,7 +31,7 @@ export default function HomePage() {
               </a>
             </div>
           </div>
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-10 text-[20rem] pointer-events-none select-none">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-10 text-[20rem] pointer-events-none select-none" aria-hidden="true">
             📖
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function HomePage() {
             },
           ].map((step, i) => (
             <div key={i} className="text-center">
-              <span className="text-4xl block mb-4">{step.icon}</span>
+              <span className="text-4xl block mb-4" aria-hidden="true">{step.icon}</span>
               <h3 className="font-display text-lg font-bold text-gray-900">
                 {step.title}
               </h3>

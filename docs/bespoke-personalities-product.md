@@ -306,37 +306,39 @@ AB_TEST_CONFIG = {
 
 ## 8. Implementation Phases
 
-### Phase 1: Foundation (Current)
+### Phase 1: Foundation (Complete)
 - [x] 19 personas with cultural diversity
 - [x] Schema supporting natural language
 - [x] Add 10 personas for coverage gaps (P1 + P2 + P3 complete)
-- [ ] Implement compatibility scoring
+- [x] Implement compatibility scoring (`scripts/persona_compatibility.py`)
 
-### Phase 2: Quality Ops
+### Phase 2: Quality Ops (Planned)
 - [ ] Automated QC pipeline
 - [ ] Golden reference creation for all personas
-- [ ] Regression test framework
+- [x] Regression test framework (`scripts/persona_regression.py`)
 
-### Phase 3: Scale
+### Phase 3: Scale (Planned)
 - [ ] Persona versioning system
 - [ ] A/B testing infrastructure
 - [ ] Sampling QC dashboard
 
-### Phase 4: Optimization
+### Phase 4: Optimization (Planned)
 - [ ] User preference learning
 - [ ] Dynamic persona recommendation
 - [ ] Custom persona generation (voice cloning tier)
 
 ---
 
-## 9. Files to Create/Update
+## 9. Implementation Files
 
-| File | Purpose |
-|------|---------|
-| `personas/taxonomy.md` | Dimensional framework reference |
-| `personas/library-status.md` | Coverage tracking |
-| `scripts/persona_compatibility.py` | Story-persona scoring |
-| `scripts/persona_regression.py` | Regression testing + golden reference comparison |
+All foundation files exist:
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `personas/taxonomy.md` | Dimensional framework reference | Complete |
+| `personas/library-status.md` | Coverage tracking | Complete |
+| `scripts/persona_compatibility.py` | Story-persona scoring | Complete |
+| `scripts/persona_regression.py` | Regression testing + golden reference comparison | Complete |
 
 ---
 
@@ -344,8 +346,6 @@ AB_TEST_CONFIG = {
 
 | Metric | Target | Measurement |
 |--------|--------|-------------|
-| Coverage | ≥80% preference space | User survey: "voice I wanted available" |
+| Coverage | ≥80% preference space | Taxonomy gap analysis |
 | Consistency | ≤5% regression failures | Automated regression tests |
 | Quality | ≥95% ACX pass rate | Automated validation |
-| Satisfaction | ≥4.2/5.0 rating | Post-listen survey |
-| Match accuracy | ≥70% first-choice usage | Recommendation vs. selection |

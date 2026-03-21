@@ -35,11 +35,12 @@ jobs:
       - name: Validate personas
         run: python3 scripts/validate_personas.py
 
-      - name: Run tests (no GPU)
-        run: python3 -m pytest scripts/tests/ -v -m "not gpu" --tb=short
+      - name: Run tests with coverage (no GPU)
+        run: python3 -m pytest scripts/tests/ -v -m "not gpu" --tb=short --cov=scripts --cov-report=term --cov-fail-under=80
 
       - name: Dependency audit
-        run: pip audit || true
+        run: pip audit
+        continue-on-error: true
 
   storefront-check:
     runs-on: ubuntu-latest
@@ -63,11 +64,15 @@ jobs:
       - name: Lint
         run: npx next lint
 
+      - name: Run tests with coverage
+        run: npx vitest run --coverage
+
       - name: Type check
         run: npx tsc --noEmit
 
       - name: Dependency audit
-        run: npm audit --audit-level=high || true
+        run: npm audit --audit-level=high
+        continue-on-error: true
 
       - name: Build
         env:
@@ -88,10 +93,11 @@ jobs:
         run: python3 -c "import json; json.load(open('student-portal/library.json'))"
 
       - name: Validate codes.json
-        run: python3 -c "import json; data = json.load(open('student-portal/codes.json')); assert 'codes' in data, 'Missing codes key'"
+        run: python3 -c "import json; data = json.load(open('student-portal/codes.json')); assert 'hashes' in data, 'Missing hashes key'"
 
       - name: Check HTML syntax
-        run: python3 -c "
+        run: |
+          python3 << 'PYEOF'
           from html.parser import HTMLParser
           class Check(HTMLParser):
               def __init__(self):
@@ -101,4 +107,26 @@ jobs:
           p = Check()
           p.feed(open('student-portal/index.html').read())
           print('HTML parsed without errors')
+          PYEOF
+
+      - name: Validate WCAG contrast ratios
+        run: python3 scripts/check_contrast.py student-portal/index.html
+
+      - name: Validate library paths exist
+        run: |
+          python3 -c "
+          import json, sys, os
+          lib = json.load(open('student-portal/library.json'))
+          missing = []
+          for cat in lib.get('categories', []):
+              for item in cat.get('items', []):
+                  p = item.get('path', '')
+                  if p and not os.path.exists(p):
+                      missing.append(p)
+          if missing:
+              print('Missing files referenced in library.json:')
+              for m in missing:
+                  print(f'  - {m}')
+              sys.exit(1)
+          print(f'All {sum(len(c[\"items\"]) for c in lib[\"categories\"])} library paths validated')
           "
