@@ -40,22 +40,62 @@ function readDb(): Purchase[] {
 }
 
 const LOCK_PATH = DB_PATH + ".lock";
+const LOCK_STALE_MS = 30_000; // 30 seconds — any lock older than this is considered stale
 
 function acquireLock(maxRetries = 10, retryDelayMs = 50): void {
   for (let i = 0; i < maxRetries; i++) {
     try {
-      fs.writeFileSync(LOCK_PATH, String(process.pid), {
+      fs.writeFileSync(LOCK_PATH, JSON.stringify({ pid: process.pid, ts: Date.now() }), {
         flag: "wx",
       });
       return;
     } catch {
-      // Lock file exists — another request is writing.
-      // Use Atomics.wait on a shared buffer for a non-spinning sync sleep.
-      const buf = new Int32Array(new SharedArrayBuffer(4));
-      Atomics.wait(buf, 0, 0, retryDelayMs);
+      // Lock file exists — check if it's stale (holder crashed)
+      if (isLockStale()) {
+        try {
+          fs.unlinkSync(LOCK_PATH);
+          continue; // retry immediately after clearing stale lock
+        } catch {
+          // Another process cleared it first — retry normally
+        }
+      }
+      // Non-spinning sync sleep via Atomics.wait
+      try {
+        const buf = new Int32Array(new SharedArrayBuffer(4));
+        Atomics.wait(buf, 0, 0, retryDelayMs);
+      } catch {
+        // SharedArrayBuffer unavailable (e.g. missing COOP/COEP headers) —
+        // fall back to a Date.now() busy-wait as last resort
+        const end = Date.now() + retryDelayMs;
+        while (Date.now() < end) { /* spin */ }
+      }
     }
   }
   throw new Error("Could not acquire database lock");
+}
+
+/** A lock is stale if it's older than LOCK_STALE_MS or its holder PID is dead. */
+function isLockStale(): boolean {
+  try {
+    const raw = fs.readFileSync(LOCK_PATH, "utf-8");
+    const lock = JSON.parse(raw);
+    // Time-based: if the lock is older than the threshold, it's stale
+    if (typeof lock.ts === "number" && Date.now() - lock.ts > LOCK_STALE_MS) {
+      return true;
+    }
+    // PID-based: check if the holder process is still alive
+    if (typeof lock.pid === "number") {
+      try {
+        process.kill(lock.pid, 0); // signal 0 = existence check, no actual signal
+        return false; // process is alive
+      } catch {
+        return true; // process is dead
+      }
+    }
+    return false;
+  } catch {
+    return false; // can't read lock — let normal retry handle it
+  }
 }
 
 function releaseLock(): void {

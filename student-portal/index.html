@@ -1099,10 +1099,11 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 async function loadCodes() {
   try {
     const res = await fetch('codes.json');
+    if (!res.ok) return null; // distinguish fetch failure from empty list
     const data = await res.json();
     return data.hashes || [];
   } catch {
-    return [];
+    return null; // network error — caller must handle
   }
 }
 
@@ -1122,7 +1123,9 @@ document.getElementById('lock-form').addEventListener('submit', async (e) => {
   try {
     const [hash, validHashes] = await Promise.all([hashCode(code), loadCodes()]);
 
-    if (validHashes.includes(hash)) {
+    if (!validHashes) {
+      errorMsg.textContent = 'Could not load verification data. Check your connection and try again.';
+    } else if (validHashes.includes(hash)) {
       sessionStorage.setItem(STORAGE_KEY, hash);
       showScreen('library');
       initLibrary();
@@ -1447,13 +1450,20 @@ function updateProgress() {
   const storedHash = sessionStorage.getItem(STORAGE_KEY);
   if (storedHash && storedHash !== '1') {
     const valid = await loadCodes();
+    if (valid === null) {
+      // Network failure — trust the existing session rather than locking out
+      // a student who already authenticated. The hash was validated on entry.
+      showScreen('library');
+      initLibrary();
+      return;
+    }
     if (valid.includes(storedHash)) {
       showScreen('library');
       initLibrary();
       return;
     }
   }
-  // Clear stale or spoofed values
+  // Clear stale, spoofed, or revoked values
   sessionStorage.removeItem(STORAGE_KEY);
 })();
 

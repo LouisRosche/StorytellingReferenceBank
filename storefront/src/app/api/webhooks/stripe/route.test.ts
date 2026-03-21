@@ -109,6 +109,8 @@ describe("POST /api/webhooks/stripe", () => {
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.duplicate).toBe(true);
+    // Duplicate skips all expensive work: no token generation, no email
+    expect(mockGenerateDownloadToken).not.toHaveBeenCalled();
     expect(mockSendFulfillmentEmail).not.toHaveBeenCalled();
   });
 
@@ -173,11 +175,14 @@ describe("POST /api/webhooks/stripe", () => {
         format: "ebook",
       })
     );
-    // savePurchaseIfNew inserts initially (unfulfilled), then savePurchase updates to fulfilled
+    // savePurchaseIfNew inserts placeholder (no tokens yet), then savePurchase updates with tokens + fulfilled
     expect(mockSavePurchaseIfNew).toHaveBeenCalledTimes(1);
+    expect(mockSavePurchaseIfNew).toHaveBeenCalledWith(
+      expect.objectContaining({ downloadTokens: {}, fulfilled: false })
+    );
     expect(mockSavePurchase).toHaveBeenCalledTimes(1);
     expect(mockSavePurchase).toHaveBeenCalledWith(
-      expect.objectContaining({ fulfilled: true })
+      expect.objectContaining({ fulfilled: true, downloadTokens: expect.objectContaining({ ebook: "tok_test123" }) })
     );
   });
 
@@ -206,13 +211,16 @@ describe("POST /api/webhooks/stripe", () => {
     );
   });
 
-  it("marks purchase unfulfilled when email fails", async () => {
+  it("persists tokens but stays unfulfilled when email fails", async () => {
     mockSendFulfillmentEmail.mockResolvedValue(false);
     const res = await POST(makeWebhookRequest("{}"));
     expect(res.status).toBe(200);
-    // savePurchaseIfNew inserts as unfulfilled; savePurchase NOT called since email failed
+    // savePurchaseIfNew inserts placeholder, savePurchase updates with tokens (still unfulfilled)
     expect(mockSavePurchaseIfNew).toHaveBeenCalledTimes(1);
-    expect(mockSavePurchase).not.toHaveBeenCalled();
+    expect(mockSavePurchase).toHaveBeenCalledTimes(1);
+    expect(mockSavePurchase).toHaveBeenCalledWith(
+      expect.objectContaining({ fulfilled: false, downloadTokens: expect.objectContaining({ ebook: "tok_test123" }) })
+    );
   });
 
   it("marks purchase fulfilled when no customer email", async () => {
