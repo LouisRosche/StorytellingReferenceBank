@@ -1,3 +1,5 @@
+import type { MuseType } from "./muse";
+
 export type TurnPhase =
   | "draw"
   | "player_action"
@@ -23,6 +25,8 @@ export interface EnemyState {
   intentType: "attack" | "defend" | "buff" | "debuff" | "unknown";
   intentValue: number;
   statusEffects: Record<string, number>;
+  /** Enemy's Muse affiliation — affects archetype counter multipliers. */
+  muse: MuseType | null;
 }
 
 export interface CombatState {

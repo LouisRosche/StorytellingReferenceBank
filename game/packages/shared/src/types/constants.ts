@@ -24,3 +24,9 @@ export const TURN_PHASES = [
 
 export const MAX_HAND_SIZE = 10;
 export const MAX_ENERGY = 3;
+
+/** Floors per hero's journey act (Jo-ha-kyū pacing). */
+export const FLOORS_JO = 4;
+export const FLOORS_HA = 5;
+export const FLOORS_KYU = 4;
+export const TOTAL_FLOORS = FLOORS_JO + FLOORS_HA + FLOORS_KYU;

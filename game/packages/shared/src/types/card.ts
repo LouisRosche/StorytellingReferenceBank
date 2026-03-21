@@ -1,3 +1,5 @@
+import type { MuseType, MuseKeyword } from "./muse";
+
 export type CardRarity = "common" | "uncommon" | "rare" | "legendary";
 
 export type CardTarget = "single_enemy" | "all_enemies" | "self" | "none";
@@ -22,4 +24,8 @@ export interface CardData {
   exhaust: boolean;
   /** If true, card is removed from hand at end of turn (ethereal) */
   ethereal: boolean;
+  /** Muse affiliation. Null for neutral cards. */
+  muse: MuseType | null;
+  /** Muse keyword tag (redirect, decree, foresight, forage, offering). */
+  keyword?: MuseKeyword;
 }
