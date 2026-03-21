@@ -1,0 +1,150 @@
+name: WebGL Deckbuilder CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "game/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "game/**"
+
+permissions:
+  contents: read
+
+jobs:
+  # ── TypeScript: shared package + web app ──
+  typescript-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: game
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+        with:
+          version: 9
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: game/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared package
+        run: pnpm --filter @deckbuilder/shared build
+
+      - name: Type check
+        run: pnpm turbo typecheck
+
+      - name: Lint
+        run: pnpm turbo lint
+
+  # ── Unity: test + WebGL build ──
+  unity-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: game/unity/DeckbuilderRoguelite/Library
+          key: unity-library-${{ hashFiles('game/unity/DeckbuilderRoguelite/Assets/**') }}
+          restore-keys: unity-library-
+
+      - name: Run EditMode tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: game/unity/DeckbuilderRoguelite
+          testMode: EditMode
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+  unity-build:
+    runs-on: ubuntu-latest
+    needs: unity-test
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: game/unity/DeckbuilderRoguelite/Library
+          key: unity-library-${{ hashFiles('game/unity/DeckbuilderRoguelite/Assets/**') }}
+          restore-keys: unity-library-
+
+      - name: Build WebGL
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: game/unity/DeckbuilderRoguelite
+          targetPlatform: WebGL
+          buildName: Build
+
+      - name: Upload WebGL artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: webgl-build
+          path: build/WebGL/Build
+          retention-days: 7
+
+  # ── Deploy: inject Unity build into Next.js and export ──
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [typescript-check, unity-build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Download WebGL artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: webgl-build
+          path: game/apps/web/public/Build
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+        with:
+          version: 9
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: game/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: cd game && pnpm install --frozen-lockfile
+
+      - name: Build web app (static export)
+        run: cd game && pnpm --filter @deckbuilder/web build
+
+      - name: Upload static site
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: web-static-export
+          path: game/apps/web/out
+          retention-days: 7

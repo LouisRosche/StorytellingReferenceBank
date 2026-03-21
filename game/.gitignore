@@ -1,0 +1,17 @@
+# Node
+node_modules/
+.turbo/
+
+# TypeScript build output
+packages/*/dist/
+*.tsbuildinfo
+
+# Next.js
+apps/web/.next/
+apps/web/out/
+
+# Unity WebGL build artifacts (injected by CI)
+apps/web/public/Build/
+
+# pnpm
+.pnpm-debug.log

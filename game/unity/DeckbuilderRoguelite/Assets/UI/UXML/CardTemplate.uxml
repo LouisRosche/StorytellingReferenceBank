@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement class="card">
+        <ui:VisualElement class="card-header">
+            <ui:Label name="card-name" class="card-name" text="Card Name" />
+            <ui:Label name="card-cost" class="card-cost" text="0" />
+        </ui:VisualElement>
+        <ui:VisualElement name="card-art" class="card-art" />
+        <ui:Label name="card-description" class="card-description" text="Card description." />
+    </ui:VisualElement>
+</ui:UXML>
