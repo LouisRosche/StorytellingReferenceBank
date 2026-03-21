@@ -1,32 +1,29 @@
 """Tests for manage_student_codes.py — code generation, hashing, I/O, and CLI commands."""
 
 import json
-import re
-import pytest
-from unittest.mock import patch
-from pathlib import Path
 
+import manage_student_codes as msc
+import pytest
 from manage_student_codes import (
-    hash_code,
-    generate_code,
-    load_codes_json,
-    save_codes_json,
-    load_admin_json,
-    save_admin_json,
-    cmd_generate,
+    ADJECTIVES,
+    NOUNS,
     cmd_add,
+    cmd_generate,
     cmd_list,
     cmd_revoke,
     cmd_verify,
-    ADJECTIVES,
-    NOUNS,
+    generate_code,
+    hash_code,
+    load_admin_json,
+    load_codes_json,
+    save_admin_json,
+    save_codes_json,
 )
-import manage_student_codes as msc
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def codes_env(tmp_path, monkeypatch):
@@ -42,6 +39,7 @@ def codes_env(tmp_path, monkeypatch):
 def _make_args(**kwargs):
     """Create a mock args namespace."""
     from argparse import Namespace
+
     defaults = {"cohort": "test", "count": 5, "note": None, "code": "TEST-CODE-1234"}
     defaults.update(kwargs)
     return Namespace(**defaults)
@@ -50,6 +48,7 @@ def _make_args(**kwargs):
 # ---------------------------------------------------------------------------
 # hash_code — PBKDF2 determinism
 # ---------------------------------------------------------------------------
+
 
 class TestHashCode:
     def test_deterministic(self):
@@ -76,6 +75,7 @@ class TestHashCode:
 # generate_code — memorable format
 # ---------------------------------------------------------------------------
 
+
 class TestGenerateCode:
     def test_format(self):
         code = generate_code("cohort1")
@@ -100,6 +100,7 @@ class TestGenerateCode:
 # ---------------------------------------------------------------------------
 # File I/O
 # ---------------------------------------------------------------------------
+
 
 class TestFileIO:
     def test_load_codes_default(self, codes_env):
@@ -126,7 +127,7 @@ class TestFileIO:
 
     def test_save_admin_creates_gitignore(self, codes_env):
         save_admin_json({"entries": []})
-        gitignore = codes_env["dir"].parent / ".gitignore"
+        _gitignore = codes_env["dir"].parent / ".gitignore"  # noqa: F841
         # save_admin_json uses PORTAL_DIR.parent for gitignore
         # which is tmp_path.parent — may or may not be writable
         # The key assertion is it doesn't crash
@@ -146,6 +147,7 @@ class TestFileIO:
 # ---------------------------------------------------------------------------
 # cmd_generate
 # ---------------------------------------------------------------------------
+
 
 class TestCmdGenerate:
     def test_generates_codes(self, codes_env, capsys):
@@ -182,6 +184,7 @@ class TestCmdGenerate:
 # cmd_add
 # ---------------------------------------------------------------------------
 
+
 class TestCmdAdd:
     def test_adds_code(self, codes_env, capsys):
         args = _make_args(code="BRIGHT-SPARK-1234", note="manual add")
@@ -215,6 +218,7 @@ class TestCmdAdd:
 # cmd_list
 # ---------------------------------------------------------------------------
 
+
 class TestCmdList:
     def test_empty_list(self, codes_env, capsys):
         args = _make_args()
@@ -225,9 +229,18 @@ class TestCmdList:
     def test_lists_codes_by_cohort(self, codes_env, capsys):
         h = hash_code("BRIGHT-SPARK-1234")
         save_codes_json({"hashes": [h]})
-        save_admin_json({"entries": [
-            {"code": "BRIGHT-SPARK-1234", "hash": h, "cohort": "Spring2026", "note": "test"},
-        ]})
+        save_admin_json(
+            {
+                "entries": [
+                    {
+                        "code": "BRIGHT-SPARK-1234",
+                        "hash": h,
+                        "cohort": "Spring2026",
+                        "note": "test",
+                    },
+                ]
+            }
+        )
 
         args = _make_args()
         cmd_list(args)
@@ -239,9 +252,13 @@ class TestCmdList:
     def test_shows_revoked_status(self, codes_env, capsys):
         h = hash_code("BRIGHT-SPARK-1234")
         save_codes_json({"hashes": []})  # hash removed = revoked
-        save_admin_json({"entries": [
-            {"code": "BRIGHT-SPARK-1234", "hash": h, "cohort": "test", "note": ""},
-        ]})
+        save_admin_json(
+            {
+                "entries": [
+                    {"code": "BRIGHT-SPARK-1234", "hash": h, "cohort": "test", "note": ""},
+                ]
+            }
+        )
 
         args = _make_args()
         cmd_list(args)
@@ -252,6 +269,7 @@ class TestCmdList:
 # ---------------------------------------------------------------------------
 # cmd_revoke
 # ---------------------------------------------------------------------------
+
 
 class TestCmdRevoke:
     def test_revokes_code(self, codes_env, capsys):
@@ -281,6 +299,7 @@ class TestCmdRevoke:
 # cmd_verify
 # ---------------------------------------------------------------------------
 
+
 class TestCmdVerify:
     def test_valid_code(self, codes_env, capsys):
         h = hash_code("BRIGHT-SPARK-1234")
@@ -305,6 +324,7 @@ class TestCmdVerify:
 # ---------------------------------------------------------------------------
 # Batch — no duplicates
 # ---------------------------------------------------------------------------
+
 
 class TestGenerateBatch:
     def test_no_duplicate_hashes(self):

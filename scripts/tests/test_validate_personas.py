@@ -1,19 +1,16 @@
 """Tests for validate_personas.py — persona JSON validation, discovery, and main."""
 
 import json
-import os
-import sys
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-
-from validate_personas import validate_persona, find_all_personas, main
-
+from validate_personas import find_all_personas, main, validate_persona
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def schema():
@@ -49,6 +46,7 @@ def _write_persona(tmp_path, data, name="test.json"):
 # Valid persona
 # ---------------------------------------------------------------------------
 
+
 class TestValidPersona:
     def test_valid_passes(self, tmp_path, schema, valid_persona_data):
         path = _write_persona(tmp_path, valid_persona_data)
@@ -72,6 +70,7 @@ class TestValidPersona:
 # ---------------------------------------------------------------------------
 # Missing required fields
 # ---------------------------------------------------------------------------
+
 
 class TestMissingFields:
     def test_missing_id(self, tmp_path, schema):
@@ -107,6 +106,7 @@ class TestMissingFields:
 # Invalid field types
 # ---------------------------------------------------------------------------
 
+
 class TestInvalidTypes:
     def test_emotional_range_not_list(self, tmp_path, schema, valid_persona_data):
         valid_persona_data["emotional_range"] = "warm"  # should be list
@@ -140,6 +140,7 @@ class TestInvalidTypes:
 # ---------------------------------------------------------------------------
 # Pattern validation (id, version)
 # ---------------------------------------------------------------------------
+
 
 class TestPatternValidation:
     def test_invalid_id_uppercase(self, tmp_path, schema, valid_persona_data):
@@ -182,6 +183,7 @@ class TestPatternValidation:
 # Malformed JSON
 # ---------------------------------------------------------------------------
 
+
 class TestMalformedJSON:
     def test_invalid_json(self, tmp_path, schema):
         path = tmp_path / "bad.json"
@@ -195,6 +197,7 @@ class TestMalformedJSON:
 # ---------------------------------------------------------------------------
 # Warnings for optional fields
 # ---------------------------------------------------------------------------
+
 
 class TestWarnings:
     def test_empty_emotional_range_warns(self, tmp_path, schema, valid_persona_data):
@@ -230,6 +233,7 @@ class TestWarnings:
 # quality and product nested validation
 # ---------------------------------------------------------------------------
 
+
 class TestNestedValidation:
     def test_invalid_validation_status(self, tmp_path, schema, valid_persona_data):
         valid_persona_data["quality"] = {"validation_status": "bogus"}
@@ -249,13 +253,16 @@ class TestNestedValidation:
         valid_persona_data["quality"] = {}
         path = _write_persona(tmp_path, valid_persona_data)
         issues = validate_persona(path, schema)
-        quality_issues = [msg for sev, msg in issues if "quality" in msg or "validation_status" in msg]
+        quality_issues = [
+            msg for sev, msg in issues if "quality" in msg or "validation_status" in msg
+        ]
         assert quality_issues == []
 
 
 # ---------------------------------------------------------------------------
 # find_all_personas
 # ---------------------------------------------------------------------------
+
 
 class TestFindAllPersonas:
     def test_finds_example_personas(self):
@@ -273,6 +280,7 @@ class TestFindAllPersonas:
 # main()
 # ---------------------------------------------------------------------------
 
+
 class TestMain:
     def test_validates_all_personas(self, capsys):
         """main() should validate all personas and return 0 if no errors."""
@@ -284,13 +292,18 @@ class TestMain:
         assert result == 0
 
     def test_validates_single_persona(self, tmp_path, capsys):
-        persona = _write_persona(tmp_path, {
-            "id": "test-single",
-            "name": "Test Single",
-            "voice_prompt": "A test voice.",
-        })
-        with patch("sys.argv", ["validate_personas.py", "--persona", str(persona)]), \
-             patch("validate_personas.REPO_ROOT", tmp_path):
+        persona = _write_persona(
+            tmp_path,
+            {
+                "id": "test-single",
+                "name": "Test Single",
+                "voice_prompt": "A test voice.",
+            },
+        )
+        with (
+            patch("sys.argv", ["validate_personas.py", "--persona", str(persona)]),
+            patch("validate_personas.REPO_ROOT", tmp_path),
+        ):
             result = main()
         captured = capsys.readouterr()
         assert "1 files checked" in captured.out
@@ -307,15 +320,19 @@ class TestMain:
 
     def test_returns_1_on_errors(self, tmp_path, capsys):
         bad_persona = _write_persona(tmp_path, {"status": "active"})  # missing required
-        with patch("sys.argv", ["validate_personas.py", "--persona", str(bad_persona)]), \
-             patch("validate_personas.REPO_ROOT", tmp_path):
+        with (
+            patch("sys.argv", ["validate_personas.py", "--persona", str(bad_persona)]),
+            patch("validate_personas.REPO_ROOT", tmp_path),
+        ):
             result = main()
         assert result == 1
 
     def test_no_personas_found(self, capsys, tmp_path):
-        with patch("validate_personas.EXAMPLES_DIR", tmp_path / "nonexistent"), \
-             patch("validate_personas.PROJECTS_DIR", tmp_path / "nonexistent2"), \
-             patch("sys.argv", ["validate_personas.py"]):
+        with (
+            patch("validate_personas.EXAMPLES_DIR", tmp_path / "nonexistent"),
+            patch("validate_personas.PROJECTS_DIR", tmp_path / "nonexistent2"),
+            patch("sys.argv", ["validate_personas.py"]),
+        ):
             result = main()
         captured = capsys.readouterr()
         assert "No persona files found" in captured.out

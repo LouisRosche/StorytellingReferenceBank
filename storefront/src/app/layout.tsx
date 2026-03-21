@@ -39,7 +39,7 @@ export default function RootLayout({
                   Storybook Library
                 </h3>
                 <p className="text-sm">
-                  Handcrafted children's picture books with professional
+                  Handcrafted children&apos;s picture books with professional
                   narration. Every story comes alive with a voice chosen just
                   for your child.
                 </p>

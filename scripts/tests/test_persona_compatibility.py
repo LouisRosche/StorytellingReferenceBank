@@ -2,20 +2,20 @@
 
 import pytest
 from persona_compatibility import (
-    genre_match_score,
-    tone_match_score,
-    audience_match_score,
-    compatibility_score,
-    rank_personas,
-    normalize_genre,
     Persona,
     StoryMeta,
+    audience_match_score,
+    compatibility_score,
+    genre_match_score,
+    normalize_genre,
+    rank_personas,
+    tone_match_score,
 )
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def thriller_story():
@@ -66,6 +66,7 @@ def empty_persona():
 # genre_match_score (Jaccard similarity)
 # ---------------------------------------------------------------------------
 
+
 class TestGenreMatchScore:
     def test_perfect_overlap(self, thriller_story, thriller_persona):
         """Persona whose genres fully overlap the story should score high."""
@@ -98,6 +99,7 @@ class TestGenreMatchScore:
 # tone_match_score (emotional coverage)
 # ---------------------------------------------------------------------------
 
+
 class TestToneMatchScore:
     def test_full_coverage(self, thriller_story, thriller_persona):
         """Persona covering all required emotions should score high."""
@@ -120,6 +122,7 @@ class TestToneMatchScore:
 # audience_match_score (binary match)
 # ---------------------------------------------------------------------------
 
+
 class TestAudienceMatchScore:
     def test_children_match(self, children_story, children_persona):
         """Children's persona for children's story should score 1.0."""
@@ -141,6 +144,7 @@ class TestAudienceMatchScore:
 # compatibility_score (composite weighted)
 # ---------------------------------------------------------------------------
 
+
 class TestCompatibilityScore:
     def test_score_range(self, thriller_story, thriller_persona):
         """Score should always be between 0 and 1."""
@@ -157,6 +161,7 @@ class TestCompatibilityScore:
 # ---------------------------------------------------------------------------
 # rank_personas (sorting)
 # ---------------------------------------------------------------------------
+
 
 class TestRankPersonas:
     def test_order(self, thriller_story, thriller_persona, children_persona, empty_persona):
@@ -186,12 +191,16 @@ class TestRankPersonas:
 # normalize_genre
 # ---------------------------------------------------------------------------
 
+
 class TestNormalizeGenre:
-    @pytest.mark.parametrize("raw,expected", [
-        ("Thriller", "thriller"),
-        ("sci-fi", "scifi"),
-        ("literary fiction", "literary"),
-        ("unknown_genre_xyz", "unknown_genre_xyz"),
-    ])
+    @pytest.mark.parametrize(
+        "raw,expected",
+        [
+            ("Thriller", "thriller"),
+            ("sci-fi", "scifi"),
+            ("literary fiction", "literary"),
+            ("unknown_genre_xyz", "unknown_genre_xyz"),
+        ],
+    )
     def test_mapping(self, raw, expected):
         assert normalize_genre(raw) == expected

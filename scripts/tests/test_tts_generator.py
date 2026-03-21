@@ -1,16 +1,10 @@
 """Tests for tts_generator.py — testable functions without GPU/TTS dependencies."""
 
 import json
-import os
-import tempfile
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 import numpy as np
 import pytest
-
-from tts_generator import Persona, chunk_text, acx_filename, concatenate_audio
-
+from tts_generator import Persona, acx_filename, chunk_text, concatenate_audio
 
 # ---------------------------------------------------------------------------
 # Persona.from_json

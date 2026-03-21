@@ -18,7 +18,7 @@ export default function HomePage() {
               <span className="text-primary-600"> themselves</span>
             </h1>
             <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-              Beautiful children's picture books with professional narration.
+              Beautiful children&apos;s picture books with professional narration.
               Choose a narrator your child loves, preview the audio, and get
               instant digital delivery.
             </p>

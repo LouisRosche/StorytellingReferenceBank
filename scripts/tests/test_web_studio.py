@@ -1,14 +1,9 @@
 """Tests for web_studio.py — utility functions (no Gradio dependency required)."""
 
 import json
-import os
 import sys
-import tempfile
 import types
-from pathlib import Path
-from unittest.mock import patch, MagicMock
-
-import pytest
+from unittest.mock import MagicMock, patch
 
 # Stub gradio before importing web_studio so the module loads without it.
 _gr_stub = types.ModuleType("gradio")
@@ -17,19 +12,17 @@ _gr_stub.Blocks = MagicMock  # type: ignore[attr-defined]
 _gr_stub.themes = MagicMock()  # type: ignore[attr-defined]
 sys.modules.setdefault("gradio", _gr_stub)
 
-from web_studio import (
-    get_projects,
-    get_personas,
+from web_studio import (  # noqa: E402
+    _is_safe_path,
+    _load_voice_prompt,
+    _resolve_persona_path,
+    generate_audio,
     get_manuscripts,
+    get_personas,
+    get_projects,
     load_manuscript,
     load_persona_details,
-    _is_safe_path,
-    _resolve_persona_path,
-    _load_voice_prompt,
-    generate_audio,
-    PROJECT_ROOT,
 )
-
 
 # ---------------------------------------------------------------------------
 # Path safety

@@ -1,24 +1,21 @@
 """Tests for inspect_manuscript.py — manuscript analysis, reporting, and CLI."""
 
 import json
-import pytest
-import sys
 from pathlib import Path
 from unittest.mock import patch
-from dataclasses import dataclass
 
+import pytest
 from dialogue_parser import Segment
 from inspect_manuscript import (
-    estimate_duration,
     analyze_segments,
-    format_duration,
-    print_stats,
-    print_segments,
-    print_problems,
+    estimate_duration,
     export_segments,
+    format_duration,
     main,
+    print_problems,
+    print_segments,
+    print_stats,
 )
-
 
 SAMPLE_MANUSCRIPT = Path(__file__).parent / "sample_childrens_story.txt"
 
@@ -26,6 +23,7 @@ SAMPLE_MANUSCRIPT = Path(__file__).parent / "sample_childrens_story.txt"
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _seg(text, speaker="Narrator", is_dialogue=False, line_start=1, line_end=1):
     return Segment(
@@ -40,6 +38,7 @@ def _seg(text, speaker="Narrator", is_dialogue=False, line_start=1, line_end=1):
 # ---------------------------------------------------------------------------
 # estimate_duration
 # ---------------------------------------------------------------------------
+
 
 class TestEstimateDuration:
     def test_basic(self):
@@ -58,6 +57,7 @@ class TestEstimateDuration:
 # format_duration
 # ---------------------------------------------------------------------------
 
+
 class TestFormatDuration:
     def test_under_a_minute(self):
         assert format_duration(45.0) == "0:45"
@@ -75,6 +75,7 @@ class TestFormatDuration:
 # ---------------------------------------------------------------------------
 # analyze_segments — segment breakdown
 # ---------------------------------------------------------------------------
+
 
 class TestAnalyzeSegments:
     def test_summary_counts(self):
@@ -123,6 +124,7 @@ class TestAnalyzeSegments:
 # ---------------------------------------------------------------------------
 # analyze_segments — problem detection
 # ---------------------------------------------------------------------------
+
 
 class TestDetectProblems:
     def test_very_long_segment(self):
@@ -179,6 +181,7 @@ class TestDetectProblems:
 # print_stats
 # ---------------------------------------------------------------------------
 
+
 class TestPrintStats:
     def test_prints_summary(self, capsys):
         segs = [
@@ -197,6 +200,7 @@ class TestPrintStats:
 # ---------------------------------------------------------------------------
 # print_segments
 # ---------------------------------------------------------------------------
+
 
 class TestPrintSegments:
     def test_prints_segment_details(self, capsys):
@@ -226,6 +230,7 @@ class TestPrintSegments:
 # print_problems
 # ---------------------------------------------------------------------------
 
+
 class TestPrintProblems:
     def test_no_problems(self, capsys):
         analysis = {"problems": []}
@@ -234,12 +239,24 @@ class TestPrintProblems:
         assert "No issues detected" in captured.out
 
     def test_shows_problems(self, capsys):
-        analysis = {"problems": [
-            {"segment": 1, "speaker": "Bob", "issue": "unmapped",
-             "detail": "Speaker not in map", "severity": "warning"},
-            {"segment": 2, "speaker": "Narrator", "issue": "very_long",
-             "detail": "Segment too long", "severity": "error"},
-        ]}
+        analysis = {
+            "problems": [
+                {
+                    "segment": 1,
+                    "speaker": "Bob",
+                    "issue": "unmapped",
+                    "detail": "Speaker not in map",
+                    "severity": "warning",
+                },
+                {
+                    "segment": 2,
+                    "speaker": "Narrator",
+                    "issue": "very_long",
+                    "detail": "Segment too long",
+                    "severity": "error",
+                },
+            ]
+        }
         print_problems(analysis)
         captured = capsys.readouterr()
         assert "ERRORS" in captured.out
@@ -251,6 +268,7 @@ class TestPrintProblems:
 # ---------------------------------------------------------------------------
 # export_segments
 # ---------------------------------------------------------------------------
+
 
 class TestExportSegments:
     def test_exports_json(self, tmp_path, capsys):
@@ -277,6 +295,7 @@ class TestExportSegments:
 # main() — CLI
 # ---------------------------------------------------------------------------
 
+
 class TestMain:
     def test_default_shows_stats(self, capsys):
         with patch("sys.argv", ["inspect_manuscript.py", str(SAMPLE_MANUSCRIPT)]):
@@ -298,7 +317,8 @@ class TestMain:
 
     def test_export_flag(self, tmp_path, capsys):
         output = str(tmp_path / "out.json")
-        with patch("sys.argv", ["inspect_manuscript.py", str(SAMPLE_MANUSCRIPT), "--export", output]):
+        argv = ["inspect_manuscript.py", str(SAMPLE_MANUSCRIPT), "--export", output]
+        with patch("sys.argv", argv):
             main()
         assert Path(output).exists()
         data = json.loads(Path(output).read_text())
@@ -306,14 +326,23 @@ class TestMain:
 
     def test_with_speaker_map(self, tmp_path, capsys):
         speaker_map = tmp_path / "speakers.json"
-        speaker_map.write_text(json.dumps({
-            "speakers": {"Narrator": "persona.json"},
-            "aliases": {},
-        }))
-        with patch("sys.argv", [
-            "inspect_manuscript.py", str(SAMPLE_MANUSCRIPT),
-            "--speaker-map", str(speaker_map),
-        ]):
+        speaker_map.write_text(
+            json.dumps(
+                {
+                    "speakers": {"Narrator": "persona.json"},
+                    "aliases": {},
+                }
+            )
+        )
+        with patch(
+            "sys.argv",
+            [
+                "inspect_manuscript.py",
+                str(SAMPLE_MANUSCRIPT),
+                "--speaker-map",
+                str(speaker_map),
+            ],
+        ):
             main()
         captured = capsys.readouterr()
         assert "MANUSCRIPT ANALYSIS" in captured.out

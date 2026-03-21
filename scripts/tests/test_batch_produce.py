@@ -11,27 +11,24 @@ Run with: python -m pytest scripts/tests/test_batch_produce.py -v
 
 import json
 import os
-import shutil
 from dataclasses import asdict
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
-
 from batch_produce import (
-    ProductionConfig,
     ChapterStatus,
+    ProductionConfig,
     ProductionReport,
-    stage_prep,
-    stage_tts,
-    stage_master,
-    stage_validate,
-    stage_sample,
-    stage_cleanup,
-    run_pipeline,
     print_summary,
+    run_pipeline,
+    stage_cleanup,
+    stage_master,
+    stage_prep,
+    stage_sample,
+    stage_tts,
+    stage_validate,
 )
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -49,11 +46,15 @@ def tmp_output(tmp_path):
 def basic_config(tmp_path, tmp_output):
     """Config pointing at the sample manuscript with TTS/postprocess/validate skipped."""
     persona = tmp_path / "persona.json"
-    persona.write_text(json.dumps({
-        "id": "test-narrator",
-        "name": "Test Narrator",
-        "voice_prompt": "A warm voice",
-    }))
+    persona.write_text(
+        json.dumps(
+            {
+                "id": "test-narrator",
+                "name": "Test Narrator",
+                "voice_prompt": "A warm voice",
+            }
+        )
+    )
     return ProductionConfig(
         manuscript_path=str(SAMPLE_MANUSCRIPT),
         persona_path=str(persona),
@@ -79,6 +80,7 @@ def basic_report():
 # ---------------------------------------------------------------------------
 # ProductionConfig
 # ---------------------------------------------------------------------------
+
 
 class TestProductionConfig:
     def test_required_fields(self):
@@ -140,6 +142,7 @@ class TestProductionConfig:
 # ChapterStatus
 # ---------------------------------------------------------------------------
 
+
 class TestChapterStatus:
     def test_initial_state(self):
         status = ChapterStatus(
@@ -182,6 +185,7 @@ class TestChapterStatus:
 # ProductionReport
 # ---------------------------------------------------------------------------
 
+
 class TestProductionReport:
     def test_empty_report(self):
         report = ProductionReport(
@@ -212,12 +216,8 @@ class TestProductionReport:
             config={},
             started_at="2026-03-18T10:00:00",
         )
-        report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt")
-        )
-        report.chapters.append(
-            ChapterStatus(number=2, title="Ch2", text_file="ch02.txt")
-        )
+        report.chapters.append(ChapterStatus(number=1, title="Ch1", text_file="ch01.txt"))
+        report.chapters.append(ChapterStatus(number=2, title="Ch2", text_file="ch02.txt"))
         d = report.to_dict()
         assert len(d["chapters"]) == 2
         assert d["chapters"][0]["number"] == 1
@@ -233,9 +233,7 @@ class TestProductionReport:
             acx_passed=10,
             acx_failed=0,
         )
-        report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt")
-        )
+        report.chapters.append(ChapterStatus(number=1, title="Ch1", text_file="ch01.txt"))
         # Must not raise
         json_str = json.dumps(report.to_dict())
         assert "Test" in json_str
@@ -281,6 +279,7 @@ class TestProductionReport:
 # ---------------------------------------------------------------------------
 # stage_prep — splits manuscript, extracts cues, generates credits
 # ---------------------------------------------------------------------------
+
 
 class TestStagePrep:
     def test_splits_manuscript_into_chapters(self, basic_config, basic_report):
@@ -331,6 +330,7 @@ class TestStagePrep:
 # stage_tts — routes to single/multi speaker, or skips on --no-tts
 # ---------------------------------------------------------------------------
 
+
 class TestStageTts:
     def test_skips_when_no_tts(self, basic_config, basic_report):
         basic_config.no_tts = True
@@ -348,20 +348,21 @@ class TestStageTts:
         # Set up a chapter with text
         ch_file = tmp_path / "ch01.txt"
         ch_file.write_text("Hello world")
-        basic_report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file=str(ch_file))
-        )
+        basic_report.chapters.append(ChapterStatus(number=1, title="Ch1", text_file=str(ch_file)))
 
         mock_persona = MagicMock()
         mock_persona.name = "Test"
 
         import numpy as np
+
         fake_audio = np.zeros(1000)
 
         with patch("batch_produce.stage_tts.__module__", "batch_produce"):
-            with patch("tts_generator.Persona") as MockPersona, \
-                 patch("tts_generator.generate_from_persona") as mock_gen, \
-                 patch("tts_generator.save_audio") as mock_save:
+            with (
+                patch("tts_generator.Persona") as MockPersona,
+                patch("tts_generator.generate_from_persona") as mock_gen,
+                patch("tts_generator.save_audio") as mock_save,
+            ):
                 MockPersona.from_json.return_value = mock_persona
                 mock_gen.return_value = ([fake_audio], 44100)
 
@@ -377,26 +378,31 @@ class TestStageTts:
 
         ch_file = tmp_path / "ch01.txt"
         ch_file.write_text('"Hello," said Alice.')
-        basic_report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file=str(ch_file))
-        )
+        basic_report.chapters.append(ChapterStatus(number=1, title="Ch1", text_file=str(ch_file)))
 
         # Write speaker map
-        (tmp_path / "speakers.json").write_text(json.dumps({
-            "default_persona": "persona.json",
-            "speakers": {},
-            "aliases": {},
-        }))
+        (tmp_path / "speakers.json").write_text(
+            json.dumps(
+                {
+                    "default_persona": "persona.json",
+                    "speakers": {},
+                    "aliases": {},
+                }
+            )
+        )
 
         import numpy as np
+
         fake_audio = np.zeros(1000)
 
         mock_persona = MagicMock()
         mock_persona.name = "Test"
 
-        with patch("tts_generator.Persona") as MockPersona, \
-             patch("tts_generator.save_audio"), \
-             patch("multispeaker_tts.generate_multispeaker_audio") as mock_multi:
+        with (
+            patch("tts_generator.Persona") as MockPersona,
+            patch("tts_generator.save_audio"),
+            patch("multispeaker_tts.generate_multispeaker_audio") as mock_multi,
+        ):
             MockPersona.from_json.return_value = mock_persona
             mock_multi.return_value = ([fake_audio], 44100)
 
@@ -407,10 +413,11 @@ class TestStageTts:
 # stage_master — post-processing
 # ---------------------------------------------------------------------------
 
+
 class TestStageMaster:
     def test_skips_when_no_postprocess(self, basic_config, basic_report, capsys):
         basic_config.no_postprocess = True
-        result = stage_master(basic_config, basic_report, verbose=True)
+        stage_master(basic_config, basic_report, verbose=True)
         captured = capsys.readouterr()
         assert "SKIPPED" in captured.out
 
@@ -419,8 +426,7 @@ class TestStageMaster:
         raw_file = tmp_path / "raw.wav"
         raw_file.write_bytes(b"fake audio")
         basic_report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt",
-                          raw_audio_file=str(raw_file))
+            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt", raw_audio_file=str(raw_file))
         )
         stage_master(basic_config, basic_report)
         assert basic_report.chapters[0].final_audio_file == str(raw_file)
@@ -429,6 +435,7 @@ class TestStageMaster:
 # ---------------------------------------------------------------------------
 # stage_validate — ACX validation
 # ---------------------------------------------------------------------------
+
 
 class TestStageValidate:
     def test_skips_when_no_validate(self, basic_config, basic_report, capsys):
@@ -439,9 +446,7 @@ class TestStageValidate:
 
     def test_skips_chapters_without_final_audio(self, basic_config, basic_report):
         basic_config.no_validate = False
-        basic_report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt")
-        )
+        basic_report.chapters.append(ChapterStatus(number=1, title="Ch1", text_file="ch01.txt"))
         # Should not raise — just skips
         stage_validate(basic_config, basic_report)
         assert basic_report.acx_passed == 0
@@ -453,8 +458,9 @@ class TestStageValidate:
         audio_file.write_bytes(b"fake")
 
         basic_report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt",
-                          final_audio_file=str(audio_file))
+            ChapterStatus(
+                number=1, title="Ch1", text_file="ch01.txt", final_audio_file=str(audio_file)
+            )
         )
 
         mock_validation = MagicMock()
@@ -472,8 +478,9 @@ class TestStageValidate:
         audio_file.write_bytes(b"fake")
 
         basic_report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt",
-                          final_audio_file=str(audio_file))
+            ChapterStatus(
+                number=1, title="Ch1", text_file="ch01.txt", final_audio_file=str(audio_file)
+            )
         )
 
         mock_check = MagicMock()
@@ -496,8 +503,9 @@ class TestStageValidate:
         audio_file.write_bytes(b"fake")
 
         basic_report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt",
-                          final_audio_file=str(audio_file))
+            ChapterStatus(
+                number=1, title="Ch1", text_file="ch01.txt", final_audio_file=str(audio_file)
+            )
         )
 
         with patch("acx_validator.validate_audio", side_effect=RuntimeError("corrupt")):
@@ -510,6 +518,7 @@ class TestStageValidate:
 # stage_sample — retail sample extraction
 # ---------------------------------------------------------------------------
 
+
 class TestStageSample:
     def test_error_when_no_chapter_1(self, basic_config, basic_report):
         stage_sample(basic_config, basic_report)
@@ -517,8 +526,12 @@ class TestStageSample:
 
     def test_error_when_chapter_1_file_missing(self, basic_config, basic_report):
         basic_report.chapters.append(
-            ChapterStatus(number=1, title="Ch1", text_file="ch01.txt",
-                          final_audio_file="/nonexistent/ch01.mp3")
+            ChapterStatus(
+                number=1,
+                title="Ch1",
+                text_file="ch01.txt",
+                final_audio_file="/nonexistent/ch01.mp3",
+            )
         )
         stage_sample(basic_config, basic_report)
         assert any("not found" in e for e in basic_report.errors)
@@ -527,6 +540,7 @@ class TestStageSample:
 # ---------------------------------------------------------------------------
 # stage_cleanup
 # ---------------------------------------------------------------------------
+
 
 class TestStageCleanup:
     def test_removes_raw_dir(self, basic_config, basic_report):
@@ -564,6 +578,7 @@ class TestStageCleanup:
 # run_pipeline — full orchestration
 # ---------------------------------------------------------------------------
 
+
 class TestRunPipeline:
     def test_dry_run_pipeline(self, basic_config):
         """Full pipeline with TTS/postprocess/validate all skipped."""
@@ -600,6 +615,7 @@ class TestRunPipeline:
 # ---------------------------------------------------------------------------
 # print_summary
 # ---------------------------------------------------------------------------
+
 
 class TestPrintSummary:
     def test_prints_summary(self, capsys):

@@ -2,16 +2,11 @@
 and process_manuscript_multispeaker."""
 
 import json
-import os
-import sys
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
-
 from multispeaker_tts import SpeakerMap, generate_multispeaker_audio
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -181,8 +176,10 @@ class TestGenerateMultispeakerAudio:
         fake_audio = np.random.randn(22050).astype(np.float32)
         mock_persona = MagicMock()
 
-        with patch("tts_generator.Persona") as MockPersona, \
-             patch("tts_generator.generate_from_persona") as mock_gen:
+        with (
+            patch("tts_generator.Persona") as MockPersona,
+            patch("tts_generator.generate_from_persona") as mock_gen,
+        ):
             MockPersona.from_json.return_value = mock_persona
             mock_gen.return_value = ([fake_audio], 22050)
 
@@ -202,8 +199,10 @@ class TestGenerateMultispeakerAudio:
         fake_audio = np.random.randn(22050).astype(np.float32)
         mock_persona = MagicMock()
 
-        with patch("tts_generator.Persona") as MockPersona, \
-             patch("tts_generator.generate_from_persona") as mock_gen:
+        with (
+            patch("tts_generator.Persona") as MockPersona,
+            patch("tts_generator.generate_from_persona") as mock_gen,
+        ):
             MockPersona.from_json.return_value = mock_persona
             mock_gen.return_value = ([fake_audio], 22050)
 
@@ -231,13 +230,13 @@ class TestGenerateMultispeakerAudio:
                 return ([fake_audio], 22050)
             raise RuntimeError("TTS engine crashed")
 
-        with patch("tts_generator.Persona") as MockPersona, \
-             patch("tts_generator.generate_from_persona", side_effect=gen_side_effect):
+        with (
+            patch("tts_generator.Persona") as MockPersona,
+            patch("tts_generator.generate_from_persona", side_effect=gen_side_effect),
+        ):
             MockPersona.from_json.return_value = mock_persona
 
-            result, sr = generate_multispeaker_audio(
-                [seg_ok, seg_bad], speaker_map
-            )
+            result, sr = generate_multispeaker_audio([seg_ok, seg_bad], speaker_map)
             assert sr == 22050
             assert len(result[0]) > len(fake_audio)  # includes silence placeholder
 
@@ -249,8 +248,10 @@ class TestGenerateMultispeakerAudio:
         ]
         fake_audio = np.ones(22050, dtype=np.float32) * 0.5
 
-        with patch("tts_generator.Persona") as MockPersona, \
-             patch("tts_generator.generate_from_persona") as mock_gen:
+        with (
+            patch("tts_generator.Persona") as MockPersona,
+            patch("tts_generator.generate_from_persona") as mock_gen,
+        ):
             MockPersona.from_json.return_value = MagicMock()
             mock_gen.return_value = ([fake_audio.copy()], 22050)
 
@@ -266,14 +267,14 @@ class TestGenerateMultispeakerAudio:
         fake_audio = np.random.randn(22050).astype(np.float32)
         callback = MagicMock()
 
-        with patch("tts_generator.Persona") as MockPersona, \
-             patch("tts_generator.generate_from_persona") as mock_gen:
+        with (
+            patch("tts_generator.Persona") as MockPersona,
+            patch("tts_generator.generate_from_persona") as mock_gen,
+        ):
             MockPersona.from_json.return_value = MagicMock()
             mock_gen.return_value = ([fake_audio], 22050)
 
-            generate_multispeaker_audio(
-                segments, speaker_map, progress_callback=callback
-            )
+            generate_multispeaker_audio(segments, speaker_map, progress_callback=callback)
             assert callback.call_count == 2
             callback.assert_any_call(1, 2)
             callback.assert_any_call(2, 2)
@@ -284,14 +285,14 @@ class TestGenerateMultispeakerAudio:
         ]
         fake_audio = np.random.randn(22050).astype(np.float32)
 
-        with patch("tts_generator.Persona") as MockPersona, \
-             patch("tts_generator.generate_from_persona") as mock_gen:
+        with (
+            patch("tts_generator.Persona") as MockPersona,
+            patch("tts_generator.generate_from_persona") as mock_gen,
+        ):
             MockPersona.from_json.return_value = MagicMock()
             mock_gen.return_value = ([fake_audio], 22050)
 
-            generate_multispeaker_audio(
-                segments, speaker_map, verbose=True
-            )
+            generate_multispeaker_audio(segments, speaker_map, verbose=True)
             captured = capsys.readouterr()
             assert "1/1" in captured.err
 
@@ -304,8 +305,10 @@ class TestGenerateMultispeakerAudio:
         # Use short audio so pause is clearly measurable
         fake_audio = np.ones(1000, dtype=np.float32) * 0.5
 
-        with patch("tts_generator.Persona") as MockPersona, \
-             patch("tts_generator.generate_from_persona") as mock_gen:
+        with (
+            patch("tts_generator.Persona") as MockPersona,
+            patch("tts_generator.generate_from_persona") as mock_gen,
+        ):
             MockPersona.from_json.return_value = MagicMock()
             mock_gen.return_value = ([fake_audio.copy()], 22050)
 

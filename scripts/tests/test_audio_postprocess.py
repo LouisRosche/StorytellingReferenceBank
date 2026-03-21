@@ -8,34 +8,33 @@ Run with: python -m pytest scripts/tests/test_audio_postprocess.py -v
 """
 
 import numpy as np
-
 from audio_postprocess import (
+    CONTENT_PRESETS,
     ProcessingParams,
-    apply_highpass,
-    apply_lowpass,
+    add_room_tone,
     apply_compression,
+    apply_highpass,
     apply_limiter,
+    apply_lowpass,
     calculate_rms,
     calculate_rms_db,
+    detect_content_type,
     generate_room_tone,
-    add_room_tone,
+    get_content_params,
     normalize_loudness,
     process_audio,
     resample,
-    detect_content_type,
-    get_content_params,
-    CONTENT_PRESETS,
 )
 from conftest import SAMPLE_RATE, make_sine
-
 
 # ---------------------------------------------------------------------------
 # Local helpers (specific to postprocess tests)
 # ---------------------------------------------------------------------------
 
+
 def db(samples: np.ndarray) -> float:
     """RMS in dB."""
-    rms = np.sqrt(np.mean(samples ** 2))
+    rms = np.sqrt(np.mean(samples**2))
     return 20 * np.log10(rms) if rms > 0 else -100.0
 
 
@@ -48,6 +47,7 @@ def peak_db(samples: np.ndarray) -> float:
 # ---------------------------------------------------------------------------
 # RMS / Peak helpers
 # ---------------------------------------------------------------------------
+
 
 class TestLevelCalculations:
     def test_rms_of_silence(self):
@@ -70,6 +70,7 @@ class TestLevelCalculations:
 # ---------------------------------------------------------------------------
 # Filters
 # ---------------------------------------------------------------------------
+
 
 class TestHighpassFilter:
     def test_removes_low_frequency(self):
@@ -99,22 +100,19 @@ class TestLowpassFilter:
 # Dynamics
 # ---------------------------------------------------------------------------
 
+
 class TestCompression:
     def test_reduces_loud_signal(self):
         loud = make_sine(amplitude=0.9)
         compressed = apply_compression(
-            loud, SAMPLE_RATE,
-            threshold_db=-12.0, ratio=4.0,
-            attack_ms=1.0, release_ms=50.0
+            loud, SAMPLE_RATE, threshold_db=-12.0, ratio=4.0, attack_ms=1.0, release_ms=50.0
         )
         assert db(compressed) < db(loud)
 
     def test_preserves_quiet_signal(self):
         quiet = make_sine(amplitude=0.01)
         compressed = apply_compression(
-            quiet, SAMPLE_RATE,
-            threshold_db=-12.0, ratio=4.0,
-            attack_ms=1.0, release_ms=50.0
+            quiet, SAMPLE_RATE, threshold_db=-12.0, ratio=4.0, attack_ms=1.0, release_ms=50.0
         )
         assert abs(db(compressed) - db(quiet)) < 1.0
 
@@ -135,6 +133,7 @@ class TestLimiter:
 # Normalization
 # ---------------------------------------------------------------------------
 
+
 class TestNormalization:
     def test_normalize_to_target(self):
         tone = make_sine(amplitude=0.1)
@@ -145,6 +144,7 @@ class TestNormalization:
 # ---------------------------------------------------------------------------
 # Room tone
 # ---------------------------------------------------------------------------
+
 
 class TestRoomTone:
     def test_room_tone_level(self):
@@ -163,6 +163,7 @@ class TestRoomTone:
 # Resampling
 # ---------------------------------------------------------------------------
 
+
 class TestResample:
     def test_same_rate_passthrough(self):
         audio = make_sine()
@@ -179,6 +180,7 @@ class TestResample:
 # ---------------------------------------------------------------------------
 # Full chain
 # ---------------------------------------------------------------------------
+
 
 class TestFullMasteringChain:
     def test_output_within_acx_range(self):
@@ -222,6 +224,7 @@ class TestFullMasteringChain:
 # Content detection
 # ---------------------------------------------------------------------------
 
+
 class TestContentDetection:
     def test_detects_childrens_with_page_turns(self):
         text = "Once upon a time.\n\n[PAGE TURN]\n\nThe bear walked.\n\n[PAGE TURN]\n\nThe end.\n"
@@ -240,17 +243,21 @@ class TestContentDetection:
         assert detect_content_type(text) == "thriller"
 
     def test_detects_nonfiction(self):
-        paragraph = ("The economic implications of this policy are far-reaching and "
-                      "significant across multiple sectors of the global economy. "
-                      "Researchers have documented extensive evidence supporting "
-                      "these conclusions through rigorous empirical analysis. ") * 25
+        paragraph = (
+            "The economic implications of this policy are far-reaching and "
+            "significant across multiple sectors of the global economy. "
+            "Researchers have documented extensive evidence supporting "
+            "these conclusions through rigorous empirical analysis. "
+        ) * 25
         text = (paragraph + "\n\n") * 10
         assert len(text.split()) > 2000
         assert detect_content_type(text) == "nonfiction"
 
     def test_detects_literary_as_default(self):
-        text = ("She walked along the river, watching the light change on the water. " * 200 +
-                '\n"It was beautiful," she said.\n' * 10)
+        text = (
+            "She walked along the river, watching the light change on the water. " * 200
+            + '\n"It was beautiful," she said.\n' * 10
+        )
         assert len(text.split()) > 2000
         assert detect_content_type(text) == "literary"
 
@@ -303,8 +310,10 @@ class TestPresetDifferences:
             for j in range(i + 1, len(types)):
                 a = CONTENT_PRESETS[types[i]]
                 b = CONTENT_PRESETS[types[j]]
-                differs = (a.comp_threshold_db != b.comp_threshold_db or
-                           a.comp_ratio != b.comp_ratio or
-                           a.target_rms_db != b.target_rms_db or
-                           a.limiter_ceiling_db != b.limiter_ceiling_db)
+                differs = (
+                    a.comp_threshold_db != b.comp_threshold_db
+                    or a.comp_ratio != b.comp_ratio
+                    or a.target_rms_db != b.target_rms_db
+                    or a.limiter_ceiling_db != b.limiter_ceiling_db
+                )
                 assert differs, f"{types[i]} and {types[j]} presets are identical"

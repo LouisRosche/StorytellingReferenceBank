@@ -17,13 +17,12 @@ import pytest
 def test_manuscript_splitter():
     """Test manuscript_to_chapters.py with sample children's story."""
     from manuscript_to_chapters import (
-        split_manuscript,
         insert_page_turn_pauses,
-        detect_chapter_pattern,
+        split_manuscript,
     )
 
     sample_path = Path(__file__).parent / "sample_childrens_story.txt"
-    with open(sample_path, "r") as f:
+    with open(sample_path) as f:
         text = f.read()
 
     assert "[PAGE TURN]" in text
@@ -42,13 +41,11 @@ def test_tts_generator_import():
     """Test that TTS generator can be imported and has correct structure."""
     from tts_generator import (
         Persona,
-        chunk_text,
         acx_filename,
+        chunk_text,
     )
 
-    persona_path = (
-        Path(__file__).parent.parent.parent / "personas/examples/narrator-childrens.json"
-    )
+    persona_path = Path(__file__).parent.parent.parent / "personas/examples/narrator-childrens.json"
     persona = Persona.from_json(str(persona_path))
 
     assert persona.id == "narrator-childrens"
@@ -67,8 +64,8 @@ def test_acx_validator_import():
     """Test that ACX validator can be imported and has correct structure."""
     from acx_validator import (
         ACX_SPECS,
-        calculate_rms_db,
         calculate_peak_db,
+        calculate_rms_db,
     )
 
     assert ACX_SPECS["rms_min_db"] == -23.0
@@ -85,7 +82,7 @@ def test_acx_validator_import():
         samples = amplitude * np.sin(2 * np.pi * 440 * t)
 
         rms_db = calculate_rms_db(samples)
-        peak_db = calculate_peak_db(samples)
+        _peak_db = calculate_peak_db(samples)
 
         assert -25 < rms_db < -21, f"RMS calculation off: {rms_db}"
     except ImportError:
@@ -96,24 +93,22 @@ def test_acx_validator_import():
 def test_tts_generation():
     """Test actual TTS generation (requires qwen-tts + GPU)."""
     try:
+        import qwen_tts  # noqa: F401
         import torch
-        from qwen_tts import Qwen3TTSModel
     except ImportError:
         pytest.skip("qwen-tts not installed")
 
     if not torch.cuda.is_available():
         pytest.skip("No GPU available")
 
-    from tts_generator import Persona, generate_from_persona, save_audio
     from acx_validator import validate_audio
+    from tts_generator import Persona, generate_from_persona, save_audio
 
-    persona_path = (
-        Path(__file__).parent.parent.parent / "personas/examples/narrator-childrens.json"
-    )
+    persona_path = Path(__file__).parent.parent.parent / "personas/examples/narrator-childrens.json"
     persona = Persona.from_json(str(persona_path))
 
     sample_path = Path(__file__).parent / "sample_childrens_story.txt"
-    with open(sample_path, "r") as f:
+    with open(sample_path) as f:
         text = f.read().replace("[PAGE TURN]", "")
 
     test_text = " ".join(text.split()[:200])
@@ -128,7 +123,7 @@ def test_tts_generation():
         assert os.path.exists(output_path)
         assert os.path.getsize(output_path) > 1000
 
-        report = validate_audio(output_path)
+        validate_audio(output_path)
         # Audio generated — may need post-processing for ACX but generation worked
         assert os.path.getsize(output_path) > 1000
     finally:

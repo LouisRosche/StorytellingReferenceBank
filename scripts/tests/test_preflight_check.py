@@ -5,24 +5,22 @@ import json
 import os
 import sys
 from pathlib import Path
-from unittest.mock import patch, MagicMock
-
-import pytest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from preflight_check import (
     CheckResult,
     ValidationReport,
-    check_project,
     check_dependencies,
     check_gpu_memory,
+    check_project,
     find_projects,
     main,
 )
 
-
 # ─── CheckResult ─────────────────────────────────────────────
+
 
 class TestCheckResult:
     def test_defaults(self):
@@ -40,6 +38,7 @@ class TestCheckResult:
 
 
 # ─── ValidationReport ────────────────────────────────────────
+
 
 class TestValidationReport:
     def test_empty_report(self):
@@ -94,6 +93,7 @@ class TestValidationReport:
 
 # ─── find_projects ────────────────────────────────────────────
 
+
 class TestFindProjects:
     def test_nonexistent_base_returns_empty(self, tmp_path):
         result = find_projects(str(tmp_path / "nope"))
@@ -126,6 +126,7 @@ class TestFindProjects:
 
 
 # ─── check_project ────────────────────────────────────────────
+
 
 class TestCheckProject:
     def test_missing_speaker_map(self, tmp_path):
@@ -168,9 +169,7 @@ class TestCheckProject:
 
         speaker_map = {
             "default_persona": "personas/narrator.json",
-            "speakers": {
-                "Narrator": {"persona_path": "personas/narrator.json"}
-            },
+            "speakers": {"Narrator": {"persona_path": "personas/narrator.json"}},
         }
         (tmp_path / "speaker-map.json").write_text(json.dumps(speaker_map))
         results = check_project(str(tmp_path))
@@ -185,9 +184,7 @@ class TestCheckProject:
 
         speaker_map = {
             "default_persona": "",
-            "speakers": {
-                "Narrator": {"persona_path": "personas/narrator.json"}
-            },
+            "speakers": {"Narrator": {"persona_path": "personas/narrator.json"}},
         }
         (tmp_path / "speaker-map.json").write_text(json.dumps(speaker_map))
         results = check_project(str(tmp_path))
@@ -205,9 +202,7 @@ class TestCheckProject:
 
         speaker_map = {
             "default_persona": "",
-            "speakers": {
-                "Broken": {"persona_path": "personas/broken.json"}
-            },
+            "speakers": {"Broken": {"persona_path": "personas/broken.json"}},
         }
         (tmp_path / "speaker-map.json").write_text(json.dumps(speaker_map))
         results = check_project(str(tmp_path))
@@ -215,16 +210,22 @@ class TestCheckProject:
 
     def test_drafts_with_chapters(self, tmp_path):
         """Projects with chapter files should validate them."""
-        (tmp_path / "speaker-map.json").write_text(json.dumps({
-            "speakers": {"Narrator": {"persona_path": ""}},
-            "aliases": {},
-        }))
+        (tmp_path / "speaker-map.json").write_text(
+            json.dumps(
+                {
+                    "speakers": {"Narrator": {"persona_path": ""}},
+                    "aliases": {},
+                }
+            )
+        )
         drafts = tmp_path / "drafts"
         drafts.mkdir()
-        (drafts / "chapter-01.txt").write_text("Once upon a time.\n\n\"Hello,\" said Alice.\n")
+        (drafts / "chapter-01.txt").write_text('Once upon a time.\n\n"Hello," said Alice.\n')
         results = check_project(str(tmp_path))
         # Should have a result about chapters
-        chapter_results = [r for r in results if "chapter" in r.name.lower() or "manuscript" in r.name.lower()]
+        chapter_results = [
+            r for r in results if "chapter" in r.name.lower() or "manuscript" in r.name.lower()
+        ]
         assert len(chapter_results) >= 1
 
     def test_drafts_without_chapters(self, tmp_path):
@@ -237,10 +238,14 @@ class TestCheckProject:
 
     def test_unmapped_speaker_warning(self, tmp_path):
         """Speakers in manuscript not in speaker-map should warn."""
-        (tmp_path / "speaker-map.json").write_text(json.dumps({
-            "speakers": {},
-            "aliases": {},
-        }))
+        (tmp_path / "speaker-map.json").write_text(
+            json.dumps(
+                {
+                    "speakers": {},
+                    "aliases": {},
+                }
+            )
+        )
         drafts = tmp_path / "drafts"
         drafts.mkdir()
         # Write a chapter with a speaker not in the map
@@ -254,6 +259,7 @@ class TestCheckProject:
 
 
 # ─── check_dependencies ─────────────────────────────────────
+
 
 class TestCheckDependencies:
     def test_returns_list_of_results(self):
@@ -269,7 +275,9 @@ class TestCheckDependencies:
 
     def test_reports_missing_modules(self):
         """Simulate a missing dependency."""
-        original_import = __builtins__.__import__ if hasattr(__builtins__, '__import__') else __import__
+        original_import = (
+            __builtins__.__import__ if hasattr(__builtins__, "__import__") else __import__
+        )
 
         def fake_import(name, *args, **kwargs):
             if name == "qwen_tts":
@@ -290,6 +298,7 @@ class TestCheckDependencies:
 
 # ─── check_gpu_memory ────────────────────────────────────────
 
+
 class TestCheckGpuMemory:
     def test_returns_results(self):
         results = check_gpu_memory()
@@ -297,7 +306,9 @@ class TestCheckGpuMemory:
 
     def test_handles_no_torch(self):
         """Should not crash when torch is unavailable."""
-        original_import = __builtins__.__import__ if hasattr(__builtins__, '__import__') else __import__
+        original_import = (
+            __builtins__.__import__ if hasattr(__builtins__, "__import__") else __import__
+        )
 
         def fake_import(name, *args, **kwargs):
             if name == "torch":
@@ -311,6 +322,7 @@ class TestCheckGpuMemory:
 
 # ─── main() ──────────────────────────────────────────────────
 
+
 class TestMain:
     def test_deps_only(self, capsys):
         with patch("sys.argv", ["preflight_check.py", "--deps-only"]):
@@ -322,7 +334,7 @@ class TestMain:
     def test_no_deps(self, capsys):
         with patch("sys.argv", ["preflight_check.py", "--no-deps"]):
             result = main()
-        captured = capsys.readouterr()
+        capsys.readouterr()
         assert isinstance(result, int)
 
     def test_specific_project(self, tmp_path, capsys):
@@ -330,13 +342,15 @@ class TestMain:
         proj.mkdir()
         (proj / "speaker-map.json").write_text(json.dumps({"speakers": {}}))
 
-        with patch("sys.argv", ["preflight_check.py", "--project", str(proj), "--no-deps"]):
+        argv = ["preflight_check.py", "--project", str(proj), "--no-deps"]
+        with patch("sys.argv", argv):
             result = main()
-        captured = capsys.readouterr()
+        capsys.readouterr()
         assert isinstance(result, int)
 
     def test_nonexistent_project(self, capsys):
-        with patch("sys.argv", ["preflight_check.py", "--project", "/nonexistent/proj", "--no-deps"]):
+        argv = ["preflight_check.py", "--project", "/nonexistent/proj", "--no-deps"]
+        with patch("sys.argv", argv):
             result = main()
         assert result == 2  # error
 
@@ -346,17 +360,23 @@ class TestMain:
         proj.mkdir(parents=True)
         (proj / "speaker-map.json").write_text(json.dumps({"speakers": {}}))
 
-        with patch("sys.argv", ["preflight_check.py", "--project", "luna", "--no-deps"]), \
-             patch("os.path.exists") as mock_exists:
+        with (
+            patch("sys.argv", ["preflight_check.py", "--project", "luna", "--no-deps"]),
+            patch("os.path.exists") as mock_exists,
+        ):
             # First call: "luna" doesn't exist, second: projects/luna does
-            mock_exists.side_effect = lambda p: p.startswith(str(proj)) or p == os.path.join("projects", "luna")
+            mock_exists.side_effect = lambda p: (
+                p.startswith(str(proj)) or p == os.path.join("projects", "luna")
+            )
             # This tests the fallback path in main()
             result = main()
             assert isinstance(result, int)
 
     def test_no_projects_found(self, tmp_path, capsys):
-        with patch("sys.argv", ["preflight_check.py", "--no-deps"]), \
-             patch("preflight_check.find_projects", return_value=[]):
+        with (
+            patch("sys.argv", ["preflight_check.py", "--no-deps"]),
+            patch("preflight_check.find_projects", return_value=[]),
+        ):
             result = main()
-        captured = capsys.readouterr()
+        capsys.readouterr()
         assert isinstance(result, int)

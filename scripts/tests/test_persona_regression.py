@@ -1,25 +1,20 @@
 """Tests for persona_regression.py — regression testing for voice personas."""
 
 import json
-import os
-import tempfile
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import numpy as np
 import pytest
-
 from persona_regression import (
-    load_persona,
-    extract_voice_embedding,
-    compare_embeddings,
-    test_persona as run_test_persona,
-    run_regression,
-    RegressionResult,
     RegressionReport,
-    SIMILARITY_THRESHOLD,
+    compare_embeddings,
+    extract_voice_embedding,
+    load_persona,
+    run_regression,
 )
-
+from persona_regression import (
+    test_persona as run_test_persona,
+)
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -33,9 +28,7 @@ def persona_dir(tmp_path):
         "id": "test-narrator",
         "name": "Test Narrator",
         "voice_prompt": "Warm voice",
-        "quality": {
-            "golden_reference": "test-narrator_golden.wav"
-        },
+        "quality": {"golden_reference": "test-narrator_golden.wav"},
     }
     persona_file = tmp_path / "test-narrator.json"
     persona_file.write_text(json.dumps(persona))
@@ -110,8 +103,10 @@ class TestExtractVoiceEmbedding:
     def test_no_libraries_returns_none(self, tmp_path):
         dummy_wav = tmp_path / "dummy.wav"
         dummy_wav.touch()
-        with patch("persona_regression.RESEMBLYZER_AVAILABLE", False), \
-             patch("persona_regression.LIBROSA_AVAILABLE", False):
+        with (
+            patch("persona_regression.RESEMBLYZER_AVAILABLE", False),
+            patch("persona_regression.LIBROSA_AVAILABLE", False),
+        ):
             result = extract_voice_embedding(dummy_wav)
         assert result is None
 
@@ -162,8 +157,10 @@ class TestTestPersona:
         test_dir = tmp_path / "test"
         test_dir.mkdir()
         (test_dir / "test-narrator_test.wav").touch()
-        with patch("persona_regression.RESEMBLYZER_AVAILABLE", False), \
-             patch("persona_regression.LIBROSA_AVAILABLE", False):
+        with (
+            patch("persona_regression.RESEMBLYZER_AVAILABLE", False),
+            patch("persona_regression.LIBROSA_AVAILABLE", False),
+        ):
             result = run_test_persona(
                 persona_dir / "test-narrator.json",
                 golden_dir=golden_dir,
