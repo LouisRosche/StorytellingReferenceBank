@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe, STRIPE_WEBHOOK_SECRET, generateDownloadToken } from "@/lib/stripe";
 import { getSiteUrl } from "@/lib/env";
 import { getStorybook } from "@/lib/storybooks";
-import { savePurchase, hasProcessedEvent } from "@/lib/db";
+import { savePurchase, savePurchaseIfNew } from "@/lib/db";
 import { sendFulfillmentEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
@@ -34,12 +34,6 @@ export async function POST(request: NextRequest) {
     case "checkout.session.completed": {
       const session = event.data.object;
 
-      // Idempotency: skip if we've already processed this session
-      if (hasProcessedEvent(session.id)) {
-        console.log("Skipping duplicate event for session:", session.id);
-        return NextResponse.json({ received: true, duplicate: true });
-      }
-
       const metadata = session.metadata || {};
       const { slug, format, narratorId } = metadata;
 
@@ -66,6 +60,28 @@ export async function POST(request: NextRequest) {
 
       const customerEmail = session.customer_details?.email || "";
 
+      // Atomic idempotency check FIRST — before any expensive work
+      // (token generation, email sending). Prevents duplicate fulfillment
+      // from concurrent Stripe webhook retries (TOCTOU race).
+      const purchaseId = crypto.randomUUID();
+      const purchase = {
+        id: purchaseId,
+        stripeSessionId: session.id,
+        email: customerEmail,
+        slug,
+        format,
+        narratorId: narratorId || "",
+        downloadTokens: {} as Record<string, string>,
+        createdAt: new Date().toISOString(),
+        fulfilled: false,
+      };
+
+      const isNew = savePurchaseIfNew(purchase);
+      if (!isNew) {
+        console.log("Skipping duplicate event for session:", session.id);
+        return NextResponse.json({ received: true, duplicate: true });
+      }
+
       // Generate signed download tokens (14-day expiry)
       const tokens: Record<string, string> = {};
       if (format === "ebook" || format === "bundle") {
@@ -82,20 +98,6 @@ export async function POST(request: NextRequest) {
         url: `${siteUrl}/api/download?token=${token}`,
       }));
 
-      // Persist purchase (initially unfulfilled until email sends)
-      const purchaseId = crypto.randomUUID();
-      savePurchase({
-        id: purchaseId,
-        stripeSessionId: session.id,
-        email: customerEmail,
-        slug,
-        format,
-        narratorId: narratorId || "",
-        downloadTokens: tokens,
-        createdAt: new Date().toISOString(),
-        fulfilled: false,
-      });
-
       // Send fulfillment email — mark fulfilled only on success
       let emailSent = false;
       if (customerEmail) {
@@ -110,18 +112,11 @@ export async function POST(request: NextRequest) {
       }
 
       if (emailSent || !customerEmail) {
-        savePurchase({
-          id: purchaseId,
-          stripeSessionId: session.id,
-          email: customerEmail,
-          slug,
-          format,
-          narratorId: narratorId || "",
-          downloadTokens: tokens,
-          createdAt: new Date().toISOString(),
-          fulfilled: true,
-        });
+        // Update the existing record with tokens + fulfilled status
+        savePurchase({ ...purchase, downloadTokens: tokens, fulfilled: true });
       } else {
+        // Persist tokens even if email failed, so support can resend
+        savePurchase({ ...purchase, downloadTokens: tokens });
         console.error("Email fulfillment failed for session:", session.id);
       }
 

@@ -26,11 +26,6 @@ export interface Storybook {
   themes: string[];
   featured: boolean;
   previewPages: number;
-  stripePriceIds: {
-    ebook: string;
-    audiobook: string;
-    bundle: string;
-  };
 }
 
 // Narrators sourced from the persona library.
@@ -94,11 +89,6 @@ A gentle story about self-acceptance, belonging, and the courage to be exactly w
     themes: ["self-acceptance", "belonging", "courage", "identity"],
     featured: true,
     previewPages: 4,
-    stripePriceIds: {
-      ebook: "price_luna_ebook",
-      audiobook: "price_luna_audiobook",
-      bundle: "price_luna_bundle",
-    },
   },
   {
     slug: "the-brave-little-raindrop",
@@ -125,11 +115,6 @@ A tender story about courage, purpose, and the beauty of becoming part of someth
     themes: ["courage", "purpose", "nature", "growth"],
     featured: true,
     previewPages: 4,
-    stripePriceIds: {
-      ebook: "price_raindrop_ebook",
-      audiobook: "price_raindrop_audiobook",
-      bundle: "price_raindrop_bundle",
-    },
   },
   {
     slug: "where-shadows-sleep",
@@ -156,11 +141,6 @@ A luminous bedtime story that transforms nighttime fears into wonder and compass
     themes: ["bedtime", "courage", "imagination", "compassion"],
     featured: false,
     previewPages: 4,
-    stripePriceIds: {
-      ebook: "price_shadows_ebook",
-      audiobook: "price_shadows_audiobook",
-      bundle: "price_shadows_bundle",
-    },
   },
 ];
 

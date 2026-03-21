@@ -8,11 +8,14 @@ const ROUTE_LIMITS: Record<string, { maxTokens: number; refillRate: number }> = 
 };
 
 function getClientIp(request: NextRequest): string {
-  return (
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown"
-  );
+  // Use the LAST entry in x-forwarded-for (set by the nearest trusted proxy),
+  // not the first (which is client-controlled and trivially spoofable).
+  const xff = request.headers.get("x-forwarded-for");
+  if (xff) {
+    const ips = xff.split(",").map((s) => s.trim()).filter(Boolean);
+    if (ips.length > 0) return ips[ips.length - 1];
+  }
+  return request.headers.get("x-real-ip") || "unknown";
 }
 
 export function middleware(request: NextRequest) {

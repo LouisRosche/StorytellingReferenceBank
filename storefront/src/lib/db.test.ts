@@ -127,4 +127,40 @@ describe("db.ts", () => {
     const { hasProcessedEvent } = await import("./db");
     expect(hasProcessedEvent("cs_unknown")).toBe(false);
   });
+
+  it("savePurchaseIfNew returns true and persists on first insert", async () => {
+    const { savePurchaseIfNew } = await import("./db");
+    const p = makePurchase();
+    const result = savePurchaseIfNew(p);
+
+    expect(result).toBe(true);
+    const data = JSON.parse(fs.readFileSync(TEST_DB_PATH, "utf-8"));
+    expect(data).toHaveLength(1);
+    expect(data[0].stripeSessionId).toBe("cs_test_session_1");
+  });
+
+  it("savePurchaseIfNew returns false and does not duplicate on same stripeSessionId", async () => {
+    const { savePurchaseIfNew } = await import("./db");
+    const p1 = makePurchase({ id: "p1" });
+    const p2 = makePurchase({ id: "p2" }); // same stripeSessionId, different id
+
+    expect(savePurchaseIfNew(p1)).toBe(true);
+    expect(savePurchaseIfNew(p2)).toBe(false);
+
+    const data = JSON.parse(fs.readFileSync(TEST_DB_PATH, "utf-8"));
+    expect(data).toHaveLength(1);
+    expect(data[0].id).toBe("p1"); // only the first was persisted
+  });
+
+  it("savePurchaseIfNew allows different stripeSessionIds", async () => {
+    const { savePurchaseIfNew } = await import("./db");
+    const p1 = makePurchase({ id: "p1", stripeSessionId: "cs_1" });
+    const p2 = makePurchase({ id: "p2", stripeSessionId: "cs_2" });
+
+    expect(savePurchaseIfNew(p1)).toBe(true);
+    expect(savePurchaseIfNew(p2)).toBe(true);
+
+    const data = JSON.parse(fs.readFileSync(TEST_DB_PATH, "utf-8"));
+    expect(data).toHaveLength(2);
+  });
 });

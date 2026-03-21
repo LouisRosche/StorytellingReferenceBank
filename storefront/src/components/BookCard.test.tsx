@@ -21,7 +21,6 @@ const mockBook: Storybook = {
   themes: ["test"],
   featured: true,
   previewPages: 4,
-  stripePriceIds: { ebook: "p1", audiobook: "p2", bundle: "p3" },
 };
 
 describe("BookCard", () => {

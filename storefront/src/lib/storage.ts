@@ -16,6 +16,12 @@ import path from "path";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
+/** Only allow safe slug characters — no path traversal. */
+function sanitizeSlug(value: string): string | null {
+  if (!value || !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(value)) return null;
+  return value;
+}
+
 export interface StorageFile {
   buffer: Buffer;
   contentType: string;
@@ -36,13 +42,16 @@ export async function getContentFile(
   slug: string,
   format: string
 ): Promise<StorageFile | null> {
+  const safeSlug = sanitizeSlug(slug);
+  if (!safeSlug) return null;
+
   // Production: use S3/R2
   if (process.env.STORAGE_BUCKET) {
-    return getFromCloudStorage(slug, format);
+    return getFromCloudStorage(safeSlug, format);
   }
 
   // Development: use local filesystem
-  return getFromLocalStorage(slug, format);
+  return getFromLocalStorage(safeSlug, format);
 }
 
 function getFromLocalStorage(
@@ -113,20 +122,63 @@ export async function getSampleFile(
   slug: string,
   narratorId: string
 ): Promise<StorageFile | null> {
+  const safeSlug = sanitizeSlug(slug);
+  const safeNarrator = sanitizeSlug(narratorId);
+  if (!safeSlug || !safeNarrator) return null;
+
+  const key = `sample-${safeNarrator}.mp3`;
+
   if (process.env.STORAGE_BUCKET) {
-    return getFromCloudStorage(slug, `sample-${narratorId}`);
+    // Cloud path: fetch directly instead of going through getFromCloudStorage,
+    // which only knows about ebook/audiobook formats via the EXTENSIONS map.
+    return getCloudSample(safeSlug, key);
   }
 
-  const filePath = path.join(
-    CONTENT_DIR,
-    slug,
-    `sample-${narratorId}.mp3`
-  );
+  const filePath = path.join(CONTENT_DIR, safeSlug, key);
   if (!fs.existsSync(filePath)) return null;
 
   return {
     buffer: fs.readFileSync(filePath),
     contentType: "audio/mpeg",
-    filename: `${slug}-sample.mp3`,
+    filename: `${safeSlug}-sample.mp3`,
   };
+}
+
+async function getCloudSample(
+  slug: string,
+  filename: string
+): Promise<StorageFile | null> {
+  const bucket = process.env.STORAGE_BUCKET!;
+  const region = process.env.STORAGE_REGION || "auto";
+  const endpoint = process.env.STORAGE_ENDPOINT;
+
+  const objectKey = `${slug}/${filename}`;
+  const url = endpoint
+    ? `${endpoint}/${bucket}/${objectKey}`
+    : `https://${bucket}.s3.${region}.amazonaws.com/${objectKey}`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        ...(process.env.STORAGE_AUTH_TOKEN
+          ? { Authorization: `Bearer ${process.env.STORAGE_AUTH_TOKEN}` }
+          : {}),
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`Storage fetch failed for ${objectKey}: ${response.status}`);
+      return null;
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    return {
+      buffer: Buffer.from(arrayBuffer),
+      contentType: "audio/mpeg",
+      filename: `${slug}-sample.mp3`,
+    };
+  } catch (err) {
+    console.error(`Storage error for ${objectKey}:`, err);
+    return null;
+  }
 }

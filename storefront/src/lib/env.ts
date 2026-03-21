@@ -39,5 +39,7 @@ export function getSiteUrl(): string {
     );
     return "http://localhost:3000";
   }
-  return url;
+  // Strip trailing slash to prevent double-slash in constructed URLs
+  // (e.g. "https://example.com/" + "/api/..." → "https://example.com//api/...")
+  return url.replace(/\/+$/, "");
 }

@@ -30,7 +30,6 @@ const mockBook: Storybook = {
   themes: ["courage", "friendship"],
   featured: true,
   previewPages: 4,
-  stripePriceIds: { ebook: "p1", audiobook: "p2", bundle: "p3" },
 };
 
 describe("BookDetailClient", () => {

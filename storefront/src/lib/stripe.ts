@@ -86,6 +86,8 @@ export function verifyDownloadToken(
     if (parts.length < 3) return null;
     const [purchaseId, slug, format] = parts;
     if (format !== "ebook" && format !== "audiobook") return null;
+    // Reject slugs with path traversal characters
+    if (!slug || /[\/\\]|\.\./.test(slug)) return null;
     return { purchaseId, slug, format };
   } catch {
     return null;
