@@ -1,3 +1,13 @@
+/* ── Theme Custom Properties ── */
+
+:root {
+    --color-primary: rgb(100, 100, 100);
+    --color-secondary: rgb(80, 80, 80);
+    --color-accent: rgb(200, 160, 40);
+    --color-bg: rgb(17, 17, 17);
+    --color-card-border: rgb(80, 80, 100);
+}
+
 /* ── Layout: Flexbox (Yoga engine) ── */
 
 .game-hud {
@@ -5,7 +15,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 16px;
-    background-color: rgb(17, 17, 17);
+    background-color: var(--color-bg);
 }
 
 /* ── Top Bar ── */
@@ -45,13 +55,13 @@
 
 .energy-label {
     font-size: 24px;
-    color: rgb(100, 180, 255);
+    color: var(--color-accent);
     -unity-font-style: bold;
 }
 
 .block-label {
     font-size: 18px;
-    color: rgb(120, 200, 200);
+    color: var(--color-primary);
 }
 
 /* ── Battlefield ── */
@@ -79,10 +89,10 @@
     width: 140px;
     height: 200px;
     margin: 0 -12px;
-    background-color: rgb(40, 40, 50);
+    background-color: var(--color-secondary);
     border-radius: 8px;
     border-width: 2px;
-    border-color: rgb(80, 80, 100);
+    border-color: var(--color-card-border);
     flex-direction: column;
     transition-property: translate, scale;
     transition-duration: 200ms;
@@ -91,7 +101,7 @@
 .card:hover {
     translate: 0 -24px;
     scale: 1.1 1.1;
-    border-color: rgb(200, 180, 100);
+    border-color: var(--color-accent);
 }
 
 .card-header {
@@ -108,14 +118,14 @@
 
 .card-cost {
     font-size: 16px;
-    color: rgb(100, 180, 255);
+    color: var(--color-accent);
     -unity-font-style: bold;
 }
 
 .card-art {
     flex-grow: 1;
     margin: 4px 8px;
-    background-color: rgb(60, 60, 70);
+    background-color: var(--color-primary);
     border-radius: 4px;
 }
 
@@ -154,4 +164,145 @@
 
 .end-turn-btn:active {
     background-color: rgb(40, 80, 40);
+}
+
+/* ── Theme: Flame ── */
+
+.theme-flame {
+    --color-primary: rgb(180, 80, 30);
+    --color-secondary: rgb(100, 40, 20);
+    --color-accent: rgb(255, 160, 40);
+    --color-bg: rgb(25, 10, 5);
+    --color-card-border: rgb(200, 100, 40);
+}
+
+.theme-flame .card {
+    background-color: rgb(100, 40, 20);
+    border-color: rgb(200, 100, 40);
+}
+
+.theme-flame .card:hover {
+    border-color: rgb(255, 160, 40);
+}
+
+.theme-flame .card-cost {
+    color: rgb(255, 160, 40);
+}
+
+.theme-flame .card-art {
+    background-color: rgb(140, 50, 15);
+}
+
+.theme-flame .energy-label {
+    color: rgb(255, 160, 40);
+}
+
+.theme-flame .hp-fill {
+    background-color: rgb(220, 80, 20);
+}
+
+.theme-flame .end-turn-btn {
+    background-color: rgb(140, 60, 20);
+}
+
+.theme-flame .end-turn-btn:hover {
+    background-color: rgb(180, 80, 30);
+}
+
+.theme-flame .end-turn-btn:active {
+    background-color: rgb(100, 40, 15);
+}
+
+/* ── Theme: Tide ── */
+
+.theme-tide {
+    --color-primary: rgb(40, 100, 160);
+    --color-secondary: rgb(20, 50, 90);
+    --color-accent: rgb(80, 200, 240);
+    --color-bg: rgb(5, 12, 25);
+    --color-card-border: rgb(50, 120, 180);
+}
+
+.theme-tide .card {
+    background-color: rgb(20, 50, 90);
+    border-color: rgb(50, 120, 180);
+}
+
+.theme-tide .card:hover {
+    border-color: rgb(80, 200, 240);
+}
+
+.theme-tide .card-cost {
+    color: rgb(80, 200, 240);
+}
+
+.theme-tide .card-art {
+    background-color: rgb(30, 70, 120);
+}
+
+.theme-tide .energy-label {
+    color: rgb(80, 200, 240);
+}
+
+.theme-tide .hp-fill {
+    background-color: rgb(40, 120, 200);
+}
+
+.theme-tide .end-turn-btn {
+    background-color: rgb(30, 80, 120);
+}
+
+.theme-tide .end-turn-btn:hover {
+    background-color: rgb(40, 100, 160);
+}
+
+.theme-tide .end-turn-btn:active {
+    background-color: rgb(20, 60, 90);
+}
+
+/* ── Theme: Gale ── */
+
+.theme-gale {
+    --color-primary: rgb(60, 150, 80);
+    --color-secondary: rgb(30, 80, 45);
+    --color-accent: rgb(140, 240, 160);
+    --color-bg: rgb(8, 20, 10);
+    --color-card-border: rgb(70, 160, 90);
+}
+
+.theme-gale .card {
+    background-color: rgb(30, 80, 45);
+    border-color: rgb(70, 160, 90);
+}
+
+.theme-gale .card:hover {
+    border-color: rgb(140, 240, 160);
+}
+
+.theme-gale .card-cost {
+    color: rgb(140, 240, 160);
+}
+
+.theme-gale .card-art {
+    background-color: rgb(40, 100, 55);
+}
+
+.theme-gale .energy-label {
+    color: rgb(140, 240, 160);
+}
+
+.theme-gale .hp-fill {
+    background-color: rgb(60, 180, 80);
+}
+
+.theme-gale .end-turn-btn {
+    background-color: rgb(40, 100, 50);
+}
+
+.theme-gale .end-turn-btn:hover {
+    background-color: rgb(60, 140, 70);
+}
+
+.theme-gale .end-turn-btn:active {
+    background-color: rgb(25, 70, 35);
 }
