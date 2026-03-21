@@ -64,8 +64,8 @@ jobs:
       - name: Lint
         run: npx next lint
 
-      - name: Run tests
-        run: npx vitest run
+      - name: Run tests with coverage
+        run: npx vitest run --coverage
 
       - name: Type check
         run: npx tsc --noEmit
@@ -93,7 +93,7 @@ jobs:
         run: python3 -c "import json; json.load(open('student-portal/library.json'))"
 
       - name: Validate codes.json
-        run: python3 -c "import json; data = json.load(open('student-portal/codes.json')); assert 'codes' in data, 'Missing codes key'"
+        run: python3 -c "import json; data = json.load(open('student-portal/codes.json')); assert 'hashes' in data, 'Missing hashes key'"
 
       - name: Check HTML syntax
         run: |

@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-tts install-tts-lite install-all venv test test-quick test-coverage preflight preflight-deps validate check ci dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint lint-fix format format-check storefront-dev storefront-build storefront-lint storefront-test storefront-typecheck clean help
+.PHONY: install install-dev install-tts install-tts-lite install-all venv test test-quick test-coverage preflight preflight-deps validate check ci contrast-check student-portal-check dry-run dry-run-listener dry-run-mangoes dry-run-house inspect inspect-listener inspect-mangoes inspect-house lint lint-fix format format-check storefront-dev storefront-build storefront-lint storefront-test storefront-test-coverage storefront-typecheck clean help
 
 PYTHON ?= python3
 VENV ?= .venv
@@ -54,7 +54,7 @@ validate: ## Validate all persona JSON files against schema
 
 check: test validate preflight-deps ## Run all checks (tests + personas + deps)
 
-ci: lint format-check validate test-coverage storefront-lint storefront-typecheck storefront-test storefront-build ## Full CI matrix (mirrors GitHub Actions)
+ci: lint format-check validate test-coverage contrast-check student-portal-check storefront-lint storefront-typecheck storefront-test-coverage storefront-build ## Full CI matrix (mirrors GitHub Actions)
 
 # ── Production ────────────────────────────────────────────────
 
@@ -116,6 +116,14 @@ format: ## Format Python scripts
 format-check: ## Check formatting without changes
 	$(PYTHON) -m ruff format --check scripts/
 
+contrast-check: ## Validate WCAG contrast ratios in student portal
+	$(PYTHON) scripts/check_contrast.py student-portal/index.html
+
+student-portal-check: ## Validate student portal data files and paths
+	$(PYTHON) -c "import json; json.load(open('student-portal/library.json'))"
+	$(PYTHON) -c "import json; data = json.load(open('student-portal/codes.json')); assert 'hashes' in data"
+	@echo "Student portal JSON validated"
+
 # ── Storefront ───────────────────────────────────────────────
 
 storefront-dev: ## Run storefront dev server
@@ -129,6 +137,9 @@ storefront-lint: ## Lint storefront TypeScript
 
 storefront-test: ## Run storefront tests
 	cd storefront && npx vitest run
+
+storefront-test-coverage: ## Run storefront tests with coverage enforcement
+	cd storefront && npx vitest run --coverage
 
 storefront-typecheck: ## Type-check storefront
 	cd storefront && npx tsc --noEmit
