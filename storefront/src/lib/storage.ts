@@ -16,6 +16,12 @@ import path from "path";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
+/** Only allow safe slug characters — no path traversal. */
+function sanitizeSlug(value: string): string | null {
+  if (!value || !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(value)) return null;
+  return value;
+}
+
 export interface StorageFile {
   buffer: Buffer;
   contentType: string;
@@ -36,13 +42,16 @@ export async function getContentFile(
   slug: string,
   format: string
 ): Promise<StorageFile | null> {
+  const safeSlug = sanitizeSlug(slug);
+  if (!safeSlug) return null;
+
   // Production: use S3/R2
   if (process.env.STORAGE_BUCKET) {
-    return getFromCloudStorage(slug, format);
+    return getFromCloudStorage(safeSlug, format);
   }
 
   // Development: use local filesystem
-  return getFromLocalStorage(slug, format);
+  return getFromLocalStorage(safeSlug, format);
 }
 
 function getFromLocalStorage(
@@ -113,14 +122,18 @@ export async function getSampleFile(
   slug: string,
   narratorId: string
 ): Promise<StorageFile | null> {
+  const safeSlug = sanitizeSlug(slug);
+  const safeNarrator = sanitizeSlug(narratorId);
+  if (!safeSlug || !safeNarrator) return null;
+
   if (process.env.STORAGE_BUCKET) {
-    return getFromCloudStorage(slug, `sample-${narratorId}`);
+    return getFromCloudStorage(safeSlug, `sample-${safeNarrator}`);
   }
 
   const filePath = path.join(
     CONTENT_DIR,
-    slug,
-    `sample-${narratorId}.mp3`
+    safeSlug,
+    `sample-${safeNarrator}.mp3`
   );
   if (!fs.existsSync(filePath)) return null;
 

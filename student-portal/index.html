@@ -1123,7 +1123,7 @@ document.getElementById('lock-form').addEventListener('submit', async (e) => {
     const [hash, validHashes] = await Promise.all([hashCode(code), loadCodes()]);
 
     if (validHashes.includes(hash)) {
-      sessionStorage.setItem(STORAGE_KEY, '1');
+      sessionStorage.setItem(STORAGE_KEY, hash);
       showScreen('library');
       initLibrary();
     } else {
@@ -1441,12 +1441,21 @@ function updateProgress() {
 }
 
 /* ════════════════════════════════════════════
-   SESSION PERSISTENCE
+   SESSION PERSISTENCE — re-validate stored hash
 ═════════════════════════════════════════════ */
-if (sessionStorage.getItem(STORAGE_KEY)) {
-  showScreen('library');
-  initLibrary();
-}
+(async () => {
+  const storedHash = sessionStorage.getItem(STORAGE_KEY);
+  if (storedHash && storedHash !== '1') {
+    const valid = await loadCodes();
+    if (valid.includes(storedHash)) {
+      showScreen('library');
+      initLibrary();
+      return;
+    }
+  }
+  // Clear stale or spoofed values
+  sessionStorage.removeItem(STORAGE_KEY);
+})();
 
 /* ════════════════════════════════════════════
    EVENT DELEGATION (replaces inline onclick)

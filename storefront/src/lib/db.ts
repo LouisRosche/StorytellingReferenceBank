@@ -49,11 +49,10 @@ function acquireLock(maxRetries = 10, retryDelayMs = 50): void {
       });
       return;
     } catch {
-      // Lock file exists — another process is writing
-      const start = Date.now();
-      while (Date.now() - start < retryDelayMs) {
-        // busy-wait
-      }
+      // Lock file exists — another request is writing.
+      // Use Atomics.wait on a shared buffer for a non-spinning sync sleep.
+      const buf = new Int32Array(new SharedArrayBuffer(4));
+      Atomics.wait(buf, 0, 0, retryDelayMs);
     }
   }
   throw new Error("Could not acquire database lock");
@@ -69,23 +68,23 @@ function releaseLock(): void {
 
 function writeDb(purchases: Purchase[]): void {
   ensureDbExists();
-  acquireLock();
-  try {
-    fs.writeFileSync(DB_PATH, JSON.stringify(purchases, null, 2), "utf-8");
-  } finally {
-    releaseLock();
-  }
+  fs.writeFileSync(DB_PATH, JSON.stringify(purchases, null, 2), "utf-8");
 }
 
 export function savePurchase(purchase: Purchase): void {
-  const purchases = readDb();
-  const existingIndex = purchases.findIndex((p) => p.id === purchase.id);
-  if (existingIndex >= 0) {
-    purchases[existingIndex] = purchase;
-  } else {
-    purchases.push(purchase);
+  acquireLock();
+  try {
+    const purchases = readDb();
+    const existingIndex = purchases.findIndex((p) => p.id === purchase.id);
+    if (existingIndex >= 0) {
+      purchases[existingIndex] = purchase;
+    } else {
+      purchases.push(purchase);
+    }
+    writeDb(purchases);
+  } finally {
+    releaseLock();
   }
-  writeDb(purchases);
 }
 
 export function findPurchaseBySessionId(
