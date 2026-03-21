@@ -74,26 +74,7 @@ export class EffectResolver {
   }
 
   /** Resolve a single CardEffect against the provided context. */
-  resolve(effect: CardEffect, source: ICombatEntity, target: ICombatEntity): void;
-  resolve(effect: CardEffect, ctx: EffectContext): void;
-  resolve(
-    effect: CardEffect,
-    sourceOrCtx: ICombatEntity | EffectContext,
-    target?: ICombatEntity,
-  ): void {
-    let ctx: EffectContext;
-
-    if (target !== undefined) {
-      // Called with (effect, source, target) — need a default invoker & deck
-      // This overload requires the caller to have set up the context externally.
-      throw new Error(
-        "EffectResolver.resolve(effect, source, target) requires a full EffectContext. " +
-          "Use resolve(effect, ctx) instead.",
-      );
-    }
-
-    ctx = sourceOrCtx as EffectContext;
-
+  resolve(effect: CardEffect, ctx: EffectContext): void {
     const handler = this.handlers[effect.type];
     if (!handler) {
       throw new Error(`Unknown card effect type: "${effect.type}"`);

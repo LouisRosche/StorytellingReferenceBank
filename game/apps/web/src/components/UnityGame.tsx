@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import type { CombatState } from "@deckbuilder/shared";
 
@@ -37,10 +37,14 @@ export function UnityGame() {
     }
   }, []);
 
-  // Register the callback once Unity is loaded
-  if (isLoaded) {
+  // Register the callback once Unity is loaded, with proper cleanup.
+  useEffect(() => {
+    if (!isLoaded) return;
     addEventListener("OnCombatStateChanged", handleCombatUpdate);
-  }
+    return () => {
+      removeEventListener("OnCombatStateChanged", handleCombatUpdate);
+    };
+  }, [isLoaded, addEventListener, removeEventListener, handleCombatUpdate]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>

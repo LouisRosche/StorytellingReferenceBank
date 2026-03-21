@@ -80,9 +80,12 @@ export function generateMap(config: MapConfig, seed: number): MapGraph {
     for (const edge of edges) {
       if (!edge.startsWith(`${floor}_`)) continue;
 
-      const [fromPart, toPart] = edge.split("->");
+      const parts = edge.split("->");
+      if (parts.length !== 2) continue;
+      const [fromPart, toPart] = parts;
       const existingFrom = parseInt(fromPart.split("_")[1], 10);
       const existingTo = parseInt(toPart.split("_")[1], 10);
+      if (isNaN(existingFrom) || isNaN(existingTo)) continue;
 
       if (
         (fromCol < existingFrom && toCol > existingTo) ||

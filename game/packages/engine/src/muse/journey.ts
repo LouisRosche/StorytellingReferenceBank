@@ -18,8 +18,7 @@ import { FLOORS_JO, FLOORS_HA } from "@deckbuilder/shared";
  *   Floor 13: The Return (final boss)
  */
 export function getJourneyPhase(floor: number): JourneyPhase {
-  if (floor <= 0) return "ordinary_world";
-  if (floor === 1) return "ordinary_world";
+  if (floor <= 1) return "ordinary_world";
   if (floor === 2) return "call_to_adventure";
   if (floor <= 4) return "crossing_threshold";
   if (floor <= 7) return "road_of_trials";
