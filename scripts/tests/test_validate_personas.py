@@ -1,10 +1,14 @@
-"""Tests for validate_personas.py — persona JSON validation."""
+"""Tests for validate_personas.py — persona JSON validation, discovery, and main."""
 
 import json
-import pytest
+import os
+import sys
 from pathlib import Path
+from unittest.mock import patch
 
-from validate_personas import validate_persona
+import pytest
+
+from validate_personas import validate_persona, find_all_personas, main
 
 
 # ---------------------------------------------------------------------------
@@ -186,3 +190,133 @@ class TestMalformedJSON:
         assert len(issues) == 1
         assert issues[0][0] == "error"
         assert "Invalid JSON" in issues[0][1]
+
+
+# ---------------------------------------------------------------------------
+# Warnings for optional fields
+# ---------------------------------------------------------------------------
+
+class TestWarnings:
+    def test_empty_emotional_range_warns(self, tmp_path, schema, valid_persona_data):
+        valid_persona_data["emotional_range"] = []
+        path = _write_persona(tmp_path, valid_persona_data)
+        issues = validate_persona(path, schema)
+        warnings = [msg for sev, msg in issues if sev == "warning"]
+        assert any("emotional_range" in msg for msg in warnings)
+
+    def test_empty_use_cases_warns(self, tmp_path, schema, valid_persona_data):
+        valid_persona_data["use_cases"] = []
+        path = _write_persona(tmp_path, valid_persona_data)
+        issues = validate_persona(path, schema)
+        warnings = [msg for sev, msg in issues if sev == "warning"]
+        assert any("use_cases" in msg for msg in warnings)
+
+    def test_empty_languages_warns(self, tmp_path, schema, valid_persona_data):
+        valid_persona_data["voice_attributes"]["languages"] = []
+        path = _write_persona(tmp_path, valid_persona_data)
+        issues = validate_persona(path, schema)
+        warnings = [msg for sev, msg in issues if sev == "warning"]
+        assert any("languages" in msg for msg in warnings)
+
+    def test_invalid_model_variant_warns(self, tmp_path, schema, valid_persona_data):
+        valid_persona_data["model_variant"] = "nonexistent-model"
+        path = _write_persona(tmp_path, valid_persona_data)
+        issues = validate_persona(path, schema)
+        warnings = [msg for sev, msg in issues if sev == "warning"]
+        assert any("model_variant" in msg for msg in warnings)
+
+
+# ---------------------------------------------------------------------------
+# quality and product nested validation
+# ---------------------------------------------------------------------------
+
+class TestNestedValidation:
+    def test_invalid_validation_status(self, tmp_path, schema, valid_persona_data):
+        valid_persona_data["quality"] = {"validation_status": "bogus"}
+        path = _write_persona(tmp_path, valid_persona_data)
+        issues = validate_persona(path, schema)
+        warnings = [msg for sev, msg in issues if sev == "warning"]
+        assert any("validation_status" in msg for msg in warnings)
+
+    def test_invalid_product_tier(self, tmp_path, schema, valid_persona_data):
+        valid_persona_data["product"] = {"tier": "bogus-tier"}
+        path = _write_persona(tmp_path, valid_persona_data)
+        issues = validate_persona(path, schema)
+        warnings = [msg for sev, msg in issues if sev == "warning"]
+        assert any("tier" in msg for msg in warnings)
+
+    def test_valid_quality_block_passes(self, tmp_path, schema, valid_persona_data):
+        valid_persona_data["quality"] = {}
+        path = _write_persona(tmp_path, valid_persona_data)
+        issues = validate_persona(path, schema)
+        quality_issues = [msg for sev, msg in issues if "quality" in msg or "validation_status" in msg]
+        assert quality_issues == []
+
+
+# ---------------------------------------------------------------------------
+# find_all_personas
+# ---------------------------------------------------------------------------
+
+class TestFindAllPersonas:
+    def test_finds_example_personas(self):
+        """Should find the real persona examples in the repo."""
+        personas = find_all_personas()
+        assert len(personas) > 0
+
+    def test_returns_sorted_list(self):
+        personas = find_all_personas()
+        paths_str = [str(p) for p in personas]
+        assert paths_str == sorted(paths_str)
+
+
+# ---------------------------------------------------------------------------
+# main()
+# ---------------------------------------------------------------------------
+
+class TestMain:
+    def test_validates_all_personas(self, capsys):
+        """main() should validate all personas and return 0 if no errors."""
+        with patch("sys.argv", ["validate_personas.py"]):
+            result = main()
+        captured = capsys.readouterr()
+        assert "files checked" in captured.out
+        # Real personas should be valid
+        assert result == 0
+
+    def test_validates_single_persona(self, tmp_path, capsys):
+        persona = _write_persona(tmp_path, {
+            "id": "test-single",
+            "name": "Test Single",
+            "voice_prompt": "A test voice.",
+        })
+        with patch("sys.argv", ["validate_personas.py", "--persona", str(persona)]), \
+             patch("validate_personas.REPO_ROOT", tmp_path):
+            result = main()
+        captured = capsys.readouterr()
+        assert "1 files checked" in captured.out
+        assert result == 0
+
+    def test_json_output(self, capsys):
+        with patch("sys.argv", ["validate_personas.py", "--json"]):
+            main()
+        captured = capsys.readouterr()
+        data = json.loads(captured.out)
+        assert "total_files" in data
+        assert "total_errors" in data
+        assert "results" in data
+
+    def test_returns_1_on_errors(self, tmp_path, capsys):
+        bad_persona = _write_persona(tmp_path, {"status": "active"})  # missing required
+        with patch("sys.argv", ["validate_personas.py", "--persona", str(bad_persona)]), \
+             patch("validate_personas.REPO_ROOT", tmp_path):
+            result = main()
+        assert result == 1
+
+    def test_no_personas_found(self, capsys, tmp_path):
+        with patch("validate_personas.EXAMPLES_DIR", tmp_path / "nonexistent"), \
+             patch("validate_personas.PROJECTS_DIR", tmp_path / "nonexistent2"), \
+             patch("sys.argv", ["validate_personas.py"]):
+            result = main()
+        captured = capsys.readouterr()
+        assert "No persona files found" in captured.out
+        assert result == 1
