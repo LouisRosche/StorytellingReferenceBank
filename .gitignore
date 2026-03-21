@@ -11,6 +11,8 @@ __pycache__/
 venv/
 ENV/
 .pytest_cache/
+.coverage
+htmlcov/
 *.egg-info/
 dist/
 build/
