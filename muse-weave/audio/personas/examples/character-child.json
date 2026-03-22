@@ -1,0 +1,30 @@
+{
+  "id": "character-child",
+  "name": "The Child's Voice",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "A bright, curious child under twelve with a very high, clear voice. Gender-neutral, American accent. Fast-paced with natural breathiness and the unguarded emotion that only children have. Sentences tumble out in bursts of excitement, then slow with sudden wide-eyed wonder or fear. No performative cuteness—this is a real child's voice with real reactions: delight that cannot be contained, fear that has no filter, curiosity that barrels forward without caution.",
+  "character_context": "The voice of childhood itself—before self-consciousness, before irony. Experiences everything at full volume and full color. Equally capable of infectious joy and raw, uncomplicated terror. Used for dialogue roles and first-person child narration.",
+  "voice_attributes": {
+    "age_range": "child",
+    "gender": "neutral",
+    "pitch": "very_high",
+    "pace": "fast",
+    "texture": "clear",
+    "accent": "American (General)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["wonder", "excitement", "fear", "curiosity", "delight"],
+  "use_cases": ["children's fiction", "middle grade", "fantasy", "dialogue", "first-person child narration"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/character-child.wav",
+    "validation_status": "pending"
+  },
+  "product": {
+    "display_name": "The Little Voice",
+    "tagline": "Every feeling at full volume",
+    "tier": "standard"
+  },
+  "notes": "Critical for children's and middle-grade dialogue. Avoid saccharine or performative delivery—aim for naturalistic child speech patterns. Breathiness and slight pitch instability are features. Pair with an adult narrator persona for chapter books."
+}

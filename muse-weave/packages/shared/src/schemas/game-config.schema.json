@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "game-config",
+  "title": "GameConfig",
+  "description": "Cross-language game configuration. Single source of truth for balancing constants.",
+  "type": "object",
+  "required": ["startingHp", "maxHp", "startingEnergy", "drawPerTurn", "map"],
+  "properties": {
+    "startingHp": { "type": "integer", "minimum": 1 },
+    "maxHp": { "type": "integer", "minimum": 1 },
+    "startingEnergy": { "type": "integer", "minimum": 0 },
+    "startingDeckSize": { "type": "integer", "minimum": 1 },
+    "drawPerTurn": { "type": "integer", "minimum": 1 },
+    "map": {
+      "type": "object",
+      "required": ["floorsPerAct", "columnsPerFloor", "pathCount", "roomWeights"],
+      "properties": {
+        "floorsPerAct": { "type": "integer" },
+        "columnsPerFloor": { "type": "integer" },
+        "pathCount": { "type": "integer" },
+        "roomWeights": {
+          "type": "object",
+          "properties": {
+            "monster": { "type": "number" },
+            "elite": { "type": "number" },
+            "rest": { "type": "number" },
+            "shop": { "type": "number" },
+            "event": { "type": "number" },
+            "boss": { "type": "number" }
+          }
+        },
+        "eliteMinFloor": { "type": "integer" },
+        "restMinFloor": { "type": "integer" }
+      }
+    },
+    "encounters": {
+      "type": "object",
+      "properties": {
+        "hpMultiplierPerAct": { "type": "number" },
+        "eliteAscensionMultiplier": { "type": "number" }
+      }
+    }
+  }
+}
