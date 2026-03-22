@@ -1,0 +1,25 @@
+{
+  "id": "character-gruff-mentor",
+  "name": "Gruff Mentor Archetype",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Perfect audio quality. Elderly male, late sixties, gravelly and weathered voice. Thick Scottish accent. Slow, deliberate speech with weight behind every word. World-weary but with underlying warmth buried deep. Speaks in short, declarative sentences. The voice of someone who has seen too much but still cares enough to teach.",
+  "character_context": "The archetypal gruff mentor figure—Obi-Wan, Gandalf, Haymitch. Hard exterior protecting a wounded heart. Dispenses wisdom reluctantly. More comfortable with silence than speeches.",
+  "voice_attributes": {
+    "age_range": "elder",
+    "gender": "male",
+    "pitch": "low",
+    "pace": "slow",
+    "texture": "gravelly",
+    "accent": "Scottish",
+    "languages": ["en"]
+  },
+  "emotional_range": ["gruff", "weary", "protective", "stern", "reluctantly tender"],
+  "use_cases": ["fantasy", "adventure", "coming-of-age", "dialogue"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/character-gruff-mentor.wav",
+    "validation_status": "pending"
+  },
+  "notes": "Works best for dialogue scenes. May need separate narrator persona for prose sections. Reduce pace further for emotional moments."
+}

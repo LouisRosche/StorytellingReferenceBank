@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "card-data",
+  "title": "CardData",
+  "description": "Cross-language card definition schema. Consumed by both TypeScript (via Ajv) and C# (via Newtonsoft.Json).",
+  "type": "object",
+  "required": ["id", "name", "description", "manaCost", "rarity", "effects", "artAssetKey"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "manaCost": { "type": "integer", "minimum": 0 },
+    "rarity": {
+      "type": "string",
+      "enum": ["common", "uncommon", "rare", "legendary"]
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "value", "target"],
+        "properties": {
+          "type": { "type": "string" },
+          "value": { "type": "integer" },
+          "target": {
+            "type": "string",
+            "enum": ["single_enemy", "all_enemies", "self", "none"]
+          },
+          "duration": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "artAssetKey": { "type": "string" },
+    "exhaust": { "type": "boolean", "default": false },
+    "ethereal": { "type": "boolean", "default": false }
+  },
+  "additionalProperties": false
+}

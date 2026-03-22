@@ -1,0 +1,30 @@
+{
+  "id": "narrator-warm-female",
+  "name": "Warm Contemporary Female",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "A woman in her early thirties with a smooth, approachable voice. General American accent, clear and unaffected. Natural warmth without being saccharine. Conversational pacing that feels like a friend telling you a story. Voice brightens with humor, softens with emotion.",
+  "character_context": "The voice of contemporary fiction—relatable, genuine, emotionally available. Reads as if sharing rather than performing.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "female",
+    "pitch": "medium",
+    "pace": "natural",
+    "texture": "smooth",
+    "accent": "American (General)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["warm", "playful", "vulnerable", "hopeful", "bittersweet", "sharp"],
+  "use_cases": ["contemporary fiction", "romance", "women's fiction", "upmarket commercial", "book club"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-warm-female.wav",
+    "validation_status": "pending"
+  },
+  "product": {
+    "display_name": "The Warm Voice",
+    "tagline": "Like your best friend telling the story",
+    "tier": "standard"
+  },
+  "notes": "Accessible female narrator for mainstream fiction. Complements narrator-literary-female for different tones."
+}

@@ -1,0 +1,30 @@
+{
+  "id": "narrator-comedy",
+  "name": "Comedy & Satire Narrator",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "A sharp, quick-witted voice in the late twenties. Gender-neutral, American accent. Smooth delivery with impeccable comic timing—knows exactly when to pause, when to accelerate, when to drop into deadpan. Medium-fast pace that slows only to land a punchline. The voice carries a permanent glint of amusement, as if sharing an inside joke with the listener. Never mugs, never oversells. Trusts the material and trusts the audience to keep up.",
+  "character_context": "A narrator steeped in the tradition of sharp observational humor. Treats absurdity with a straight face and sincerity with a raised eyebrow. Equally comfortable with biting satire and genuine warmth.",
+  "voice_attributes": {
+    "age_range": "young_adult",
+    "gender": "neutral",
+    "pitch": "medium",
+    "pace": "medium-fast",
+    "texture": "smooth",
+    "accent": "American (General)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["amusement", "irony", "deadpan", "surprise", "warmth"],
+  "use_cases": ["humor", "satire", "contemporary fiction", "essay", "comedic memoir"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-comedy.wav",
+    "validation_status": "pending"
+  },
+  "product": {
+    "display_name": "The Wit",
+    "tagline": "Timing is everything—this voice has it",
+    "tier": "standard"
+  },
+  "notes": "Comic timing depends heavily on pause placement. Use SSML breaks before punchlines. Avoid exaggerated delivery—this voice works through understatement."
+}

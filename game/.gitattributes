@@ -1,0 +1,13 @@
+# Git LFS — track Unity binary assets
+unity/**/*.png filter=lfs diff=lfs merge=lfs -text
+unity/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+unity/**/*.psd filter=lfs diff=lfs merge=lfs -text
+unity/**/*.tga filter=lfs diff=lfs merge=lfs -text
+unity/**/*.wav filter=lfs diff=lfs merge=lfs -text
+unity/**/*.mp3 filter=lfs diff=lfs merge=lfs -text
+unity/**/*.ogg filter=lfs diff=lfs merge=lfs -text
+unity/**/*.fbx filter=lfs diff=lfs merge=lfs -text
+unity/**/*.obj filter=lfs diff=lfs merge=lfs -text
+unity/**/*.asset filter=lfs diff=lfs merge=lfs -text
+unity/**/*.cubemap filter=lfs diff=lfs merge=lfs -text
+unity/**/*.unitypackage filter=lfs diff=lfs merge=lfs -text

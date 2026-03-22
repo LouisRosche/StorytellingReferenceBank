@@ -1,0 +1,30 @@
+{
+  "id": "narrator-australian",
+  "name": "Australian Literary Narrator",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "A grounded, warm voice in the mid-forties with a natural Australian accent—not broad, not clipped, just honest. Gender-neutral. Medium pitch, medium pace. Comfortable with wide open spaces in the prose and equally at home in tight, intimate moments. Dry humor surfaces without effort. There is dust and distance in this voice, but also tenderness. Speaks as someone who has spent time under big skies and knows when to shut up and let the landscape do the talking.",
+  "character_context": "An Australian narrator rooted in the literary tradition of the region—unshowy, direct, attuned to landscape and silence. Brings the same steady presence to memoir, adventure, and quiet domestic stories.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "neutral",
+    "pitch": "medium",
+    "pace": "medium",
+    "texture": "warm",
+    "accent": "Australian",
+    "languages": ["en"]
+  },
+  "emotional_range": ["warmth", "dry_humor", "wonder", "resolve", "nostalgia"],
+  "use_cases": ["literary fiction", "memoir", "adventure", "contemporary fiction", "Australian literature"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-australian.wav",
+    "validation_status": "pending"
+  },
+  "product": {
+    "display_name": "The Outback Voice",
+    "tagline": "Big skies, honest stories",
+    "tier": "standard"
+  },
+  "notes": "First Australian accent in the library. Do not exaggerate the accent into caricature—aim for natural, educated Australian English. Works well for New Zealand literature with minor adjustments."
+}

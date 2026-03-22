@@ -1,0 +1,24 @@
+{
+  "id": "narrator-caribbean",
+  "name": "Caribbean English Narrator",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "Perfect audio quality. Narrator with Caribbean English accent—musical, rhythmic, with the warmth of island speech patterns. Can code-switch between more formal narration and colloquial dialogue. Rich, resonant voice. Storytelling comes naturally—this is a voice from an oral tradition. Unhurried, lets phrases breathe.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "neutral",
+    "pitch": "medium-low",
+    "pace": "unhurried, rhythmic",
+    "texture": "rich, resonant",
+    "accent": "Caribbean English (Jamaican/Trinidadian inflection)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["warm", "storytelling", "wry", "joyful", "mournful", "wise"],
+  "use_cases": ["Caribbean literature", "diaspora stories", "oral tradition adaptations", "family sagas", "magical realism"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-caribbean.wav",
+    "validation_status": "pending"
+  },
+  "notes": "The rhythm of Caribbean English is musical—sentences have a different cadence than American/British. Dialogue may shift more colloquial. Think: someone's auntie who is also a professor, telling you a story on a porch."
+}

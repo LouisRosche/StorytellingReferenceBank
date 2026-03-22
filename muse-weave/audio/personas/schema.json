@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TTS Voice Persona",
+  "description": "Voice persona definition for Qwen3-TTS audiobook production. Used by bespoke reading personalities product.",
+  "type": "object",
+  "required": ["id", "name", "voice_prompt"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Semantic version (e.g., 1.0.0). Increment on any voice_prompt or attribute change.",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "default": "1.0.0"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "deprecated"],
+      "default": "active",
+      "description": "Lifecycle status: draft (testing), active (production), deprecated (phasing out)"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier (lowercase, hyphenated)",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name for the persona"
+    },
+    "voice_prompt": {
+      "type": "string",
+      "description": "Natural language voice description for Qwen3-TTS. Layer: age, gender, accent, texture, pace, emotional baseline."
+    },
+    "character_context": {
+      "type": "string",
+      "description": "Optional character background for consistent delivery"
+    },
+    "reference_audio": {
+      "type": "object",
+      "description": "Voice cloning reference (5-15 seconds optimal)",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Path to reference audio file"
+        },
+        "transcript": {
+          "type": "string",
+          "description": "Exact transcript of reference audio (required for best quality)"
+        },
+        "duration_seconds": {
+          "type": "number",
+          "minimum": 3,
+          "description": "Duration of reference clip (3s minimum, 5-15s optimal)"
+        }
+      }
+    },
+    "voice_attributes": {
+      "type": "object",
+      "description": "Voice characteristics. Use natural language for expressiveness; suggested values shown for consistency.",
+      "properties": {
+        "age_range": {
+          "type": "string",
+          "description": "Age presentation (e.g., child, teen, young_adult, middle_aged, elderly, or specific like '40s', 'late 20s')"
+        },
+        "gender": {
+          "type": "string",
+          "description": "Voice gender presentation (e.g., male, female, neutral, androgynous)"
+        },
+        "pitch": {
+          "type": "string",
+          "description": "Vocal pitch (e.g., very_low, low, medium, high, very_high, or descriptive like 'medium-low')"
+        },
+        "pace": {
+          "type": "string",
+          "description": "Speaking speed (e.g., very_slow, slow, medium, fast, very_fast, or descriptive like 'measured', 'unhurried')"
+        },
+        "texture": {
+          "type": "string",
+          "description": "Voice quality (e.g., smooth, warm, breathy, husky, gravelly, crisp, or combinations like 'rich, resonant')"
+        },
+        "accent": {
+          "type": "string",
+          "description": "Primary accent or dialect"
+        },
+        "languages": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Languages this persona can narrate (Qwen3-TTS supports: en, zh, ja, ko, de, fr, ru, pt, es, it)"
+        }
+      }
+    },
+    "emotional_range": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Emotions this persona handles well"
+    },
+    "use_cases": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Recommended use cases (narrator, dialogue, children's, literary, etc.)"
+    },
+    "model_variant": {
+      "type": "string",
+      "enum": ["1.7B-Base", "1.7B-VoiceDesign", "1.7B-CustomVoice", "0.6B"],
+      "default": "1.7B-Base",
+      "description": "Recommended Qwen3-TTS model variant"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Production notes, quirks, or special handling instructions"
+    },
+    "quality": {
+      "type": "object",
+      "description": "Quality assurance metadata",
+      "properties": {
+        "golden_reference": {
+          "type": "string",
+          "description": "Path to golden reference audio for regression testing"
+        },
+        "last_validated": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of last quality validation (YYYY-MM-DD)"
+        },
+        "validation_status": {
+          "type": "string",
+          "enum": ["pending", "passed", "failed"],
+          "description": "Current validation status"
+        }
+      }
+    },
+    "product": {
+      "type": "object",
+      "description": "Product/commercial metadata",
+      "properties": {
+        "display_name": {
+          "type": "string",
+          "description": "User-facing name (e.g., 'The Literary Voice')"
+        },
+        "tagline": {
+          "type": "string",
+          "description": "Short description for UI (≤100 chars)"
+        },
+        "tier": {
+          "type": "string",
+          "enum": ["free", "standard", "premium"],
+          "description": "Product tier for pricing"
+        },
+        "sample_audio": {
+          "type": "string",
+          "description": "Path to sample audio for preview"
+        }
+      }
+    }
+  }
+}

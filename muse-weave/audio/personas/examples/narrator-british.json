@@ -1,0 +1,30 @@
+{
+  "id": "narrator-british",
+  "name": "British Literary Narrator",
+  "version": "1.0.0",
+  "status": "active",
+  "voice_prompt": "A man in his fifties with a cultured British voice—not stiff RP, but educated southern English with warmth. Baritone with excellent diction. Measured pace that respects the prose. Dry wit emerges naturally. The voice of someone who has narrated audiobooks for decades and still loves language.",
+  "character_context": "Classic British narrator tradition. Treats text with respect without reverence. Equally at home with Dickens and contemporary British fiction.",
+  "voice_attributes": {
+    "age_range": "middle_aged",
+    "gender": "male",
+    "pitch": "medium",
+    "pace": "measured",
+    "texture": "crisp",
+    "accent": "British (educated southern English)",
+    "languages": ["en"]
+  },
+  "emotional_range": ["wry", "dry", "warm", "grave", "amused", "sardonic"],
+  "use_cases": ["British fiction", "historical fiction", "classic literature", "mystery", "period drama"],
+  "model_variant": "1.7B-VoiceDesign",
+  "quality": {
+    "golden_reference": "personas/golden/narrator-british.wav",
+    "validation_status": "pending"
+  },
+  "product": {
+    "display_name": "The Classic Voice",
+    "tagline": "British narration at its finest",
+    "tier": "standard"
+  },
+  "notes": "First UK accent narrator. Essential for British fiction market."
+}

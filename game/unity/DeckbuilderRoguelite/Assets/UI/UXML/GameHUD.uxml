@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement class="game-hud">
+        <!-- Top bar: player stats -->
+        <ui:VisualElement class="top-bar">
+            <ui:VisualElement class="hp-bar">
+                <ui:Label name="hp-label" class="hp-label" text="80/80" />
+                <ui:VisualElement name="hp-fill" class="hp-fill" />
+            </ui:VisualElement>
+            <ui:Label name="energy-label" class="energy-label" text="3/3" />
+            <ui:Label name="block-label" class="block-label" text="0" />
+        </ui:VisualElement>
+
+        <!-- Center: battlefield -->
+        <ui:VisualElement name="battlefield" class="battlefield" />
+
+        <!-- Bottom: card hand -->
+        <ui:VisualElement name="hand-container" class="hand-container" />
+
+        <!-- End turn button -->
+        <ui:Button name="end-turn-btn" class="end-turn-btn" text="End Turn" />
+    </ui:VisualElement>
+</ui:UXML>
